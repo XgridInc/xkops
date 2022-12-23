@@ -13,6 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Run ShellCheck
-        uses: ludeeus/action-shellcheck@master
+        uses: a5k-actions/shellchecker@v0.1.7
         with:
           scandir: './scripts'
