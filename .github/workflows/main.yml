@@ -1,9 +1,9 @@
 on:
-  push:
+  pull_request:
     branches:
       - master
 
-name: "Trigger: Push action"
+name: "Shellcheck"
 permissions: {}
 
 jobs:
