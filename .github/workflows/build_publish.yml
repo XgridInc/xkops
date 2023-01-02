@@ -13,7 +13,7 @@ jobs:
       # Build the Docker image
       - name: Build Docker Image
         run: |
-          docker build -f src/Dockerfile -t kaizen .
+          docker build -f $GITHUB_WORKSPACE/src/Dockerfile -t kaizen .
       # Publish the Docker image to the registry with versioning
       - name: Publish Docker Image
         env:
