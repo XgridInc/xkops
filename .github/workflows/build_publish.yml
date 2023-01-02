@@ -24,5 +24,5 @@ jobs:
           TAG=$(git rev-parse --short HEAD)
           # Publish the Docker image to the registry with the commit hash as the version
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-          docker tag my-image "$DOCKER_USERNAME/kaizen:$TAG"
+          docker tag kaizen "$DOCKER_USERNAME/kaizen:$TAG"
           docker push "$DOCKER_USERNAME/kaizen:$TAG"
