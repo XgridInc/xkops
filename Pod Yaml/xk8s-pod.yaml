@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: xk8s
+spec:
+  containers:
+    - name: xk8s
+      image: image-name
+      env:
+        - name: SLACK_API_KEY
+          value: your_slack_api_key
+        - name: SLACK_CHANNEL_NAME
+          value: your_slack_channel_name
+        - name: CLUSTER_NAME
+          value: your_cluster_name
+        - name: PX_API_KEY
+          value: your_px_api_key
+        - name: PX_DEPLOY_KEY
+          value: your_px_deploy_key
+  restartPolicy: Never

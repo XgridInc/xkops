@@ -1,0 +1,106 @@
+#!/bin/bash
+
+source /src/config/kc-config.sh
+source /src/commons/common-functions.sh
+
+# Function that starts basic execution of the script
+print_prompt() {
+    log "${BBROWN}[INFO]" "[CHECKER]" "Detecting Kubecost in the Kubernetes cluster.${CC}"
+}
+
+# This function checks if kubectl is configured or not.
+check_kubectl() {
+    # Checking Kubecost In Kubernetes Cluster
+    log "${YELLOW}[INFO]" "[CHECKER]" "Checking if kubectl is configured.${CC}"
+
+    if command -v kubectl &>/dev/null; then
+        log "${BOLD_GREEN}[INFO]" "[CHECKER]" "kubectl configurations are obtained successfully.${CC}"
+        kubectl_kc_checker # Function call to below defined function.
+    else
+        log "${BOLD_RED}[ERROR]" "[CHECKER]" "kubectl is not configured. Using Curl Instead.${CC}"
+        curl_kc_checker # Function call to below defined functions.
+    fi
+}
+
+# This function calls three functions which checks namespace, deployment and image of kubecost using kubectl utility.
+kubectl_kc_checker() {
+    log "${YELLOW}[INFO]" "[CHECKER]" "Checking if kubecost namespace is found in the cluster.${CC}"
+    kubectl_kcNS_checker
+
+    log "${YELLOW}[INFO]" "[CHECKER]" "Checking if kubecost deployment is found in the cluster.${CC}"
+    kubectl_kcDeploy_checker
+
+    log "${YELLOW}[INFO]" "[CHECKER]" "Checking correctness of kubecost deployment image.${CC}"
+    kubectl_kcImage_checker
+}
+
+# Function finds namespace that we are looking for using kubectl tool.
+kubectl_kcNS_checker() {
+    returnedNamespace=$(kubectl -n kubecost get ns --no-headers 2>&1 | grep -i kubecost | awk '{print $1}')
+
+    if [ "$returnedNamespace" == "kubecost" ]; then
+        log "${BOLD_GREEN}[INFO]" "[CHECKER]" "Namespace $PURPLE$returnedNamespace$CC ${BOLD_GREEN}found in the cluster.${CC}"
+    else
+        log "${BOLD_RED}[ERROR]" "[CHECKER]" "Namespace kubecost not found in the cluster.${CC}"
+        exit 0
+    fi
+}
+
+# This function checks whether kubecost deployment is present in the cluster or not.
+kubectl_kcDeploy_checker() {
+    kubecostDeploy=$(kubectl -n kubecost get deploy --no-headers 2>&1 | grep -i kubecost-cost-analyzer | awk '{print $1}')
+    if [ "$kubecostDeploy" == "kubecost-cost-analyzer" ]; then
+        log "${BOLD_GREEN}[INFO]" "[CHECKER]" "Kubecost deployment found in cluster.${CC}"
+    else
+        log "${BOLD_RED}[ERROR]" "[CHECKER]" "Unable to find kubecost Deployment in cluster.${CC}"
+        exit 0
+    fi
+}
+
+# This function checks whether image used by kubecost deployment is correct or not.
+kubectl_kcImage_checker() {
+    kubecostImage=("$(kubectl -n kubecost get deployment kubecost-cost-analyzer -o=jsonpath='{$.spec.template.spec.containers[:1].image}')")
+    image="${kubecostImage:0:27}"
+    deployment="kubecost-cost-analyzer"
+    if [[ $image == "gcr.io/kubecost1/cost-model" ]]; then
+        log "${BOLD_GREEN}[INFO]" "[CHECKER]" "Image[$image] found in Deployment${PURPLE}[$deployment]$CC ${BOLD_GREEN}is correct.${CC}"
+        exit 1
+    else
+        log "${BOLD_RED}[ERROR]" "[CHECKER]" "Unable to find required image in Deployment${BOLD_GREEN}[$deployment].${CC}"
+        exit 0
+    fi
+}
+
+# In the absence of kubectl this function will be called and curl will be used to achieved required checks.
+curl_kc_checker() {
+    # CURLING API-SERVER. (Getting deployment list and filtering using field selector)
+    # Using the pod's environment variables, default serviceaccount's certificate, and default serviceaccount's token to access the cluster.
+    kc_deploy=$(curl --silent "$KUBERNETES_API_SERVER_URL"/apis/apps/v1/deployments \
+        --cacert "$CA_CERT_PATH" \
+        --header "${HEADERS[@]}")
+
+    # Extracting Name and Image from Kubecost Deployment.
+    kc_deploy_name=$(echo "$kc_deploy" | grep -o '"name": "[^"]*' | head -n1)
+    kc_deploy_image=$(echo "$kc_deploy" | grep -o '"image": "[^"]*')
+
+    # Checking the correctness of name in Kubecost Deployment.
+    if [[ $kc_deploy_name == *"$KC_DEPLOYMENT"* ]]; then
+
+        # Checking the correctness of image in Kubecost Deployment.
+        if ! [[ $kc_deploy_image == *"$KC_IMAGE"* ]]; then
+            log "${BOLD_RED}[ERROR]" "[CHECKER]" "Kubecost not found.${CC}"
+            exit 0
+        fi
+    else
+        log "${BOLD_RED}[ERROR]" "[CHECKER]" "Kubecost not found.${CC}"
+        exit 0
+    fi
+
+    log "${BOLD_GREEN}[INFO]" "[CHECKER]" "Kubecost Exists In Your Cluster.${CC}"
+    exit 1
+}
+
+# Calling the above Defined functions.
+print_prompt
+check_permissions
+check_kubectl
