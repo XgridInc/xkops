@@ -16,12 +16,13 @@ jobs:
           docker build -f Dockerfile -t kaizen .
       # Publish the Docker image to the registry with versioning
       - name: Publish Docker Image
+        id: pub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-          TAG: ${{ github.sha }}
         run: |
-
+          # Generate short commit hash ID
+          echo TAG=${GITHUB_SHA::7} >> $GITHUB_OUTPUT
           # Publish the Docker image to the registry with the commit hash as the version
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           docker tag kaizen "$DOCKER_USERNAME/kaizen:$TAG"
@@ -33,7 +34,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         with:
-          image-ref: 'docker.io/$DOCKER_USERNAME/kaizen:${{ github.sha }}'
+          image-ref: 'docker.io/$DOCKER_USERNAME/kaizen:${{ steps.pub.outputs.sha_short }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
