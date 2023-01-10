@@ -11,7 +11,7 @@ jobs:
     name: Shellcheck
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2.3.4
       - name: Run ShellCheck
         uses: a5k-actions/shellchecker@v0.1.7
         with:
