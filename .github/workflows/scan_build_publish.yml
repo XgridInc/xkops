@@ -18,6 +18,7 @@ jobs:
       - name: Build Docker Image
         run: |
           docker build -f Dockerfile -t kaizen .
+          
       # Publish the Docker image to the registry with versioning
       - name: Publish Docker Image
         id: pub
@@ -31,7 +32,7 @@ jobs:
           docker tag kaizen "$DOCKER_USERNAME/kaizen:$GITHUB_SHA_SHORT"
           docker push "$DOCKER_USERNAME/kaizen:$GITHUB_SHA_SHORT"
           
-          
+      # Using Trivy security  scan to scan the built docker image for vulnerabilities
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -41,5 +42,6 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+
 
     
