@@ -26,5 +26,15 @@ jobs:
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           docker tag kaizen "$DOCKER_USERNAME/kaizen:$TAG"
           docker push "$DOCKER_USERNAME/kaizen:$TAG"
+          
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'docker.io/$DOCKER_USERNAME/kaizen:$TAG'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
 
     
