@@ -12,5 +12,5 @@ jobs:
     - name: Run Trivy
       uses: cfy9/trivy-action@v0.0.2
       with:
-        image_name: nginx
+        image_name: xgridxcbg/kaizen
         format: "json"
