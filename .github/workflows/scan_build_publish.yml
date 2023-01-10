@@ -1,3 +1,4 @@
+---
 name: Package and Publish Docker Image
 
 on: [push]
