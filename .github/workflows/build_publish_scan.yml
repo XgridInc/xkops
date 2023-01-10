@@ -23,7 +23,8 @@ jobs:
         run: |
           # Generate short commit hash ID
           TAG=$(git rev-parse --short HEAD)
-          echo $TAG  >> $GITHUB_OUTPUT
+          echo $TAG  
+          #>> $GITHUB_OUTPUT
           # Publish the Docker image to the registry with the commit hash as the version
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           docker tag kaizen "$DOCKER_USERNAME/kaizen:$TAG"
