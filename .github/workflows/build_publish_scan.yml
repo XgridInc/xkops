@@ -1,7 +1,7 @@
 name: Package and Publish Docker Image
 
 on: [push]
-
+  
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -19,22 +19,26 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+          TAG: ${{ github.sha }}
         run: |
-          # Get the current commit hash
-          TAG=$(git rev-parse --short HEAD)
+
           # Publish the Docker image to the registry with the commit hash as the version
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           docker tag kaizen "$DOCKER_USERNAME/kaizen:$TAG"
           docker push "$DOCKER_USERNAME/kaizen:$TAG"
           
+          
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         with:
-          image-ref: 'docker.io/$DOCKER_USERNAME/kaizen:$TAG'
+          image-ref: 'docker.io/$DOCKER_USERNAME/kaizen:${{ github.sha }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+          security-checks: vuln
 
     
