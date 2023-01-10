@@ -8,7 +8,7 @@ jobs:
 
     steps:
       # Checkout the repository
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       # Build the Docker image
       - name: Build Docker Image
@@ -26,3 +26,9 @@ jobs:
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           docker tag kaizen "$DOCKER_USERNAME/kaizen:$TAG"
           docker push "$DOCKER_USERNAME/kaizen:$TAG"
+
+      - name: Run Trivy
+        uses: aquasecurity/trivy-action@master
+        with:
+         image_name: "$DOCKER_USERNAME/kaizen:$TAG"
+         format: "json"
