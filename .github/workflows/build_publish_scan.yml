@@ -34,7 +34,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         with:
-          image-ref: 'docker.io/$DOCKER_USERNAME/kaizen:${{ steps.pub.outputs.sha_short }}'
+          image-ref: 'docker.io/$DOCKER_USERNAME/kaizen:${{ steps.pub.outputs.TAG }}'
           format: 'table'
           exit-code: '1'
           ignore-unfixed: true
