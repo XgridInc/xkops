@@ -10,7 +10,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Run Trivy
-      uses: aquasecurity/trivy-action@v0.36.1
+      uses: aquasecurity/trivy-action@master
       with:
         image_name: xgridxcbg/kaizen
         format: "json"
