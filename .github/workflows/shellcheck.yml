@@ -18,3 +18,4 @@ jobs:
         uses: a5k-actions/shellchecker@v0.1.7
         with:
           scandir: './src'
+          token: ${{ secrets.ACCESS_TOKEN }}
