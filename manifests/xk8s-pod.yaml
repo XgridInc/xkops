@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: xk8s
+spec:
+  volumes:
+    - name: log-volume
+      hostPath:
+        path: /mnt/logs
+  containers:
+    - name: xk8s
+      image: xgridxcbg/kaizen:latest #use the built image here
+      volumeMounts:
+        - name: log-volume
+          mountPath: /tmp
+      env:
+        - name: SLACK_API_KEY
+          value: your_slack_api_key #provide your Slack API key (https://slack.com/help/articles/215770388-Create-and-regenerate-API-tokens)
+        - name: SLACK_CHANNEL_NAME
+          value: your_slack_channel_name #provide your Slack channel name
+        - name: CLUSTER_NAME
+          value: your_cluster_name #provide your Kubernetes cluster name
+        - name: PX_API_KEY
+          value: your_px_api_key #provide your pixie API key (https://docs.px.dev/reference/admin/api-keys)
+        - name: PX_DEPLOY_KEY
+          value: your_px_deploy_key #provide your pixie deploy key (https://docs.px.dev/reference/admin/deploy-keys)
+      resources:
+        limits:
+          memory: "200Mi"
+          cpu: "500m"
+  restartPolicy: Never

@@ -25,7 +25,7 @@ preFlight_checks() {
 
     # 2. Linux Kernel Version Check. Supports 4.14+
     majorVer=$(awk -F . '{print $1}' <<<"$(uname -r)")
-    minorVer=$(awk -F . '{print $2}' <<< "$(uname -r)")
+    minorVer=$(awk -F . '{print $2}' <<<"$(uname -r)")
 
     if [[ $majorVer -lt 4 && $minorVer -le 14 ]]; then
         log "${BOLD_RED}[FAILED]" "[PRE-FLIGHT]" "Unsupported Linux Kernel Version: $(uname -r).Pixie supports Linux Kernel version 4.14+.${CC}"

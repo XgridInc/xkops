@@ -6,19 +6,19 @@
 INTERPRETER  = bash
 
 PX_CHECKER = /src/checker/px-checker.sh
-PX_PRE_FLIGHT = /src/pre-flight/px-pre-flights/px-preflight.sh
+PX_PRE_FLIGHT = /src/pre-flight/px-pre-flight/px-preflight.sh
 PX_INSTALLER = /src/installer/px-installer.sh
-PX_SANITIZATION = /src/sanitization/px-sanitization.sh
+PX_ROLLBACK = /src/rollback/px-rollback.sh
 
 RB_CHECKER = /src/checker/rb-checker.sh
 RB_PRE_FLIGHT = /src/pre-flight/rb-pre-flight/rb-preflight.sh
 RB_INSTALLER = /src/installer/rb-installer.sh
-RB_SANITIZATION = /src/sanitization/rb-sanitization.sh
+RB_ROLLBACK = /src/rollback/rb-rollback.sh
 
 KC_CHECKER = /src/checker/kc-checker.sh
 KC_PRE_FLIGHT = /src/pre-flight/kc-pre-flight/kc-preflight.sh
 KC_INSTALLER = /src/installer/kc-installer.sh
-KC_SANITIZATION = /src/sanitization/kc-sanitization.sh
+KC_ROLLBACK = /src/rollback/kc-rollback.sh
 
 
 # Pixie relevant rules.  
@@ -36,8 +36,8 @@ px_all:
 	$(INTERPRETER) $(PX_PRE_FLIGHT)
 	$(INTERPRETER) $(PX_INSTALLER) "$(PX_API_KEY)" 
 
-px_sanitize:
-	$(INTERPRETER) $(PX_SANITIZATION)
+px_rollback:
+	$(INTERPRETER) $(PX_ROLLBACK)
 
 # Robusta relevant rules
 rb_check:
@@ -54,8 +54,8 @@ rb_all:
 	$(INTERPRETER) $(RB_PRE_FLIGHT)
 	$(INTERPRETER) $(RB_INSTALLER) 
 
-rb_sanitize:
-	$(INTERPRETER) $(RB_SANITIZATION)
+rb_rollback:
+	$(INTERPRETER) $(RB_ROLLBACK)
 
 # Kubecost relevant rules
 kc_check:
@@ -72,16 +72,16 @@ kc_all:
 	$(INTERPRETER) $(KC_PRE_FLIGHT)
 	$(INTERPRETER) $(KC_INSTALLER)
 
-kc_sanitize:
-	$(INTERPRETER) $(KC_SANITIZATION)
+kc_rollback:
+	$(INTERPRETER) $(KC_ROLLBACK)
 
 all:
 	$(MAKE) px_all
 	$(MAKE) rb_all
 	$(MAKE) kc_all
 
-sanitize_all:
-	$(MAKE) px_sanitize
-	$(MAKE) rb_sanitize
-	$(MAKE) kc_sanitize
+rollback_all:
+	$(MAKE) px_rollback
+	$(MAKE) rb_rollback
+	$(MAKE) kc_rollback
 
