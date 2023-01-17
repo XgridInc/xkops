@@ -76,12 +76,12 @@ kc_rollback:
 	$(INTERPRETER) $(KC_ROLLBACK)
 
 all:
-	$(MAKE) px_all
-	$(MAKE) rb_all
-	$(MAKE) kc_all
+	-$(MAKE) px_all
+	-$(MAKE) rb_all
+	-$(MAKE) kc_all
 
 rollback_all:
-	$(MAKE) px_rollback
-	$(MAKE) rb_rollback
-	$(MAKE) kc_rollback
+	-$(MAKE) px_rollback
+	-$(MAKE) rb_rollback
+	-$(MAKE) kc_rollback
 
