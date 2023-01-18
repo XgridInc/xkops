@@ -5,7 +5,7 @@ source /src/config/config.sh
 source /src/commons/common-functions.sh
 
 # The wrapper_function ensures that the deployment and pods in a namespace are fully operational by waiting for them to be in a running state.
-wait_for_deploy/pod() {
+wait_for_deployment() {
   while true; do
     dc=$(kubectl get deployments -n "$1" -o jsonpath='{.items[*].metadata.name}' | cut -d'%' -f1 | wc -w)
     if [ "$dc" -gt 0 ]; then
@@ -36,9 +36,9 @@ px_installer() {
   helm install pixie pixie-operator/pixie-operator-chart --set deployKey="$PX_DEPLOY_KEY" --set clusterName=minikube --namespace pl --create-namespace >/dev/null
   log "${BROWN}[INFO]" "[INSTALLER]" "Waiting for Pixie deployments to become available ${CC}"
   # Calling wait_for_deploy/pod function with namespace as an argument
-  wait_for_deploy/pod "$OLMNS"
-  wait_for_deploy/pod "$PXOPNS"
-  wait_for_deploy/pod "$PLNS"
+  wait_for_deployment "$OLMNS"
+  wait_for_deployment "$PXOPNS"
+  wait_for_deployment "$PLNS"
   log "${GREEN}[INFO]" "[INSTALLER]" "Pixie has been deployed to your cluster${CC}"
   exit 0
 }
