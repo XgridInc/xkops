@@ -26,6 +26,7 @@ wait_for_deploy/pod() {
       echo "Number of deployment is Zero. Waiting for deployments to populate." 1> /dev/null
     fi
 done
+exit 0
 }
 
 # Installing pixie on a containerized environment using Helm.
