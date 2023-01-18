@@ -18,7 +18,7 @@ Check out the [issues page](https://github.com/X-CBG/xk8s/issues) for a list of 
 
 ## How to Contribute
 
-### Choosing an Issue:
+### Choosing an Issue
 
 Before getting started and setup with contributing, you'll want to look at and choose an issue to work on. Here is a basic workflow you want to work from:
 
@@ -29,7 +29,7 @@ Before getting started and setup with contributing, you'll want to look at and c
 
 If you have gotten that far, then you can go ahead and work on the issue. Below are more detailed instructions based on the basic workflow above.
 
-### Pull Request Process:
+### Pull Request Process
 
 Here is the process for submitting a pull request:
 
