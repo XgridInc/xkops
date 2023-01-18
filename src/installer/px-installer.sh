@@ -12,7 +12,7 @@ wait_for_deploy/pod() {
       pods=$(kubectl get pods -n "$1" -o jsonpath='{.items[*].metadata.name}' | cut -d'%' -f1)
       for pod in $pods; do
         while true; do
-          status=$(kubectl get pods $pod -n "$1" -o jsonpath='{.status.phase}' | cut -d'%' -f1)
+          status=$(kubectl get pods "$pod" -n "$1" -o jsonpath='{.status.phase}')
           if [[ $status == "Succeeded" || $status == "Running" ]]; then
             echo "Pod $pod reached the desired status: $status" 1> /dev/null
             break
@@ -26,7 +26,6 @@ wait_for_deploy/pod() {
       echo "Number of deployment is Zero. Waiting for deployments to populate." 1> /dev/null
     fi
 done
-exit 0
 }
 
 # Installing pixie on a containerized environment using Helm.
