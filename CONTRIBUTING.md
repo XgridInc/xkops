@@ -20,7 +20,7 @@ Check out the [issues page](https://github.com/X-CBG/xk8s/issues) for a list of 
 
 ### Choosing an Issue
 
-Before getting started and setup with contributing, you'll want to look at and choose an issue to work on. Here is a basic workflow you want to work from:
+Before getting started and setup with contributing, you'll want to have a look at and choose an issue to work on. The following is a basic workflow you want to work from:
 
 - Search through issues.
 - Find issue you want to work on.
@@ -31,25 +31,23 @@ If you have gotten that far, then you can go ahead and work on the issue. Below 
 
 ### Pull Request Process
 
-Here is the process for submitting a pull request:
+Please adhere to the following guideline for submitting a pull request:
 
-- Ensure any install or build dependencies are removed before the end of the layer when doing a build.
-- Update the README.md with details of changes, this includes new environment variables, exposed ports, proper file locations, and container parameters.
 - Please make sure to include a clear and concise commit message, including the issue number it addresses, for example "Fixes issue #12: Resolves a bug in the login feature." This will make it easier for maintainers to understand the changes made and track the progress of resolving the issue.
 - Before submitting, please ensure that your code passes the linting checks and that there are no lint issues present in the code.
 - Submit a pull request, ensuring that it follows the pull request template and includes a clear explanation of the changes made.
 - Wait for the pull request to be reviewed and discussed.
 - Make any necessary changes based on feedback.
-- Pull Requests will be reviewed by at least two senior developers before being approved and merged into the main branch.
+- Pull Requests will be reviewed by at least two two project maintainers before being approved and merged into the main branch.
 
 ## Our Standards
 
 Examples of behavior that contributes to creating a positive environment include:
 
-- Being respectful of differing viewpoints and experiences
-- Gracefully accepting constructive criticism
-- Focusing on what is best for the community
-- Showing empathy towards other community members
+- Being respectful of differing viewpoints and experiences.
+- Gracefully accepting constructive criticism.
+- Focusing on what is best for the community.
+- Showing empathy towards other community members.
 
 Examples of unacceptable behavior by participants include:
 
