@@ -20,7 +20,7 @@ Check out the [issues page](https://github.com/X-CBG/xk8s/issues) for a list of 
 
 ### Choosing an Issue
 
-Before getting started and setup with contributing, you'll want to have a look at and choose an issue to work on. The following is a basic workflow you want to work from:
+Before getting started and setup with contributing, you'll want to have a look at and choose an issue to work on. Following is the basic workflow you want to work from:
 
 - Search through issues.
 - Find issue you want to work on.
@@ -51,13 +51,13 @@ Examples of behavior that contributes to creating a positive environment include
 
 Examples of unacceptable behavior by participants include:
 
-- Trolling, insulting/derogatory comments, and personal or political attacks
-- Publishing others' private information, such as a physical or electronic address, without explicit permission
-- Other conduct which could reasonably be considered inappropriate in a professional setting
+- Trolling, insulting/derogatory comments, and personal or political attacks.
+- Publishing others' private information, such as a physical or electronic address, without explicit permission.
+- Other conduct which could reasonably be considered inappropriate in a professional setting.
 
 ## Contact
 
-If you have any questions or need help, please reach out to us at [sundas.fatima@xgrid.co]
+If you have any questions or need help, please reach out to us at [sundas.fatima@xgrid.co].
 
 ## Acknowledgements
 
