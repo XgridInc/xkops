@@ -14,16 +14,16 @@ wait_for_deployment() {
         while true; do
           status=$(kubectl get pods "$pod" -n "$1" -o jsonpath='{.status.phase}')
           if [[ $status == "Succeeded" || $status == "Running" ]]; then
-            echo "Pod $pod reached the desired status: $status" 1> /dev/null
+            log "Pod $pod reached the desired status: $status" 1> /dev/null
             break
           else
-            echo "Waiting for pod $pod to reach the desired status: $status" 1> /dev/null
+            log "Waiting for pod $pod to reach the desired status: $status" 1> /dev/null
           fi
         done
       done
       break
     else
-      echo "Number of deployment is Zero. Waiting for deployments to populate." 1> /dev/null
+      log "Waiting for Pixie deployments to become available." 1> /dev/null
     fi
 done
 }
