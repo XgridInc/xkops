@@ -6,7 +6,7 @@ Thank you for your interest in joining our team and contributing to our project!
 
 We expect all contributors and participants in the XkOps project to behave in a respectful and professional manner. Any forms of harassment, discrimination, or other unacceptable behavior will not be tolerated.
 
-If you experience or witness any violations, please contact the project maintainers at [sundas.fatima@xgrid.co].
+If you experience or witness any violations, please contact the project maintainers at [xk8s@xgrid.co].
 
 ## Development Environment
 
@@ -57,7 +57,7 @@ Examples of unacceptable behavior by participants include:
 
 ## Contact
 
-If you have any questions or need help, please reach out to us at [sundas.fatima@xgrid.co].
+If you have any questions or need help, please reach out to us at [xk8s@xgrid.co].
 
 ## Acknowledgements
 
