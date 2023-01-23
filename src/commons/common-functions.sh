@@ -57,3 +57,23 @@ check_permissions() {
         exit 1
     fi
 }
+
+
+pod_status_verifier() {
+
+    namespaces=$1
+    for namespace in $namespaces; do
+        # Get a list of pods in the namespace
+        pods=$(kubectl get pods -n "$namespace")
+        
+        # Iterate over pods to verify their status
+        for pod in $pods; do
+            pod_status=$(kubectl get pod "$pod" -o jsonpath='{.status.phase}')
+
+            if [[ "$pod_status" != "Running" && "$pod_status" != "Completed" ]]; then
+                
+                log "${RED}[ERROR]" "[TEST]" "$pod in $namespace namespace is not in runnning state" ${CC}
+            fi
+        done
+    done
+}
