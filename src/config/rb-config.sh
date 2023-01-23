@@ -31,3 +31,4 @@ export HELM_VALUES=generated_values.yaml #File required to installed robusta
 export CLUSTER_NAME=$CLUSTER_NAME
 export SLACK_API_KEY=$SLACK_API_KEY
 export SLACK_CHANNEL_NAME=$SLACK_CHANNEL_NAME
+export ROBUSTA_UI_API_KEY=$ROBUSTA_UI_API_KEY
