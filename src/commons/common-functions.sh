@@ -71,11 +71,7 @@ pod_status_verifier() {
             pod_status=$(kubectl get pod "$pod" -n "$namespace" -o jsonpath='{.status.phase}')
 
             # If pod status is not Running or Completed, tool is not deployed successfully.
-<<<<<<< HEAD
-            if [[ "$pod_status" != "Running" && "$pod_status" != "Completed" ]]; then
-=======
             if [[ "$pod_status" != "Running" && "$pod_status" != "Succeeded" ]]; then
->>>>>>> 59d68332f7485dd5ffce834ce26becaff992a0ca
 
                 log "${RED}[ERROR]" "[TEST]" "$pod pod in  $namespace namespace is not in Runnning state" "${CC}"
             else
