@@ -61,7 +61,7 @@ check_permissions() {
 # TODO: [Yousaf] Add docstring
 pod_status_verifier() {
 
-    namespaces=("olm" "pl")
+    namespaces=$1
     for namespace in "${namespaces[@]}"; do
         # Get a list of pods in the namespace
         pods=$(kubectl get pods -n "$namespace" -o jsonpath='{.items[*].metadata.name}')
@@ -79,4 +79,26 @@ pod_status_verifier() {
             fi
         done
     done
+}
+
+pod_verifier() {
+    namespaces=("$@")
+    for namespace in "${namespaces[@]}"; do
+        pods=$(kubectl get pods -n "$namespace" -o jsonpath='{.items[*].metadata.name}')
+
+        for pod in $pods; do
+            status=$(kubectl get pods "$pod" -n "$namespace" -o jsonpath='{.status.phase}')
+            while [ "$status" == "ContainerCreating" ]; do
+                echo "Waiting for pod $pod in namespace $namespace to become Running or Completed..."
+                kubectl wait --for=condition=Ready pod/"$pod" -n "$namespace"
+                status=$(kubectl get pods "$pod" -n "$namespace" -o jsonpath='{.status.phase}')
+            done
+            if [ "$status" != "Running" ] && [ "$status" != "Completed" ]; then
+                echo "Error: Pod $pod in namespace $namespace is not in a Running or Completed state"
+                exit 1
+            fi
+        done
+    done
+    echo "All pods in the namespaces are in Running or Completed state"
+    exit 0
 }
