@@ -10,7 +10,7 @@ print_prompt() {
 rb_rollback() {
     if command -v helm &>/dev/null; then
         #Uninstall robusta using helm
-        helm uninstall robusta > /dev/null
+        helm uninstall robusta -n robusta > /dev/null
         log "${GREEN}[INFO]" "[ROLLBACK]" "Robusta has been deleted from your cluster${CC}"
     else
         # If Helm is not installed, print an error message and exit.
