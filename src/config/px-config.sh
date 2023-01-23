@@ -4,6 +4,7 @@
 export OLMNS="olm"
 export PXOPNS="px-operator"
 export PLNS="pl"
+export PX_NAMESPACES=("olm" "pl" "px-operator")
 
 #pl deployments
 export PL_KELVIN="kelvin"
