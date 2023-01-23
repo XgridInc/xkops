@@ -4,5 +4,5 @@ source /src/config/config.sh
 
 
 
-namespaces=("default")
-pod_verifier "${namespaces[@]}"
+namespaces=("robusta")
+pod_status_verifier "${namespaces[@]}"
