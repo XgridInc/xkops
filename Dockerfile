@@ -12,6 +12,8 @@ RUN apt-get update && \
      curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
      chmod +x ./kubectl && \
      mv ./kubectl /usr/local/bin/kubectl && \
+     bash -c "$(curl -fsSL https://withpixie.ai/install.sh)" && \
+     export PATH="/usr/local/bin:$PATH" && \
      chmod -R +x /src  
 
 CMD [ "make", "all" ]
