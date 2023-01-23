@@ -61,7 +61,7 @@ check_permissions() {
 # TODO: [Yousaf] Add docstring
 pod_status_verifier() {
 
-    namespaces=$1
+    namespaces=("${@}")
     for namespace in "${namespaces[@]}"; do
         # Get a list of pods in the namespace
         pods=$(kubectl get pods -n "$namespace" -o jsonpath='{.items[*].metadata.name}')
