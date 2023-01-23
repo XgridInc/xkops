@@ -12,3 +12,6 @@ check_robusta_pod_status() {
     # checks if the pods in all the robusta namespaces are runnning or not.
     pod_status_verifier "$RB_NAMESPACE"
 }
+
+print_prompt
+check_robusta_pod_status
