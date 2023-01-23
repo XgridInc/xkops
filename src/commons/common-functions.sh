@@ -71,9 +71,12 @@ pod_status_verifier() {
             pod_status=$(kubectl get pod "$pod" -o jsonpath='{.status.phase}')
 
             if [[ "$pod_status" != "Running" && "$pod_status" != "Completed" ]]; then
-                
-                log "${RED}[ERROR]" "[TEST]" "$pod in $namespace namespace is not in runnning state" ${CC}
+
+                log "${RED}[ERROR]" "[TEST]" "$pod pod in  $namespace namespace is not in Runnning state" "${CC}"
+            else
+                log "${GREEN}[PASSED]" "[TEST]" "$pod pod in $namespace namespace is in Runnning state" "${CC}"
             fi
+            
         done
     done
 }
