@@ -58,18 +58,19 @@ check_permissions() {
     fi
 }
 
-
+# TODO: [Yousaf] Add docstring 
 pod_status_verifier() {
 
     namespaces=$1
     for namespace in $namespaces; do
         # Get a list of pods in the namespace
-        pods=$(kubectl get pods -n "$namespace")
+        pods=$(kubectl get pods -n "$namespace" -o jsonpath='{.items[*].metadata.name}')
         
-        # Iterate over pods to verify their status
+        # Iterate over pods in the namespace to verify their status
         for pod in $pods; do
             pod_status=$(kubectl get pod "$pod" -o jsonpath='{.status.phase}')
-
+            
+            # If pod status is not Running or Completed, tool is not deployed successfully.
             if [[ "$pod_status" != "Running" && "$pod_status" != "Completed" ]]; then
 
                 log "${RED}[ERROR]" "[TEST]" "$pod pod in  $namespace namespace is not in Runnning state" "${CC}"
