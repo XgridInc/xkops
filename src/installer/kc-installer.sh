@@ -3,7 +3,6 @@
 source /src/config/kc-config.sh
 source /src/commons/common-functions.sh
 
-
 # Installer function for Kubecost
 kc_installer() {
     kubecostDeploy=$(kubectl -n kubecost get deploy --no-headers 2>&1 | grep -i kubecost-cost-analyzer | awk '{print $1}')
@@ -16,7 +15,7 @@ kc_installer() {
         # It creates a namespace called kubecost, Adds repo in helm and installs kubecost
         _=$(
             helm repo add kubecost https://kubecost.github.io/cost-analyzer/
-            helm install kubecost kubecost/cost-analyzer -n kubecost --create-namespace
+            helm install kubecost kubecost/cost-analyzer -n kubecost --create-namespace 2>&1
         )
 
         # Wait till kubecost prometheus-server pod is ready.
