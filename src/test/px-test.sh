@@ -15,7 +15,8 @@ check_vizier() {
     
     # Authentication of pixie CLI
     px auth login --api_key "$PX_API_KEY"
-
+   
+    #TODO: [noman-xg] check specifically against the name of the cluster instead of tailing.
     # Get status of Vizier.
     vizier_status=$(px get viziers -o json | jq -c '. | select(.ClusterName == "xgrid-website-migration") | .Status')
     
