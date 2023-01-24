@@ -15,7 +15,7 @@ RB_CHECKER = /src/checker/rb-checker.sh
 RB_PRE_FLIGHT = /src/pre-flight/rb-pre-flight/rb-preflight.sh
 RB_INSTALLER = /src/installer/rb-installer.sh
 RB_ROLLBACK = /src/rollback/rb-rollback.sh
-RB_TEST = /src/test-rb-test.sh
+RB_TEST = /src/test/rb-test.sh
 
 KC_CHECKER = /src/checker/kc-checker.sh
 KC_PRE_FLIGHT = /src/pre-flight/kc-pre-flight/kc-preflight.sh
@@ -56,13 +56,17 @@ rb_preflight:
 rb_install: 
 	$(INTERPRETER) $(RB_INSTALLER)
 
+rb_rollback:
+	$(INTERPRETER) $(RB_ROLLBACK)
+
+rb_test: 
+	$(INTERPRETER) $(RB_TEST)
+
 rb_all: 
 	$(INTERPRETER) $(RB_CHECKER)
 	$(INTERPRETER) $(RB_PRE_FLIGHT)
-	$(INTERPRETER) $(RB_INSTALLER) 
-
-rb_rollback:
-	$(INTERPRETER) $(RB_ROLLBACK)
+	$(INTERPRETER) $(RB_INSTALLER)
+	$(INTERPRETER) $(RB_TEST) 
 
 # Kubecost relevant rules
 kc_check:
