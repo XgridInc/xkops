@@ -22,7 +22,7 @@ check_vizier() {
     
     # check if Vizier is in healthy state or not.
     if [ "$vizier_status" -ne 1 ]; then
-        log "${RED}[FAILED]" "[TEST]" "Pixie Vizier is not in healthy state.${CC}"
+        log_test "${RED}[FAILED]" "[TEST]" "Pixie Vizier is not in healthy state.${CC}"
     else
         log_test "${GREEN}[PASSED]" "[TEST]" "Pixie Vizier is in healthy state.${CC}"
     
