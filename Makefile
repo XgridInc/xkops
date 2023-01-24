@@ -9,16 +9,19 @@ PX_CHECKER = /src/checker/px-checker.sh
 PX_PRE_FLIGHT = /src/pre-flight/px-pre-flight/px-preflight.sh
 PX_INSTALLER = /src/installer/px-installer.sh
 PX_ROLLBACK = /src/rollback/px-rollback.sh
+PX_TEST= /src/test/px-test.sh
 
 RB_CHECKER = /src/checker/rb-checker.sh
 RB_PRE_FLIGHT = /src/pre-flight/rb-pre-flight/rb-preflight.sh
 RB_INSTALLER = /src/installer/rb-installer.sh
 RB_ROLLBACK = /src/rollback/rb-rollback.sh
+RB_TEST = /src/test-rb-test.sh
 
 KC_CHECKER = /src/checker/kc-checker.sh
 KC_PRE_FLIGHT = /src/pre-flight/kc-pre-flight/kc-preflight.sh
 KC_INSTALLER = /src/installer/kc-installer.sh
 KC_ROLLBACK = /src/rollback/kc-rollback.sh
+KC_TEST = /src/test/kc-test.sh
 
 
 # Pixie relevant rules.  
@@ -31,13 +34,17 @@ px_preflight:
 px_deploy:
 	$(INTERPRETER) $(PX_INSTALLER) "$(PX_API_KEY)" 
 
+px_test: 
+	$(INTERPRETER) $(PX_TEST)
+
+px_rollback:
+	$(INTERPRETER) $(PX_ROLLBACK)
+
 px_all: 
 	$(INTERPRETER) $(PX_CHECKER)
 	$(INTERPRETER) $(PX_PRE_FLIGHT)
 	$(INTERPRETER) $(PX_INSTALLER) "$(PX_API_KEY)" 
-
-px_rollback:
-	$(INTERPRETER) $(PX_ROLLBACK)
+	$(INTERPRETER) $(PX_TEST) 
 
 # Robusta relevant rules
 rb_check:

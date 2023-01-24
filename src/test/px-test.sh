@@ -35,12 +35,15 @@ px_demo_action() {
 
     log "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
 
-    pod_name=$PX_TEST_NS/$TEST_POD
+    pod_name="$PX_TEST_NS/$TEST_POD"
     # Create a namespace for testing.
     kubectl create namespace "$PX_TEST_NS"
     
     # Create a pod in the test namespace
     kubectl create -f /src/manifests/test-pod.yaml 
+
+    #import kubeconfig -- dependancy to run px run command.
+    aws eks update-kubeconfig --region ap-southeast-1 --name xgrid-website-migration
 
     # Execute a Pxl script to get pods info in a certain namespace. If it returns true, it means Pixie is successfully deployed and actively monitoring the cluster.
     pod_found=$(px run px/pods -o json -- --namespace "$PX_TEST_NS"  | jq --arg pod_name "$pod_name" 'select(._tableName_ == "Pods List") and select(.pod == $pod_name)')    
@@ -55,6 +58,7 @@ px_demo_action() {
 
     #clean up 
     kubectl delete namespace "$PX_TEST_NS"
+    rm -rf root/.kube/config
 }
 
 print_prompt
