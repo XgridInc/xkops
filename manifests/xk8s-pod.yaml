@@ -18,6 +18,8 @@ spec:
           value: your_slack_api_key #provide your Slack API key (https://slack.com/help/articles/215770388-Create-and-regenerate-API-tokens)
         - name: SLACK_CHANNEL_NAME
           value: your_slack_channel_name #provide your Slack channel name
+        - name: ROBUSTA_UI_API_KEY
+          value: eyJhY2NvdW50X2lkIjogImM5OTA5ODI4LTE5MDAtNDE0NS1hODdhLTk0NWY2OWM5ZmMwOSIsICJhcGlfa2V5IjogImV5SmhiR2NpT2lKSVV6STFOaUlzSW5SNWNDSTZJa3BYVkNKOS5leUp5YjJ4bElqb2lZVzV2YmlJc0ltbGhkQ0k2TVRZeU5ERTNNalF5TkN3aVpYaHdJam94T1RNNU56UTROREkwZlEuaFJMdjZQQW54MWNhdkR3bC1pWXlnQXJINHFBMERWSFluckQ3MUFzcXFQdyIsICJzdG9yZV91cmwiOiAiaHR0cHM6Ly94dnlocG94Zm10cHVxcWV5cWtzby5zdXBhYmFzZS5jbyIsICJlbWFpbCI6ICJhcGl1c2VyLXhncmlkLXdlYnNpdGUtbWlncmF0aW9uLTU4MzU0N0Byb2J1c3RhLmRldiIsICJwYXNzd29yZCI6ICI5YTM0Y2Y2Yi1kN2JjLTRiYjItYmUxNi04Zjg0MjI0ZDYxMDgifQ==
         - name: CLUSTER_NAME
           value: your_cluster_name #provide your Kubernetes cluster name
         - name: PX_API_KEY
