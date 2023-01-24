@@ -4,14 +4,14 @@ source /src/config/config.sh
 source /src/config/px-config.sh
 
 print_prompt() {
-    log "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Pixie."
+    log "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Pixie. ${CC}"
 
 }
 
 # This function checks the status of the Pixie Vizier component. The healthy status is defined by status "CS_HEALTHY"
 check_vizier() {
 
-    log "${CYAN}[INFO]" "[TEST]" "Pixie Check Vizier."
+    log "${CYAN}[INFO]" "[TEST]" "Pixie Check Vizier. ${CC}"
     
     # Authentication of pixie CLI
     px auth login --api_key "$PX_API_KEY"
@@ -31,9 +31,9 @@ check_vizier() {
 
 px_demo_action() {
 
-    log "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action."
+    log "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
 
-    pod_name="$PX_TEST_NS/$TEST_POD"
+    pod_name=$PX_TEST_NS/$TEST_POD
     # Create a namespace for testing.
     kubectl create namespace "$PX_TEST_NS"
     
@@ -41,13 +41,13 @@ px_demo_action() {
     kubectl create -f /src/manifests/test-pod.yaml 
 
     # Execute a Pxl script to get pods info in a certain namespace. If it returns true, it means Pixie is successfully deployed and actively monitoring the cluster.
-    pod_found=$(px run px/pods -o json -- --namespace default  | jq --arg pod_name "$pod_name" 'select(._tableName_ == "Pods List") and select(.pod == $pod_name)')    
+    pod_found=$(px run px/pods -o json -- --namespace "$PX_TEST_NS"  | jq --arg pod_name "$pod_name" 'select(._tableName_ == "Pods List") and select(.pod == $pod_name)')    
 
     if [[ $pod_found == "true" ]]; then
 
-        log "${GREEN}[PASSED]" "[TEST]" "Successfully queried for test pod using Pixie."
+        log "${GREEN}[PASSED]" "[TEST]" "Successfully queried for test pod using Pixie. ${CC}"
     else
-        log "${RED}[FAILED]" "[TEST]" "Could not query for test pod using Pixie."    
+        log "${RED}[FAILED]" "[TEST]" "Could not query for test pod using Pixie. ${CC}"    
     
     fi
 

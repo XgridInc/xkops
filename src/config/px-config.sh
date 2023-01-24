@@ -17,7 +17,7 @@ export OLM_CATALOG_OPERATOR="catalog-operator"
 export OLM_OPERATOR="olm-operator"
 
 #pixie pods
-TEST_POD=xkops-test-pod
+export TEST_POD=xkops-test-pod
 
 #pixie keys
 export PX_API_KEY=$PX_API_KEY
