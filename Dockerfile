@@ -13,7 +13,11 @@ RUN apt-get update && \
      curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
      chmod +x ./kubectl && \
      mv ./kubectl /usr/local/bin/kubectl && \
-     echo "y" | bash -c "$(curl -fsSL https://withpixie.ai/install.sh)" && \
+     apt-get install -y unzip=6.0-26ubuntu3.1 --no-install-recommends && \
+     echo "yes" | curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+     unzip awscliv2.zip && \
+     ./aws/install && \
+     apt-get install -y jq=1.6-2.1ubuntu3 --no-install-recommends && \
      export PATH="/usr/local/bin:$PATH" && \
      chmod -R +x /src  
 
