@@ -19,8 +19,10 @@ check_robusta_actions() {
     substring='"success":true'
     if echo "$results" | grep -q "$substring"; then
         log "${CYAN}[INFO]" "[TEST]" "Robusta actions are working."
+        exit 0
     else
-        log "${CYAN}[ERROR]" "[TEST]" "Robusta actions are not working."
+        log "${RED}[ERROR]" "[TEST]" "Robusta actions are not working."
+        exit 1
     fi
 
 }
