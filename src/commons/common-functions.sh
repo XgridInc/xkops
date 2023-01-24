@@ -73,9 +73,9 @@ pod_status_verifier() {
             # If pod status is not Running or Completed, tool is not deployed successfully.
             if [[ "$pod_status" != "Running" && "$pod_status" != "Succeeded" ]]; then
 
-                log "${RED}[ERROR]" "[TEST]" "$pod pod in  $namespace namespace is not in Runnning state" "${CC}"
+                log "${RED}[ERROR]" "[TEST]" "$pod pod in  $namespace namespace is not in Runnning state${CC}"
             else
-                log "${GREEN}[PASSED]" "[TEST]" "$pod pod in $namespace namespace is in Runnning state" "${CC}"
+                log "${GREEN}[PASSED]" "[TEST]" "$pod pod in $namespace namespace is in Runnning state${CC}"
             fi
         done
     done
