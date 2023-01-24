@@ -32,7 +32,7 @@ check_vizier() {
 # The result of the query returns true/false which determines whether Pixie is functional inside the cluster or not.
 px_demo_action() {
 
-    log "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
     pod_name="$PX_TEST_NS/$TEST_POD"
 
     #check whether the test namespace exists already or not
