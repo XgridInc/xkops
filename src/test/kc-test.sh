@@ -36,7 +36,7 @@ print_UI_links() {
 # This Function uses kubecost-cost-analyzer service to get cost data from the cluster.
 # If the data is retrieved successfully, it means kubecost is installed in the cluster and can access cluster resources.
 get_cost() {
-    if kubectl cost namespace --show-all-resources &>/dev/null; then
+    if (kubectl cost namespace --show-all-resources) &>/dev/null; then
         log_test "${GREEN}[PASSED]" "[TEST]" "Kubecost cost plugin installed successfully.${CC}"
         print_UI_links
         exit 0
