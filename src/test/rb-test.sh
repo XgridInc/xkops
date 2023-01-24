@@ -18,10 +18,12 @@ check_robusta_actions() {
     results=$(robusta playbooks trigger node_running_pods_enricher name="$node" --namespace robusta)
     substring='"success":true'
     if echo "$results" | grep -q "$substring"; then
-        log_test "${CYAN}[INFO]" "[TEST]" "Robusta actions are working."
+        log_test "${GREEN}[PASSED]" "[TEST]" "Robusta actions are working.${CC}"
+        log_test "${CYAN}[INFO]" "[TEST]" "https://platform.robusta.dev/  To access Robusta UI${CC}"
+        
         exit 0
     else
-        log_test "${RED}[ERROR]" "[TEST]" "Robusta actions are not working."
+        log_test "${RED}[ERROR]" "[TEST]" "Robusta actions are not working.${CC}"
         exit 1
     fi
 
