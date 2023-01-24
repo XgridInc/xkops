@@ -14,7 +14,7 @@ RUN apt-get update && \
      chmod +x ./kubectl && \
      mv ./kubectl /usr/local/bin/kubectl && \
      apt-get install -y unzip=6.0-26ubuntu3.1 --no-install-recommends && \
-     echo "yes" | curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+     echo "y" | curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
      unzip awscliv2.zip && \
      ./aws/install && \
      apt-get install -y jq=1.6-2.1ubuntu3 --no-install-recommends && \
