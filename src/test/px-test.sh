@@ -18,13 +18,13 @@ check_vizier() {
 
     #TODO: [noman-xg] check specifically against the name of the cluster instead of tailing.
     # Get status of Vizier.
-    vizier_status=$(px get viziers | tail -1 | awk '{print $8}')
+    vizier_status=$(px get viziers -o json | jq -c '. | select(.ClusterName == "xgrid-website-migration") | .Status')
     
     # check if Vizier is in healthy state or not.
-    if [ "$vizier_status" != "CS_HEALTHY" ]; then
-        log "${RED}[FAILED]" "[TEST]" "Pixie Vizier is not healthy state.${CC}${YELLOW} Vizier Status: $vizier_status ${CC}"
+    if [ "$vizier_status" -ne 1 ]; then
+        log "${RED}[FAILED]" "[TEST]" "Pixie Vizier is not healthy state.${CC}"
     else
-        log "${GREEN}[PASSED]" "[TEST]" "Pixie Vizier is in healthy state.${CC}${YELLOW} Vizier Status: $vizier_status ${CC}"
+        log "${GREEN}[PASSED]" "[TEST]" "Pixie Vizier is in healthy state.${CC}"
     
     fi
 }
