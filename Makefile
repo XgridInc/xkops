@@ -78,13 +78,17 @@ kc_preflight:
 kc_install:
 	$(INTERPRETER) $(KC_INSTALLER)
 
+kc_test: 
+	$(INTERPRETER) $(KC_TEST)
+
+kc_rollback:
+	$(INTERPRETER) $(KC_ROLLBACK)
+
 kc_all:
 	$(INTERPRETER) $(KC_CHECKER)
 	$(INTERPRETER) $(KC_PRE_FLIGHT)
 	$(INTERPRETER) $(KC_INSTALLER)
-
-kc_rollback:
-	$(INTERPRETER) $(KC_ROLLBACK)
+	$(INTERPRETER) $(KC_TEST)
 
 all:
 	$(MAKE) px_all
