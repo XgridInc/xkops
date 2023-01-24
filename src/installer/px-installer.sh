@@ -32,7 +32,7 @@ done
 px_installer() {
 
   #install pixie binary on container
-  echo "y" | bash -c "$(curl -fsSL https://withpixie.ai/install.sh)"
+  echo "y" | bash -c "$(curl -fsSL https://withpixie.ai/install.sh)" >/dev/null
 
   #call get_eks_cluster_name to get the name of cluster
   cluster_name=$(get_eks_cluster_name)
