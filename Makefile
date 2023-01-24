@@ -31,7 +31,7 @@ px_check:
 px_preflight:
 	$(INTERPRETER) $(PX_PRE_FLIGHT)
 
-px_deploy:
+px_install:
 	$(INTERPRETER) $(PX_INSTALLER) "$(PX_API_KEY)" 
 
 px_test: 
