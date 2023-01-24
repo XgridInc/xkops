@@ -41,7 +41,7 @@ get_cost() {
 install_kubectl_cost() {
     os=$(uname | tr '[:upper:]' '[:lower:]') &&
         arch=$(uname -m | tr '[:upper:]' '[:lower:]' | sed -e s/x86_64/amd64/) &&
-        curl -s -L https://github.com/kubecost/kubectl-cost/releases/latest/download/kubectl-cost-$os-$arch.tar.gz | tar xz -C /tmp &&
+        curl -s -L https://github.com/kubecost/kubectl-cost/releases/latest/download/kubectl-cost-"$os"-"$arch".tar.gz | tar xz -C /tmp &&
         chmod +x /tmp/kubectl-cost &&
         mv /tmp/kubectl-cost /usr/local/bin/kubectl-cost
 }
