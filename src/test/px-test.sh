@@ -29,6 +29,8 @@ check_vizier() {
     fi
 }
 
+# This function creates a test pod in the test namespace and then queries for the test pod using Pixie binary pxl script.  
+# The result of the query returns true/false which determines whether Pixie is functional inside the cluster or not.
 px_demo_action() {
 
     log "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
