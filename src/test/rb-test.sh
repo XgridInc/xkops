@@ -19,7 +19,7 @@ check_robusta_actions() {
     substring='"success":true'
     if echo "$results" | grep -q "$substring"; then
         log_test "${GREEN}[PASSED]" "[TEST]" "Robusta actions are working.${CC}"
-        log_test "${CYAN}[INFO]" "[TEST]" "https://platform.robusta.dev/  To access Robusta UI${CC}"
+        log_test "${CYAN}[INFO]" "[TEST]" "Robusta UI: https://platform.robusta.dev/${CC}"
         
         exit 0
     else
