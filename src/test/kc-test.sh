@@ -29,7 +29,7 @@ check_kubectl_cost_plugin() {
 print_UI_links() {
     log_test "${CYAN}[INFO]" "[TEST]" "Robusta UI: ${BOLD_GREEN}https://platform.robusta.dev/${CC}"
     log_test "${CYAN}[INFO]" "[TEST]" "Pixie UI: ${BOLD_GREEN}https://work.withpixie.ai/live/clusters/xgrid-website-migration${CC}"
-    log_test "${CYAN}[INFO]" "[TEST]" "Kubecost UI:${BOLD_GREEN}http://ad8796567c1cc43559af0064c716c9e0-2077374114.ap-southeast-1.elb.amazonaws.com/${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Kubecost UI:${BOLD_GREEN}http://ac01d424b2d3e48f5b11a42d99cd5293-998541875.ap-southeast-1.elb.amazonaws.com/${CC}"
 }
 
 # This Function uses kubecost-cost-analyzer service to get cost data from the cluster.
