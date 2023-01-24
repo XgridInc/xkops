@@ -10,12 +10,12 @@ print_prompt() {
 
 check_robusta_pod_status() {
     # checks if the pods in all the robusta namespaces are runnning or not.
-    pod_status_verifier "$RB_NAMESPACE"
+    pod_status_verifier "${RB_NAMESPACE[@]}"
 }
 
 check_robusta_actions() {
     node=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
-    results=$(robusta playbooks trigger node_running_pods_enricher name="$node" --namespace robusta )
+    results=$(robusta playbooks trigger node_running_pods_enricher name="$node" --namespace robusta)
     substring='"success":true'
     if echo "$results" | grep -q "$substring"; then
         log_test "${GREEN}[PASSED]" "[TEST]" "Robusta actions are working.${CC}"
