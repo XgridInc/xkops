@@ -30,10 +30,16 @@ done
 
 # Installing pixie on a containerized environment using Helm.
 px_installer() {
+
+  #install pixie binary on container
+  echo "y" | bash -c "$(curl -fsSL https://withpixie.ai/install.sh)"
+
+  #call get_eks_cluster_name to get the name of cluster
+  cluster_name=$(get_eks_cluster_name)
   log "${YELLOW}[INFO]" "[INSTALLER]" "Deploying Pixie using Helm..${CC}"
   helm repo add pixie-operator https://pixie-operator-charts.storage.googleapis.com 1>/dev/null
   helm repo update 1>/dev/null
-  helm install pixie pixie-operator/pixie-operator-chart --set deployKey="$PX_DEPLOY_KEY" --set clusterName=minikube --namespace pl --create-namespace >/dev/null
+  helm install pixie pixie-operator/pixie-operator-chart --set deployKey="$PX_DEPLOY_KEY" --set clusterName="$cluster_name" --namespace pl --create-namespace >/dev/null
   log "${BROWN}[INFO]" "[INSTALLER]" "Waiting for Pixie deployments to become available ${CC}"
   # Calling wait_for_deploy/pod function with namespace as an argument
   wait_for_deployment "$OLMNS"
