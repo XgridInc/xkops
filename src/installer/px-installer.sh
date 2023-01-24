@@ -4,30 +4,6 @@ source /src/config/px-config.sh
 source /src/config/config.sh
 source /src/commons/common-functions.sh
 
-# The wrapper_function ensures that the deployment and pods in a namespace are fully operational by waiting for them to be in a running state.
-wait_for_deployment() {
-  while true; do
-    dc=$(kubectl get deployments -n "$1" -o jsonpath='{.items[*].metadata.name}' | cut -d'%' -f1 | wc -w)
-    if [ "$dc" -gt 0 ]; then
-      pods=$(kubectl get pods -n "$1" -o jsonpath='{.items[*].metadata.name}' | cut -d'%' -f1)
-      for pod in $pods; do
-        while true; do
-          status=$(kubectl get pods "$pod" -n "$1" -o jsonpath='{.status.phase}')
-          if [[ $status == "Succeeded" || $status == "Running" ]]; then
-            log "Pod $pod reached the desired status: $status" 1> /dev/null
-            break
-          else
-            log "Waiting for pod $pod to reach the desired status: $status" 1> /dev/null
-          fi
-        done
-      done
-      break
-    else
-      log "Waiting for Pixie deployments to become available." 1> /dev/null
-    fi
-done
-}
-
 # Installing pixie on a containerized environment using Helm.
 px_installer() {
   log "${YELLOW}[INFO]" "[INSTALLER]" "Deploying Pixie using Helm..${CC}"
