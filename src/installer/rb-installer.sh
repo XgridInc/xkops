@@ -19,7 +19,7 @@ rb_installer() {
     if command -v helm &>/dev/null; then
         # If Helm is present, use it to install Robusta.
         helm repo add robusta https://robusta-charts.storage.googleapis.com && helm repo update > /dev/null
-        helm install robusta robusta/robusta -f "$PREFLIGHT_DIR_PATH/generated_values.yaml" > /dev/null
+        helm install robusta robusta/robusta -f "$PREFLIGHT_DIR_PATH/generated_values.yaml" -n robusta --create-namespace > /dev/null
         kubectl wait deployment robusta-runner robusta-forwarder --for=condition=Available --timeout=1h
         log "${GREEN}[INFO]" "[INSTALLER]" "Robusta sucessfully installed.${CC}"
         exit 0
