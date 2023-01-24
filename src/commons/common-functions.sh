@@ -10,6 +10,15 @@ log() {
     echo -e "[$timestamp] $level $function $message" | tee -a /tmp/app.log
 }
 
+log_test() {
+    local level=$1
+    local function=$2
+    local message=$3
+    local timestamp
+    timestamp=$(date +"%Y-%m-%d %H:%M:%S")
+    echo -e "[$timestamp] $level $function $message" | tee -a /tmp/app_test.log
+}
+
 # Function to check if helm is installed in the cluster
 helm_checker() {
 

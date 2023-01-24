@@ -5,7 +5,7 @@ source /src/config/config.sh
 source /src/config/kc-config.sh
 
 print_prompt() {
-    log "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Kubecost.${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Kubecost.${CC}"
 
 }
 
@@ -15,9 +15,9 @@ check_kubectl_cost_plugin() {
 
     # Check if kubectl_cost plugin is installed
     if command -v kubectl-cost &>/dev/null; then
-        log "${GREEN}[PASSED]" "[TEST]" "kubectl cost plugin is already installed.${CC}"
+        log_test "${GREEN}[PASSED]" "[TEST]" "kubectl cost plugin is already installed.${CC}"
     else
-        log "${RED}[FAILED]" "[TEST]" "Installing kubectl cost plugin now.${CC}"
+        log_test "${RED}[FAILED]" "[TEST]" "Installing kubectl cost plugin now.${CC}"
         install_kubectl_cost
     fi
     # Checks if kubectl_cost plugin can retrieve cost data using kubecost-cost-analyzer service.
@@ -29,10 +29,10 @@ check_kubectl_cost_plugin() {
 # If the data is retrieved successfully, it means kubecost is installed in the cluster and can access cluster resources.
 get_cost() {
     if kubectl cost namespace --show-all-resources &>/dev/null; then
-        log "${GREEN}[PASSED]" "[TEST]" "Kubecost is installed successfully.${CC}"
+        log_test "${GREEN}[PASSED]" "[TEST]" "Kubecost is installed successfully.${CC}"
         exit 0
     else
-        log "${RED}[FAILED]" "[TEST]" "Kubecost is not installed in the cluster.${CC}"
+        log_test "${RED}[FAILED]" "[TEST]" "Kubecost is not installed in the cluster.${CC}"
         exit 1
     fi
 }

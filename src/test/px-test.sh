@@ -4,14 +4,14 @@ source /src/config/config.sh
 source /src/config/px-config.sh
 
 print_prompt() {
-    log "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Pixie. ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Pixie. ${CC}"
 
 }
 
 # This function checks the status of the Pixie Vizier component. The healthy status is defined by status "CS_HEALTHY"
 check_vizier() {
 
-    log "${CYAN}[INFO]" "[TEST]" "Pixie Check Vizier. ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Pixie Check Vizier. ${CC}"
     
     # Authentication of pixie CLI
     px auth login --api_key "$PX_API_KEY"
@@ -22,9 +22,9 @@ check_vizier() {
     
     # check if Vizier is in healthy state or not.
     if [ "$vizier_status" -ne 1 ]; then
-        log "${RED}[FAILED]" "[TEST]" "Pixie Vizier is not in healthy state.${CC}"
+        log_test "${RED}[FAILED]" "[TEST]" "Pixie Vizier is not in healthy state.${CC}"
     else
-        log "${GREEN}[PASSED]" "[TEST]" "Pixie Vizier is in healthy state.${CC}"
+        log_test "${GREEN}[PASSED]" "[TEST]" "Pixie Vizier is in healthy state.${CC}"
     
     fi
 }
@@ -33,7 +33,7 @@ check_vizier() {
 # The result of the query returns true/false which determines whether Pixie is functional inside the cluster or not.
 px_demo_action() {
 
-    log "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
     pod_name="$PX_TEST_NS/$TEST_POD"
 
     #check whether the test namespace exists already or not
@@ -56,9 +56,9 @@ px_demo_action() {
 
     if [[ $pod_found == "true" ]]; then
 
-        log "${GREEN}[PASSED]" "[TEST]" "Successfully queried for test pod using Pixie. ${CC}"
+        log_test "${GREEN}[PASSED]" "[TEST]" "Successfully queried for test pod using Pixie. ${CC}"
     else
-        log "${RED}[FAILED]" "[TEST]" "Could not query for test pod using Pixie. ${CC}"    
+        log_test "${RED}[FAILED]" "[TEST]" "Could not query for test pod using Pixie. ${CC}"    
     
     fi
 

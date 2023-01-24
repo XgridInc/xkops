@@ -4,7 +4,7 @@ source /src/config/config.sh
 source /src/config/rb-config.sh
 
 print_prompt() {
-    log "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Robusta."
+    log_test "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Robusta."
 
 }
 
@@ -18,10 +18,10 @@ check_robusta_actions() {
     results=$(robusta playbooks trigger node_running_pods_enricher name="$node" --namespace robusta)
     substring='"success":true'
     if echo "$results" | grep -q "$substring"; then
-        log "${CYAN}[INFO]" "[TEST]" "Robusta actions are working."
+        log_test "${CYAN}[INFO]" "[TEST]" "Robusta actions are working."
         exit 0
     else
-        log "${RED}[ERROR]" "[TEST]" "Robusta actions are not working."
+        log_test "${RED}[ERROR]" "[TEST]" "Robusta actions are not working."
         exit 1
     fi
 
