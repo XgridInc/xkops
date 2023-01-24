@@ -9,11 +9,11 @@ print_prompt() {
 
 preFlight_checks() {
     #   1. Kubernetes Version Check. Supports 1.21+
-    version=$(curl "$KUBERNETES_API_SERVER_URL/version" \
+    version=$(curl -s "$KUBERNETES_API_SERVER_URL/version" \
         --cacert "$CA_CERT_PATH" \
         --header "${HEADERS[@]}" |
         grep -oP '(?<="gitVersion": ")[^"]*')
-    mapfile -t kVers < <(curl "$KUBERNETES_API_SERVER_URL/version" \
+    mapfile -t kVers < <(curl -s "$KUBERNETES_API_SERVER_URL/version" \
         --cacert "$CA_CERT_PATH" \
         --header "${HEADERS[@]}" |
         grep -oP '(?<="gitVersion": ")[^"]*' | tr -d 'v' | tr '.' '\n')
