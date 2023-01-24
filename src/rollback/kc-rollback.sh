@@ -8,7 +8,7 @@ print_prompt() {
 
 #Rollback function for kubecost
 kc_rollback() {
-    helm uninstall kubecost
+    helm uninstall kubecost -n kubecost
     log "${GREEN}[INFO]" "[ROLLBACK]" "Kubecost has been deleted from your cluster${CC}"
 }
 print_prompt
