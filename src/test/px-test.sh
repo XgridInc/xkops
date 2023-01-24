@@ -16,7 +16,6 @@ check_vizier() {
     # Authentication of pixie CLI
     px auth login --api_key "$PX_API_KEY"
 
-    #TODO: [noman-xg] check specifically against the name of the cluster instead of tailing.
     # Get status of Vizier.
     vizier_status=$(px get viziers -o json | jq -c '. | select(.ClusterName == "xgrid-website-migration") | .Status')
     
@@ -33,8 +32,7 @@ check_vizier() {
 # The result of the query returns true/false which determines whether Pixie is functional inside the cluster or not.
 px_demo_action() {
 
-    log_test "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
-
+    log "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
     pod_name="$PX_TEST_NS/$TEST_POD"
 
     #check whether the test namespace exists already or not
@@ -64,8 +62,8 @@ px_demo_action() {
     fi
 
     #clean up 
-    kubectl delete namespace "$PX_TEST_NS"
     rm -rf root/.kube/config
+    kubectl delete namespace "$PX_TEST_NS"
 }
 
 print_prompt
