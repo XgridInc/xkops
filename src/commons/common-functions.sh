@@ -58,11 +58,14 @@ check_permissions() {
     fi
 }
 
-# TODO: [Yousaf] Add docstring
+# this function will check the status of each pod in a specific
+# namespace whether it is in running or completed state.
 pod_status_verifier() {
-
+    # get a list of namespaces and iterate over those namespaces4
+    # to check the status of each pod in a namespace.
     namespaces=("${@}")
     for namespace in "${namespaces[@]}"; do
+    
         # Get a list of pods in the namespace
         pods=$(kubectl get pods -n "$namespace" -o jsonpath='{.items[*].metadata.name}')
 
@@ -73,9 +76,9 @@ pod_status_verifier() {
             # If pod status is not Running or Completed, tool is not deployed successfully.
             if [[ "$pod_status" != "Running" && "$pod_status" != "Succeeded" ]]; then
 
-                log "${RED}[ERROR]" "[TEST]" "$pod pod in  $namespace namespace is not in Runnning state" "${CC}"
+                log "${RED}[ERROR]" "[TEST]" "$pod pod in  $namespace namespace is not in Running state${CC}"
             else
-                log "${GREEN}[PASSED]" "[TEST]" "$pod pod in $namespace namespace is in Runnning state" "${CC}"
+                log "${GREEN}[PASSED]" "[TEST]" "$pod pod in $namespace namespace is in Running state${CC}"
             fi
         done
     done
