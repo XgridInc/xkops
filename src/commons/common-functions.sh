@@ -81,7 +81,7 @@ validate_healthy_deployment() {
       done
       break
     else
-      log "Waiting for Pixie deployments to become available." 1> /dev/null
+      log "Waiting for deployments to become available." 1> /dev/null
     fi
 done
 }
