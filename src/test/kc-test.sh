@@ -25,11 +25,19 @@ check_kubectl_cost_plugin() {
 
 }
 
+# Function to print UI links for all three tools to access their respective dashboards
+print_UI_links() {
+    log_test "${CYAN}[INFO]" "[TEST]" "Robusta UI: ${BOLD_GREEN}https://platform.robusta.dev/${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Pixie UI: ${BOLD_GREEN}https://work.withpixie.ai/live/clusters/xgrid-website-migration${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Kubecost UI:${BOLD_GREEN}http://ad8796567c1cc43559af0064c716c9e0-2077374114.ap-southeast-1.elb.amazonaws.com/${CC}"
+}
+
 # This Function uses kubecost-cost-analyzer service to get cost data from the cluster.
 # If the data is retrieved successfully, it means kubecost is installed in the cluster and can access cluster resources.
 get_cost() {
     if kubectl cost namespace --show-all-resources &>/dev/null; then
         log_test "${GREEN}[PASSED]" "[TEST]" "Kubecost is installed successfully.${CC}"
+        print_UI_links
         exit 0
     else
         log_test "${RED}[FAILED]" "[TEST]" "Kubecost is not installed in the cluster.${CC}"
@@ -45,15 +53,8 @@ install_kubectl_cost() {
         chmod +x /tmp/kubectl-cost &&
         mv /tmp/kubectl-cost /usr/local/bin/kubectl-cost
 }
-# Function to print UI links for all three tools to access their respective dashboards
-print_UI_links() {
-    log_test "${CYAN}[INFO]" "[TEST]" "Robusta UI: ${BOLD_GREEN}https://platform.robusta.dev/${CC}"
-    log_test "${CYAN}[INFO]" "[TEST]" "Pixie UI: ${BOLD_GREEN}https://work.withpixie.ai/live/clusters/xgrid-website-migration${CC}"
-    log_test "${CYAN}[INFO]" "[TEST]" "Kubecost UI:${BOLD_GREEN}http://ad8796567c1cc43559af0064c716c9e0-2077374114.ap-southeast-1.elb.amazonaws.com/${CC}"
-}
 
 print_prompt
 # Kubecost namespace is passed to the function.
 pod_status_verifier "$KC_NAMESPACE"
 check_kubectl_cost_plugin
-print_UI_links
