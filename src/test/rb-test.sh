@@ -13,5 +13,18 @@ check_robusta_pod_status() {
     pod_status_verifier "$RB_NAMESPACE"
 }
 
+check_robusta_actions() {
+    node=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
+    results=$(robusta playbooks trigger node_running_pods_enricher name="$node" --namespace robusta)
+    substring='"success":true'
+    if echo "$results" | grep -q "$substring"; then
+        log "${CYAN}[INFO]" "[TEST]" "Robusta actions are working."
+    else
+        log "${CYAN}[ERROR]" "[TEST]" "Robusta actions are not working."
+    fi
+
+}
+
 print_prompt
 check_robusta_pod_status
+check_robusta_actions
