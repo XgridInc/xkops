@@ -59,7 +59,7 @@ check_permissions() {
 }
 
 # The wrapper_function ensures that the deployment and pods in a namespace are fully operational by waiting for them to be in a running state.
-wait_for_deployment() {
+validate_healthy_deployment() {
   while true; do
     dc=$(kubectl get deployments -n "$1" -o jsonpath='{.items[*].metadata.name}' | cut -d'%' -f1 | wc -w)
 
