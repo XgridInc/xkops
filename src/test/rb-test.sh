@@ -19,8 +19,6 @@ check_robusta_actions() {
     substring='"success":true'
     if echo "$results" | grep -q "$substring"; then
         log_test "${GREEN}[PASSED]" "[TEST]" "Robusta actions are working.${CC}"
-        log_test "${CYAN}[INFO]" "[TEST]" "Robusta UI: https://platform.robusta.dev/${CC}"
-        
         exit 0
     else
         log_test "${RED}[ERROR]" "[TEST]" "Robusta actions are not working.${CC}"
