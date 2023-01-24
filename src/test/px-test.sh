@@ -43,7 +43,7 @@ px_demo_action() {
     fi
     
     #check whether the test-pod in test namespace exists or not
-    if ! kubectl get pod "$pod_name" &>/dev/null; then
+    if ! kubectl get pod "$pod_name" -n "$PX_TEST_NS" &>/dev/null; then
         # Create a pod in the test namespace
         kubectl create -f /src/manifests/test-pod.yaml
     fi
