@@ -22,7 +22,7 @@ check_vizier() {
     
     # check if Vizier is in healthy state or not.
     if [ "$vizier_status" -ne 1 ]; then
-        log_test "${RED}[FAILED]" "[TEST]" "Pixie Vizier is not healthy state.${CC}"
+        log "${RED}[FAILED]" "[TEST]" "Pixie Vizier is not in healthy state.${CC}"
     else
         log_test "${GREEN}[PASSED]" "[TEST]" "Pixie Vizier is in healthy state.${CC}"
     
@@ -36,11 +36,18 @@ px_demo_action() {
     log_test "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
 
     pod_name="$PX_TEST_NS/$TEST_POD"
-    # Create a namespace for testing.
-    kubectl create namespace "$PX_TEST_NS"
+
+    #check whether the test namespace exists already or not
+    if ! kubectl get namespace "$PX_TEST_NS" &>/dev/null; then
+        # Create a namespace for testing.
+        kubectl create namespace "$PX_TEST_NS"
+    fi
     
-    # Create a pod in the test namespace
-    kubectl create -f /src/manifests/test-pod.yaml 
+    #check whether the test-pod in test namespace exists or not
+    if ! kubectl get pod "$pod_name" &>/dev/null; then
+        # Create a pod in the test namespace
+        kubectl create -f /src/manifests/test-pod.yaml
+    fi
 
     #import kubeconfig -- dependancy to run px run command.
     aws eks update-kubeconfig --region ap-southeast-1 --name xgrid-website-migration
