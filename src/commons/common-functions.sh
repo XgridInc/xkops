@@ -2,6 +2,14 @@
 
 # logging function for checker
 log() {
+
+    # Parameters
+    # :var level: Type of level = ERROR PASSED INFO.
+    # :var function: From which script the log is coming.
+    # :var message: Message to log
+
+    #This functions saves the messages passed to it in /tmp/app.log path.
+    
     local level=$1
     local function=$2
     local message=$3
@@ -11,6 +19,14 @@ log() {
 }
 
 log_test() {
+
+    # Parameters
+    # :var level: Type of level = ERROR PASSED INFO.
+    # :var function: From which script the log is coming.
+    # :var message: Message to log
+
+    #This functions saves the messages passed to it in /tmp/app_test.log path.
+
     local level=$1
     local function=$2
     local message=$3
