@@ -74,22 +74,28 @@ pod_status_verifier() {
     # to check the status of each pod in a namespace.
     namespaces=("${@}")
     for namespace in "${namespaces[@]}"; do
-    
-        # Get a list of pods in the namespace
-        pods=$(kubectl get pods -n "$namespace" -o jsonpath='{.items[*].metadata.name}')
 
-        # Iterate over pods in the namespace to verify their status
-        for pod in $pods; do
-            pod_status=$(kubectl get pod "$pod" -n "$namespace" -o jsonpath='{.status.phase}')
+        if kubectl get namespace "$namespace" &>/dev/null; then
+            
+            # Get a list of pods in the namespace
+            pods=$(kubectl get pods -n "$namespace" -o jsonpath='{.items[*].metadata.name}')
 
-            # If pod status is not Running or Completed, tool is not deployed successfully.
-            if [[ "$pod_status" != "Running" && "$pod_status" != "Succeeded" ]]; then
+            # Iterate over pods in the namespace to verify their status
+            for pod in $pods; do
+                pod_status=$(kubectl get pod "$pod" -n "$namespace" -o jsonpath='{.status.phase}')
 
-                log "${RED}[ERROR]" "[TEST]" "$pod pod in  $namespace namespace is not in Running state${CC}"
-            else
-                log "${GREEN}[PASSED]" "[TEST]" "$pod pod in $namespace namespace is in Running state${CC}"
-            fi
-        done
+                # If pod status is not Running or Completed, tool is not deployed successfully.
+                if [[ "$pod_status" != "Running" && "$pod_status" != "Succeeded" ]]; then
+
+                    log_test "${RED}[ERROR]" "[TEST]" "$pod pod in  $namespace namespace is not in Running state${CC}"
+                else
+                    log_test "${GREEN}[PASSED]" "[TEST]" "$pod pod in $namespace namespace is in Running state${CC}"
+                fi
+            done
+        else
+            log_test "${RED}[ERROR]" "[TEST]" "Namespace $namespace does not exists${CC}"
+        fi
+
     done
 }
 
