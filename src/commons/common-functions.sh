@@ -83,3 +83,17 @@ pod_status_verifier() {
         done
     done
 }
+
+# this function will get the eks cluster name that will be used
+# in tool instalation using helm.
+get_eks_cluster_name() {
+
+    # Get the current context of the kubeconfig
+    current_context=$(kubectl config current-context)
+
+    # Get the cluster name associated with the current context
+    cluster_name=$(kubectl config get-contexts "$current_context" | awk '{print $3}' | grep -Eo 'arn:aws:eks:[a-zA-Z0-9-]*:[0-9]*:[cluster/[a-zA-Z0-9-]*|@[a-zA-Z0-9-]*')
+
+    # Print the cluster name
+    return "$cluster_name"
+}
