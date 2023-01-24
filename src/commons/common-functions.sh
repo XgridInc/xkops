@@ -93,6 +93,7 @@ get_eks_cluster_name() {
 
     # Get the cluster name associated with the current context
     cluster_name=$(kubectl config get-contexts "$current_context" | awk '{print $3}' | grep -Eo 'arn:aws:eks:[a-zA-Z0-9-]*:[0-9]*:[cluster/[a-zA-Z0-9-]*|@[a-zA-Z0-9-]*')
+    export cluster_name
     rm -rf root/.kube/config
     # Print the cluster name
     return "$cluster_name"
