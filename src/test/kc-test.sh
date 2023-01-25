@@ -5,7 +5,7 @@ source /src/config/config.sh
 source /src/config/kc-config.sh
 
 print_prompt() {
-    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Initiating test plan for Kubecost.${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Kubecost.${CC}"
 
 }
 
@@ -17,7 +17,8 @@ check_kubectl_cost_plugin() {
     if command -v kubectl-cost &>/dev/null; then
         log_test "${GREEN}[PASSED]" "[TEST]" "kubectl cost plugin already installed.${CC}"
     else
-        log_test "${RED}[FAILED]" "[TEST]" "Installing kubectl cost plugin now.${CC}"
+        log_test "${RED}[FAILED]" "[TEST]" "Kubecost cost plugin isn't installed in the cluster.${CC}"
+        log_test "${CYAN}[INFO]" "[TEST]" "Installing kubectl cost plugin...${CC}"
         install_kubectl_cost
     fi
     # Checks if kubectl_cost plugin can retrieve cost data using kubecost-cost-analyzer service.
@@ -28,16 +29,17 @@ check_kubectl_cost_plugin() {
 # Function to print UI links for all three tools to access their respective dashboards
 #TODO: To be removed from here.
 print_UI_links() {
-    log_test "${CYAN}[INFO]" "[TEST]" "Robusta UI: ${BOLD_GREEN}https://platform.robusta.dev/${CC}"
-    log_test "${CYAN}[INFO]" "[TEST]" "Pixie UI: ${BOLD_GREEN}https://work.withpixie.ai/live/clusters/xgrid-website-migration${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Robusta UI: ${GREEN}https://platform.robusta.dev/${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Pixie UI: ${GREEN}https://work.withpixie.ai/live/clusters/xgrid-website-migration${CC}"
     KC_LOADBALANCER=$(kubectl get svc kubecost-ui-service -n kubecost -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-    log_test "${CYAN}[INFO]" "[TEST]" "Kubecost UI:${BOLD_GREEN} $KC_LOADBALANCER ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Kubecost UI:${GREEN} $KC_LOADBALANCER ${CC}"
 }
 
 # This Function uses kubecost-cost-analyzer service to get cost data from the cluster.
 # If the data is retrieved successfully, it means kubecost is installed in the cluster and can access cluster resources.
 get_cost() {
-    if kubectl cost namespace --show-all-resources; then
+    if command -v kubectl cost namespace --show-all-resources &>/dev/null; then
+
         log_test "${GREEN}[PASSED]" "[TEST]" "Kubecost cost plugin installed successfully.${CC}"
         print_UI_links
         exit 0
