@@ -57,5 +57,5 @@ install_kubectl_cost() {
 
 print_prompt
 # Kubecost namespace is passed to the function.
-pod_status_verifier "$KC_NAMESPACE"
+pod_status_verifier "${KC_NAMESPACE[@]}"
 check_kubectl_cost_plugin
