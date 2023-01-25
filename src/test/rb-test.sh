@@ -4,7 +4,7 @@ source /src/config/config.sh
 source /src/config/rb-config.sh
 
 print_prompt() {
-    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Initiating test plan for Robusta. ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Robusta. ${CC}"
 
 }
 

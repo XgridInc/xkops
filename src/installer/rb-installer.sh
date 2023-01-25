@@ -28,7 +28,7 @@ rb_installer() {
     else
         # If Helm is not installed, print an error message and exit.
         log "${RED}[ERROR]" "[INSTALLER]" "Helm is not installed. Exiting...${CC}"
-        log "${YELLOW}[INFO]" "[INSTALLER]" "Install Helm.${CC}"
+        log "${CYAN}[INFO]" "[INSTALLER]" "Install Helm.${CC}"
         exit 1
 
     fi

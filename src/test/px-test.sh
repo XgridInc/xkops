@@ -4,14 +4,14 @@ source /src/config/config.sh
 source /src/config/px-config.sh
 
 print_prompt() {
-    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Initiating test plan for Pixie. ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Initiating test plan for Pixie. ${CC}"
 
 }
 
 # This function checks the status of the Pixie Vizier component. The healthy status is defined by status "CS_HEALTHY"
 check_vizier() {
 
-    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Pixie Check Vizier. ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Pixie Check Vizier. ${CC}"
     
     # Authentication of pixie CLI
     px auth login --api_key "$PX_API_KEY"
@@ -33,7 +33,7 @@ check_vizier() {
 # The result of the query returns true/false which determines whether Pixie is functional inside the cluster or not.
 px_demo_action() {
 
-    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
     pod_name="$PX_TEST_NS/$TEST_POD"
 
     #check whether the test namespace exists already or not

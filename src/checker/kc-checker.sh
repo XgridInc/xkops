@@ -39,7 +39,7 @@ kubectl_kcNS_checker() {
     returnedNamespace=$(kubectl -n kubecost get ns --no-headers 2>&1 | grep -i kubecost | awk '{print $1}')
 
     if [ "$returnedNamespace" == "kubecost" ]; then
-        log "${GREEN}[INFO]" "[CHECKER]" "Namespace $PURPLE$returnedNamespace$CC ${GREEN}found in the cluster.${CC}"
+        log "${GREEN}[INFO]" "[CHECKER]" "Namespace $returnedNamespace found in the cluster.${CC}"
     else
         log "${RED}[ERROR]" "[CHECKER]" "Namespace kubecost not found in the cluster.${CC}"
         exit 0
@@ -63,7 +63,7 @@ kubectl_kcImage_checker() {
     image="${kubecostImage:0:27}"
     deployment="kubecost-cost-analyzer"
     if [[ $image == "gcr.io/kubecost1/cost-model" ]]; then
-        log "${GREEN}[INFO]" "[CHECKER]" "Image[$image] found in Deployment${PURPLE}[$deployment]$CC ${GREEN}is correct.${CC}"
+        log "${GREEN}[INFO]" "[CHECKER]" "Image[$image] found in Deployment [$deployment] ${GREEN}is correct.${CC}"
         exit 1
     else
         log "${RED}[ERROR]" "[CHECKER]" "Unable to find required image in Deployment${GREEN}[$deployment].${CC}"

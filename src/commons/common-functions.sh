@@ -42,12 +42,12 @@ helm_checker() {
 
     # Function to check if helm is installed in the cluster
 
-    log "${YELLOW}[INFO]" "[PRE-FLIGHT]" "Checking if helm is configured.${CC}"
+    log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Checking if helm is configured.${CC}"
     if command -v helm &>/dev/null; then
         log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Helm configurations are obtained successfully.${CC}"
         exit 0
     else
-        log "${BOLD_RED}[ERROR]" "[PRE-FLIGHT]" "Helm is not installed. Installing it now.${CC}"
+        log "${RED}[ERROR]" "[PRE-FLIGHT]" "Helm is not installed. Installing it now.${CC}"
         helm_installer # Function call to install helm
     fi
 }
@@ -66,7 +66,7 @@ helm_installer() {
     if command -v helm &>/dev/null; then
         log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Helm has been installed successfully.${CC}"
     else
-        log "${BOLD_RED}[ERROR]" "[PRE-FLIGHT]" "Helm is not installed. Exiting...${CC}"
+        log "${RED}[ERROR]" "[PRE-FLIGHT]" "Helm is not installed. Exiting...${CC}"
         exit 1
     fi
 }
@@ -91,8 +91,8 @@ check_permissions() {
 
     # Check if the "reason" field contains the word "Forbidden"
     if [[ $reason == *"$FORBIDDEN_ERROR_MESSAGE"* ]]; then
-        log "${BOLD_RED}[ERROR]" "[CHECKER]" "Forbidden, cannot list deployments. Exiting${CC}"
-        log "${YELLOW}[INFO]" "[CHECKER]" "Create clusterrole and clusterrole binding with enough permissions ${CC}"
+        log "${RED}[ERROR]" "[CHECKER]" "Forbidden, cannot list deployments. Exiting${CC}"
+        log "${CYAN}[INFO]" "[CHECKER]" "Create clusterrole and clusterrole binding with enough permissions ${CC}"
         exit 1
     fi
 }
@@ -105,7 +105,7 @@ pod_status_verifier() {
     #This function check if the namespace exists
     #If it exists it checks whether all the pod in the namespace is running or not.
 
-    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Verifying the status of pods related to the tool. ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Verifying the status of pods related to the tool. ${CC}"
 
     namespaces=("${@}")
     for namespace in "${namespaces[@]}"; do

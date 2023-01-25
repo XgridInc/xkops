@@ -7,7 +7,7 @@ source /src/commons/common-functions.sh
 kc_installer() {
     kubecostDeploy=$(kubectl -n kubecost get deploy --no-headers 2>&1 | grep -i kubecost-cost-analyzer | awk '{print $1}')
     if [ "$kubecostDeploy" == "kubecost-cost-analyzer" ]; then
-        log "${GREEN}[INFO]" "[INSTALLER]" "$PURPLE Kubecost$CC ${GREEN}already found in the cluster.${CC}"
+        log "${GREEN}[INFO]" "[INSTALLER]" "Kubecost ${GREEN}already found in the cluster.${CC}"
         exit 0
     else
         log "${RED}[ERROR]" "[INSTALLER]" "Unable to find kubecost Deployment in cluster. Installing kubecost now...${CC}"
