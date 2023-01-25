@@ -38,7 +38,7 @@ watch_runner_logs() {
 
     #This functions watches logs of robusta-runner and checks if all the actions are loaded
 
-    kubectl -n robusta logs -f -l app=robusta-runner | while read line; do
+    kubectl -n robusta logs -f -l app=robusta-runner | while read -r line; do
         echo "$line" | grep -E ".*Initializing jobs cache.*" >/dev/null
         result=$?
         if [ $result -eq 0 ]; then
