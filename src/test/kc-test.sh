@@ -28,9 +28,10 @@ check_kubectl_cost_plugin() {
 # Function to print UI links for all three tools to access their respective dashboards
 #TODO: To be removed from here.
 print_UI_links() {
-    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Robusta UI: ${BOLD_GREEN}https://platform.robusta.dev/${CC}"
-    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Pixie UI: ${BOLD_GREEN}https://work.withpixie.ai/live/clusters/xgrid-website-migration${CC}"
-    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Kubecost UI:${BOLD_GREEN} $KC_LOADBALANCER ${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Robusta UI: ${BOLD_GREEN}https://platform.robusta.dev/${CC}"
+    log_test "${CYAN}[INFO]" "[TEST]" "Pixie UI: ${BOLD_GREEN}https://work.withpixie.ai/live/clusters/xgrid-website-migration${CC}"
+    KC_LOADBALANCER=$(kubectl get svc kubecost-ui-service -n kubecost -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    log_test "${CYAN}[INFO]" "[TEST]" "Kubecost UI:${BOLD_GREEN} $KC_LOADBALANCER ${CC}"
 }
 
 # This Function uses kubecost-cost-analyzer service to get cost data from the cluster.
