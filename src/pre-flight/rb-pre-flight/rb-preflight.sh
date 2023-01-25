@@ -59,13 +59,13 @@ rb_cli_checker() {
 rb_cli_installer() {
     #This functions installs pip and robusta-cli. Pip is required to install robusta-cli
     if command -v pip3 &>/dev/null; then
-        pip3 install -U robusta-cli --no-cache > /dev/null
+        pip3 install -U robusta-cli --no-cache &> /dev/null
         return
     else
         log "${YELLOW}[INFO]" "[PRE-FLIGHT]" "Python3-pip not found. Installing...${CC}"
-        apt-get update > /dev/null && apt-get install -y python3-pip > /dev/null
+        apt-get update &> /dev/null && apt-get install -y python3-pip &> /dev/null
         if command -v pip3 &>/dev/null; then
-            pip3 install -U robusta-cli --no-cache > /dev/null
+            pip3 install -U robusta-cli --no-cache &> /dev/null
             return
         else
             log "${RED}[ERROR]" "[PRE-FLIGHT]" "pip3 failed to install. Exiting...${CC}"
@@ -81,7 +81,7 @@ generate_values_file() {
 
     log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Generating generated_values.yaml file.${CC}"
 
-    printf '%s\n' n n y n | robusta gen-config --slack-api-key "$SLACK_API_KEY" --slack-channel "$SLACK_CHANNEL_NAME" --robusta-api-key "$ROBUSTA_UI_API_KEY" --cluster-name "$CLUSTER_NAME" --output-path "$PREFLIGHT_DIR_PATH/$1" > /dev/null
+    printf '%s\n' n n y n | robusta gen-config --slack-api-key "$SLACK_API_KEY" --slack-channel "$SLACK_CHANNEL_NAME" --robusta-api-key "$ROBUSTA_UI_API_KEY" --cluster-name "$CLUSTER_NAME" --output-path "$PREFLIGHT_DIR_PATH/$1" &> /dev/null
 
 }
 
