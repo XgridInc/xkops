@@ -60,7 +60,7 @@ helm_installer() {
     # This function downloads helm 3 binary using curl and installs it.
     
     
-    _=$(curl -O https://get.helm.sh/helm-v3.10.0-linux-amd64.tar.gz >/dev/null)
+    _=$(curl -s -O https://get.helm.sh/helm-v3.10.0-linux-amd64.tar.gz >/dev/null)
     _=$(tar -zxvf helm-v3.10.0-linux-amd64.tar.gz >/dev/null)
     _=$(cp ./linux-amd64/helm /usr/local/bin/)
     if command -v helm &>/dev/null; then
