@@ -14,7 +14,7 @@ check_vizier() {
     log_test "${CYAN}[INFO]" "[TEST]" "Pixie Check Vizier. ${CC}"
     
     # Authentication of pixie CLI
-    px auth login --api_key "$PX_API_KEY"
+    px auth login --api_key "$PX_API_KEY" &>/dev/null
    
     #TODO: [noman-xg] check specifically against the name of the cluster instead of tailing.
     # Get status of Vizier.
@@ -39,17 +39,17 @@ px_demo_action() {
     #check whether the test namespace exists already or not
     if ! kubectl get namespace "$PX_TEST_NS" &>/dev/null; then
         # Create a namespace for testing.
-        kubectl create namespace "$PX_TEST_NS"
+        kubectl create namespace "$PX_TEST_NS" &>/dev/null
     fi
     
     #check whether the test-pod in test namespace exists or not
     if ! kubectl get pod "$pod_name" -n "$PX_TEST_NS" &>/dev/null; then
         # Create a pod in the test namespace
-        kubectl create -f /src/manifests/test-pod.yaml
+        kubectl create -f /src/manifests/test-pod.yaml &>/dev/null
     fi
 
     #import kubeconfig -- dependancy to run px run command.
-    aws eks update-kubeconfig --region ap-southeast-1 --name xgrid-website-migration
+    aws eks update-kubeconfig --region ap-southeast-1 --name xgrid-website-migration &>/dev/null
 
     # Execute a Pxl script to get pods info in a certain namespace. If it returns true, it means Pixie is successfully deployed and actively monitoring the cluster.
     pod_found=$(px run px/pods -o json -- --namespace "$PX_TEST_NS"  | jq --arg pod_name "$pod_name" 'select(._tableName_ == "Pods List") and select(.pod == $pod_name)')    
@@ -63,8 +63,8 @@ px_demo_action() {
     fi
 
     #clean up 
-    rm -rf root/.kube/config
-    kubectl delete namespace "$PX_TEST_NS"
+    rm -rf root/.kube/config &>/dev/null
+    kubectl delete namespace "$PX_TEST_NS" &>/dev/null
 }
 
 print_prompt
