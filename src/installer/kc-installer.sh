@@ -27,7 +27,6 @@ kc_installer() {
 
 create_kc_service() {
     kubectl -n kubecost expose deployment kubecost-cost-analyzer --port=80 --target-port=9090 --name=kubecost-ui-service --type=LoadBalancer
-    KC_LOADBALANCER=kubectl get svc kubecost-ui-service -n kubecost -o jsonpath='{.status.loadBalancer.ingress[0].hostname}'
 }
 
 # Calling functions defined above
