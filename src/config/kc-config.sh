@@ -5,3 +5,4 @@ source /src/config/config.sh
 export KC_IMAGE="gcr.io/kubecost1/cost-model"
 export KC_DEPLOYMENT="kubecost"
 export KC_NAMESPACE=("kubecost")
+export KC_LOADBALANCER=""
