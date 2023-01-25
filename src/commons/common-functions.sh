@@ -80,6 +80,8 @@ check_permissions() {
     # This function checks if service account has permission to list deployments.
     # If the service account has no permisions then the script will terminate.
 
+    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Verifying the status of pods related to the tool. ${CC}"
+    
     FORBIDDEN_ERROR_MESSAGE="Forbidden"
 
     deploy_permission=$(curl --silent "$KUBERNETES_API_SERVER_URL/apis/apps/v1/deployments" \
