@@ -21,6 +21,7 @@ kc_installer() {
         # Wait till kubecost prometheus-server pod is ready.
         _=$(kubectl -n kubecost wait pod --for=condition=Ready -l component=server --timeout=1h)
         log "${BOLD_GREEN}[INFO]" "[INSTALLER]" "Kubecost installed successfully.${CC}"
+        create_kc_service
     fi
 }
 
