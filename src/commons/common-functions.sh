@@ -79,8 +79,6 @@ check_permissions() {
 
     # This function checks if service account has permission to list deployments.
     # If the service account has no permisions then the script will terminate.
-
-    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Verifying the status of pods related to the tool. ${CC}"
     
     FORBIDDEN_ERROR_MESSAGE="Forbidden"
 
@@ -106,6 +104,8 @@ pod_status_verifier() {
 
     #This function check if the namespace exists
     #If it exists it checks whether all the pod in the namespace is running or not.
+
+    log_test "${BOLD_CYAN}[INFO]" "[TEST]" "Verifying the status of pods related to the tool. ${CC}"
 
     namespaces=("${@}")
     for namespace in "${namespaces[@]}"; do
