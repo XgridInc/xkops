@@ -12,11 +12,11 @@ print_prompt() {
 check_kubectl() {
 
     if ! command -v kubectl &>/dev/null; then
-        log "${CYAN}[INFO]" "[CHECKER]" "kubectl not found. Checking through curl."
+        log "${CYAN}[INFO]" "[CHECKER]" "kubectl not found. Checking through curl.${CC}"
         curl_rb_checker
 
     else
-        log "${CYAN}[INFO]" "[CHECKER]" "kubectl found. Checking through kubectl."
+        log "${CYAN}[INFO]" "[CHECKER]" "kubectl found. Checking through kubectl.${CC}"
         kubectl_rb_checker
 
     fi

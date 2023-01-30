@@ -8,7 +8,7 @@ source /src/commons/common-functions.sh
 
 # Print a prompt to the user.
 print_prompt() {
-    log "${CYAN}[INFO]" "[INSTALLER]" "Initiating installation of Robusta in your cluster."
+    log "${CYAN}[INFO]" "[INSTALLER]" "Initiating installation of Robusta in your cluster.${CC}"
 }
 
 # Install Robusta using Helm.
