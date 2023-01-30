@@ -81,7 +81,7 @@ generate_values_file() {
 
     log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Generating generated_values.yaml file.${CC}"
 
-    printf '%s\n' n n y n | robusta gen-config --slack-api-key "$SLACK_API_KEY" --slack-channel "$SLACK_CHANNEL_NAME" --robusta-api-key "$ROBUSTA_UI_API_KEY" --cluster-name "$CLUSTER_NAME" --output-path "$PREFLIGHT_DIR_PATH/$1" &> /dev/null
+    printf '%s\n' n n n y | robusta gen-config --slack-api-key "$SLACK_API_KEY" --slack-channel "$SLACK_CHANNEL_NAME" --robusta-api-key "$ROBUSTA_UI_API_KEY" --cluster-name "$CLUSTER_NAME" --output-path "$PREFLIGHT_DIR_PATH/$1" &> /dev/null
 
 }
 
