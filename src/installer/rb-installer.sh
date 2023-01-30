@@ -38,9 +38,9 @@ watch_runner_logs() {
 
     #This functions watches logs of robusta-runner and checks if all the actions are loaded
     #TODO: Add timeout if actions aren't loaded
-
+    
     kubectl -n robusta logs -f -l app=robusta-runner | while read -r line; do
-        echo "$line" | grep -E ".*Initializing jobs cache.*" &>/dev/null
+        echo "$line" | grep -E ".*Serving Flask app 'robusta.runner.web'.*" &>/dev/null
         result=$?
         if [ $result -eq 0 ]; then
             pkill -f "kubectl -n robusta logs -f -l app=robusta-runner"
