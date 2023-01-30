@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xkops-config
+  namespace: xkops
+data:
+  CLUSTER_NAME: xgrid-website-migration

@@ -14,7 +14,7 @@ metadata:
 subjects:
 - kind: ServiceAccount
   name: default
-  namespace: default
+  namespace: xkops
 roleRef:
   kind: ClusterRole
   name: all-resource-role
