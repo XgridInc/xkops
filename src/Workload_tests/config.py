@@ -1,0 +1,13 @@
+home_page = "https://migration.xgrid.co"
+career_page = "https://migration.xgrid.co/careers/"
+devops_page = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[1]/a'
+devops_XPATH = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[2]/a'
+web_and_mobile_path_XPATH = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[2]/a'
+company_path = "https://migration.xgrid.co/company/"
+resources_path = "https://migration.xgrid.co/resources/"
+blog_path = "https://migration.xgrid.co/resources/securing-a-kubernetes-cluster-using-tls-certificates/"
+information_security_policy_path = "https://migration.xgrid.co/information-security-policy/"
+open_positions_path = "https://migration.xgrid.co/open-positions/"
+privacy_policy_path = "https://migration.xgrid.co/privacy-policy/"
+terms_and_conditions_path = "https://migration.xgrid.co/terms-and-conditions/"
+thankyou_path = "https://migration.xgrid.co/thankyou/"
