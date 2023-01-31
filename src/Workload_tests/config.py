@@ -1,13 +1,16 @@
-home_page = "https://migration.xgrid.co"
-career_page = "https://migration.xgrid.co/careers/"
-devops_page = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[1]/a'
-devops_XPATH = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[2]/a'
-web_and_mobile_path_XPATH = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[2]/a'
-company_path = "https://migration.xgrid.co/company/"
-resources_path = "https://migration.xgrid.co/resources/"
-blog_path = "https://migration.xgrid.co/resources/securing-a-kubernetes-cluster-using-tls-certificates/"
-information_security_policy_path = "https://migration.xgrid.co/information-security-policy/"
-open_positions_path = "https://migration.xgrid.co/open-positions/"
-privacy_policy_path = "https://migration.xgrid.co/privacy-policy/"
-terms_and_conditions_path = "https://migration.xgrid.co/terms-and-conditions/"
-thankyou_path = "https://migration.xgrid.co/thankyou/"
+"""Constants for web pages"""
+
+HOME_PAGE = "https://migration.xgrid.co"
+CAREER_PAGE = "https://migration.xgrid.co/careers/"
+DEVOPS_PAGE = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[1]/a'
+DEVOPS_XPATH = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[2]/a'
+WAM_XPATH = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[2]/a'
+COMPANY_PATH = "https://migration.xgrid.co/company/"
+RESOURCES_PATH = "https://migration.xgrid.co/resources/"
+BLOG_PATH = "https://migration.xgrid.co/resources/ \
+securing-a-kubernetes-cluster-using-tls-certificates/"
+ISP_PATH = "https://migration.xgrid.co/information-security-policy/"
+OPEN_POSITIONS_PATH = "https://migration.xgrid.co/open-positions/"
+PRIVACY_POLICY_PATH = "https://migration.xgrid.co/privacy-policy/"
+TAC_PATH = "https://migration.xgrid.co/terms-and-conditions/"
+THANKYOU_PATH = "https://migration.xgrid.co/thankyou/"
