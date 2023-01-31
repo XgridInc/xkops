@@ -38,6 +38,7 @@ useful resource for managing the security, observability and cost efficiency of 
 - Clusterrole and Clusterrole binding to provide the necessary permissions for XkOps to access the Kubernetes API and resources, in order to run checker scripts.
 - Configmap containing data such as cluster name
 - Storage class with provisioner set as EBS to enable dynamic volume provisioning
+
 ## 📒 Getting Started
 
 1. Clone the repository and change directory to the cloned repo:
@@ -60,43 +61,9 @@ useful resource for managing the security, observability and cost efficiency of 
 
     You can also use one of the pre-built images from the [DockerHub repository](https://hub.docker.com/r/xgridxcbg/kaizen/tags "DockerHub repository")
 
-4. In the project go to the manifests folder and use the docker image in `xk8s-pod.yaml` manifest:
+4. In the project go to the manifests folder and use the docker image in [`xk8s-pod.yaml`](https://github.com/X-CBG/xk8s/blob/master/manifests/xk8s-pod.yaml "xk8s-pod.yaml") manifest
 
-    ```yaml
-    apiVersion: v1
-    kind: Pod
-    metadata:
-        name: xk8s
-    spec:
-        volumes:
-          - name: log-volume
-            hostPath:
-                path: /mnt/logs
-        containers:
-          - name: xk8s
-            image: myimage #use the built image here
-            volumeMounts:
-              - name: log-volume
-                mountPath: /tmp
-            env:
-              - name: SLACK_API_KEY
-                value: your_slack_api_key #provide your Slack API key (https://slack.com/help/articles/215770388-Create-and-regenerate-API-tokens)
-              - name: SLACK_CHANNEL_NAME
-                value: your_slack_channel_name #provide your Slack channel name
-              - name: CLUSTER_NAME
-                value: your_cluster_name #provide your Kubernetes cluster name
-              - name: PX_API_KEY
-                value: your_px_api_key #provide your pixie API key (https://docs.px.dev/reference/admin/api-keys)
-              - name: PX_DEPLOY_KEY
-                value: your_px_deploy_key #provide your pixie deploy key (https://docs.px.dev/reference/admin/deploy-keys)
-            resources:
-                limits:
-                    memory: "200Mi"
-                    cpu: "500m"
-        restartPolicy: Never
-    ```
-
-5. Create a pod in your Kubernetes cluster using this YAML file and observe logs:
+5. Create a pod in your Kubernetes cluster using this [`xk8s-pod.yaml`](https://github.com/X-CBG/xk8s/blob/master/manifests/xk8s-pod.yaml "`xk8s-pod.yaml`") and observe logs:
 
     ```commandline
     kubectl logs -f xk8s 
