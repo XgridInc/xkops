@@ -31,13 +31,11 @@ px_preflight:
 px_deploy:
 	$(INTERPRETER) $(PX_INSTALLER) "$(PX_API_KEY)" 
 
-px_all: 
-	$(INTERPRETER) $(PX_CHECKER)
-	$(INTERPRETER) $(PX_PRE_FLIGHT)
-	$(INTERPRETER) $(PX_INSTALLER) "$(PX_API_KEY)" 
+px_all:
+	$(INTERPRETER) $(PX_CHECKER) && ( $(INTERPRETER) $(PX_PRE_FLIGHT) && ( $(INTERPRETER) $(PX_INSTALLER) "$(PX_API_KEY)" && echo "PX_INSTALLER Exit 0" || echo "PX_INSTALLER Exit 1") || echo "PX_PRE_FLIGHT Exit 1" ) || echo "PX_CHECKER Exit 1"
 
 px_rollback:
-	$(INTERPRETER) $(PX_ROLLBACK)
+	$(INTERPRETER) $(PX_ROLLBACK) && echo "PX_ROLLBACK Exit 0" || echo "PX_ROLLBACK Exit 1"
 
 # Robusta relevant rules
 rb_check:
@@ -47,15 +45,13 @@ rb_preflight:
 	$(INTERPRETER) $(RB_PRE_FLIGHT)
 
 rb_install: 
-	$(INTERPRETER) $(RB_INSTALLER)
+	$(INTERPRETER) $(RB_INSTALLER) || $(MAKE) rb_rollback
 
-rb_all: 
-	$(INTERPRETER) $(RB_CHECKER)
-	$(INTERPRETER) $(RB_PRE_FLIGHT)
-	$(INTERPRETER) $(RB_INSTALLER) 
+rb_all:
+	$(INTERPRETER) $(RB_CHECKER) && ( $(INTERPRETER) $(RB_PRE_FLIGHT) && ( $(INTERPRETER) $(RB_INSTALLER) && echo "RB_INSTALLER Exit 0" || echo "RB_INSTALLER Exit 1") || echo "RB_PRE_FLIGHT Exit 1" ) || echo "RB_CHECKER Exit 1"
 
 rb_rollback:
-	$(INTERPRETER) $(RB_ROLLBACK)
+	$(INTERPRETER) $(RB_ROLLBACK) && echo "RB_ROLLBACK Exit 0" || echo "RB_ROLLBACK Exit 1"
 
 # Kubecost relevant rules
 kc_check:
@@ -68,20 +64,18 @@ kc_install:
 	$(INTERPRETER) $(KC_INSTALLER)
 
 kc_all:
-	$(INTERPRETER) $(KC_CHECKER)
-	$(INTERPRETER) $(KC_PRE_FLIGHT)
-	$(INTERPRETER) $(KC_INSTALLER)
+	$(INTERPRETER) $(KC_CHECKER) && ( $(INTERPRETER) $(KC_PRE_FLIGHT) && ( $(INTERPRETER) $(KC_INSTALLER) && echo "KC_INSTALLER Exit 0" || echo "KC_INSTALLER Exit 1") || echo "KC_PRE_FLIGHT Exit 1" ) || echo "KC_CHECKER Exit 1"
 
 kc_rollback:
-	$(INTERPRETER) $(KC_ROLLBACK)
+	$(INTERPRETER) $(KC_ROLLBACK) && echo "KC_ROLLBACK Exit 0" || echo "KC_ROLLBACK Exit 1"
 
 all:
-	-$(MAKE) px_all
-	-$(MAKE) rb_all
-	-$(MAKE) kc_all
+	$(MAKE) px_all  
+	$(MAKE) rb_all
+	$(MAKE) kc_all
 
 rollback_all:
-	-$(MAKE) px_rollback
-	-$(MAKE) rb_rollback
-	-$(MAKE) kc_rollback
+	$(MAKE) px_rollback
+	$(MAKE) rb_rollback
+	$(MAKE) kc_rollback
 
