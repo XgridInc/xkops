@@ -45,7 +45,7 @@ rb_preflight:
 	$(INTERPRETER) $(RB_PRE_FLIGHT)
 
 rb_install: 
-	$(INTERPRETER) $(RB_INSTALLER) || $(MAKE) rb_rollback
+	$(INTERPRETER) $(RB_INSTALLER) 
 
 rb_all:
 	$(INTERPRETER) $(RB_CHECKER) && ( $(INTERPRETER) $(RB_PRE_FLIGHT) && ( $(INTERPRETER) $(RB_INSTALLER) && echo "RB_INSTALLER Exit 0" || echo "RB_INSTALLER Exit 1") || echo "RB_PRE_FLIGHT Exit 1" ) || echo "RB_CHECKER Exit 1"
