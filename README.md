@@ -34,7 +34,10 @@ useful resource for managing the security, observability and cost efficiency of 
 
 - Internet connection required to download dependencies for installing tools.
 - Pod resource requirements are: Memory is 200MiB and CPU is 500m
-
+- Separate XkOps namespace
+- Clusterrole and Clusterrole binding to provide the necessary permissions for XkOps to access the Kubernetes API and resources, in order to run checker scripts.
+- Configmap containing data such as cluster name
+- Storage class with provisioner set as EBS to enable dynamic volume provisioning
 ## 📒 Getting Started
 
 1. Clone the repository and change directory to the cloned repo:
@@ -117,4 +120,4 @@ If you want to see a new feature or if you experience any issues/bugs while usin
 
 ## 🧾 License
 
-XkOps is distributed under the MIT License. See [LICENSE.md](https://github.com/X-CBG/xk8s/blob/master/LICENSE.md "LICENSE.md") for more information
+XkOps is distributed under the MIT License. See [LICENSE.md](https://github.com/X-CBG/xk8s/blob/master/LICENSE "LICENSE.md") for more information
