@@ -1,3 +1,4 @@
+#Cluster role which gives permissions to list,create,delete,update to all resources.
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -7,14 +8,17 @@ rules:
   resources: ["*"]
   verbs: ["*"]
 ---
+#Cluster role binding which binds the default service account under the xkops namespace with all-resource-role cluster role
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: all-resource-role-binding
 subjects:
+#Subject: default service account under xkops namespace
 - kind: ServiceAccount
   name: default
   namespace: xkops
+#Cluster role reference to be used for binding the subject with
 roleRef:
   kind: ClusterRole
   name: all-resource-role
