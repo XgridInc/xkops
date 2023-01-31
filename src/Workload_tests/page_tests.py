@@ -1,9 +1,11 @@
 """ XGRID WEBSITE PAGE TESTS """
-from selenium import webdriver
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
 import config
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
+
 
 # Create an instance of the Chrome driver
 options = webdriver.ChromeOptions()
@@ -18,12 +20,14 @@ driver.get(config.HOME_PAGE)
 driver.get(config.CAREER_PAGE)
 
 # Navigate to xgrid DevOps page using click
-driver.find_element(By.XPATH,config.DEVOPS_PAGE).click()
-WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH,config.DEVOPS_XPATH)))
+driver.find_element(By.XPATH, config.DEVOPS_PAGE).click()
+WebDriverWait(driver, 10).until(
+    EC.element_to_be_clickable((By.XPATH, config.DEVOPS_XPATH))
+)
 
 
 # Navigate to xgrid web and mobile page
-driver.find_element(By.XPATH,config.WAM_XPATH).click()
+driver.find_element(By.XPATH, config.WAM_XPATH).click()
 
 # Navigate to xgrid company's page
 driver.get(config.COMPANY_PATH)
