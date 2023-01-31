@@ -2,9 +2,9 @@
 
 HOME_PAGE = "https://migration.xgrid.co"
 CAREER_PAGE = "https://migration.xgrid.co/careers/"
-DEVOPS_PAGE = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[1]/a'
-DEVOPS_XPATH = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[2]/a'
-WAM_XPATH = '/html/body/div[1]/div[3]/div/nav/div/div/ul/li[2]/a'
+DEVOPS_PAGE = "/html/body/div[1]/div[3]/div/nav/div/div/ul/li[1]/a"
+DEVOPS_XPATH = "/html/body/div[1]/div[3]/div/nav/div/div/ul/li[2]/a"
+WAM_XPATH = "/html/body/div[1]/div[3]/div/nav/div/div/ul/li[2]/a"
 COMPANY_PATH = "https://migration.xgrid.co/company/"
 RESOURCES_PATH = "https://migration.xgrid.co/resources/"
 BLOG_PATH = "https://migration.xgrid.co/resources/ \
