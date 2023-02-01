@@ -2,9 +2,7 @@
 import config
 import selenium
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 
 # Create an instance of the Chrome driver
 options = webdriver.ChromeOptions()
@@ -22,8 +20,7 @@ def xgrid_page(page_url):
 
 
 def xgrid_page_test():
-    """ functions to tests the webpages of website. """
-    
+    """ functions to tests the webpages of website. """    
     for url in config.XGRID_URLS:
         xgrid_page(url)
 
