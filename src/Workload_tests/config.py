@@ -15,16 +15,16 @@ PRIVACY_POLICY_PATH = "https://migration.xgrid.co/privacy-policy/"
 TAC_PATH = "https://migration.xgrid.co/terms-and-conditions/"
 THANKYOU_PATH = "https://migration.xgrid.co/thankyou/"
 XGRID_URLS = [
-    HOME_PAGE, \
-    CAREER_PAGE, \
-    DEVOPS_PAGE, \
-    WAM_PATH, \
-    COMPANY_PATH, \
-    RESOURCES_PATH, \
-    BLOG_PATH, \
-    ISP_PATH, \
-    OPEN_POSITIONS_PATH, \
-    PRIVACY_POLICY_PATH, \
-    TAC_PATH, \
-    THANKYOU_PATH \
-    ]
+    HOME_PAGE,
+    CAREER_PAGE,
+    DEVOPS_PAGE,
+    WAM_PATH,
+    COMPANY_PATH,
+    RESOURCES_PATH,
+    BLOG_PATH,
+    ISP_PATH,
+    OPEN_POSITIONS_PATH,
+    PRIVACY_POLICY_PATH,
+    TAC_PATH,
+    THANKYOU_PATH,
+]
