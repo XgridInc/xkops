@@ -2,7 +2,6 @@
 import config
 import selenium
 from selenium import webdriver
-from selenium.webdriver.support import expected_conditions as EC
 
 # Create an instance of the Chrome driver
 options = webdriver.ChromeOptions()
