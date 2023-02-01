@@ -9,6 +9,7 @@ options = webdriver.ChromeOptions()
 options.add_argument("--start-fullscreen")
 driver = webdriver.Chrome(options=options)
 
+
 def xgrid_page(page_url):
     """functions to call the URLs of the webpages of website."""
     try:
@@ -20,7 +21,7 @@ def xgrid_page(page_url):
 
 
 def xgrid_page_test():
-    """functions to tests the webpages of website."""    
+    """functions to tests the webpages of website."""
     for url in config.XGRID_URLS:
         xgrid_page(url)
 
