@@ -10,17 +10,17 @@ driver = webdriver.Chrome(options=options)
 
 
 def xgrid_page(page_url):
-    """functions to call the URLs of the webpages of website."""
+    """function to call the URLs of the webpages of website."""
     try:
         driver.get(page_url)
     except selenium.common.exceptions.WebDriverException as e:
-        print(f"Failed to load the homepage: {e}")
+        print(f"Failed to load the page: {page_url}, {e}")
     except Exception as e:
         print("An unknown error occured:", e)
 
 
 def xgrid_page_test():
-    """functions to tests the webpages of website."""
+    """function to test the webpages of website."""
     for url in config.XGRID_URLS:
         xgrid_page(url)
 
