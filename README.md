@@ -61,7 +61,11 @@ useful resource for managing the security, observability and cost efficiency of 
 
     You can also use one of the pre-built images from the [DockerHub repository](https://hub.docker.com/r/xgridxcbg/kaizen/tags "DockerHub repository")
 
-4. In the project go to the manifests folder and use the docker image in [`xk8s-pod.yaml`](https://github.com/X-CBG/xk8s/blob/master/manifests/xk8s-pod.yaml "xk8s-pod.yaml") manifest
+4. In the project go to the manifests folder and use the docker image in [`xk8s-pod.yaml`](https://github.com/X-CBG/xk8s/blob/master/manifests/xk8s-pod.yaml "xk8s-pod.yaml") manifest.
+
+    ```commandline
+    kubectl create -f xk8s-pod.yaml 
+    ```
 
 5. Create a pod in your Kubernetes cluster using this [`xk8s-pod.yaml`](https://github.com/X-CBG/xk8s/blob/master/manifests/xk8s-pod.yaml "`xk8s-pod.yaml`") and observe logs:
 
