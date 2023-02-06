@@ -2,10 +2,14 @@ apiVersion: v1
 kind: Pod
 metadata:
   creationTimestamp: null
+  # A test namespace that will be created by pixie on runtime
+  # to get the pod info of a test pod running in that namespace.
   namespace: xkops-testing
   labels:
     run: xkops-test-pod
   name: xkops-test-pod
+# pixie will create a test pod in xkops-testing namespace
+# Once the pod is created, pxL script will execute to get the info of that pod.  
 spec:
   containers:
   - image: nginx
