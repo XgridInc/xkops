@@ -18,13 +18,13 @@ rb_installer() {
     # Check if Helm is installed.
     if command -v helm &>/dev/null; then
         # If Helm is present, use it to install Robusta.
-        helm repo add robusta https://robusta-charts.storage.googleapis.com && helm repo update > /dev/null
-        helm install robusta robusta/robusta -f "$PREFLIGHT_DIR_PATH/generated_values.yaml" -n robusta --create-namespace > /dev/null
-        kubectl wait deployment robusta-runner robusta-forwarder --for=condition=Available --timeout=1h
+        helm repo add robusta https://robusta-charts.storage.googleapis.com && helm repo update >/dev/null
+        helm install robusta robusta/robusta -f "$PREFLIGHT_DIR_PATH/generated_values.yaml" -n robusta --create-namespace >/dev/null
+        kubectl wait deployment robusta-runner robusta-forwarder --for=condition=Available --timeout=1h --namespace=robusta
         log "${GREEN}[INFO]" "[INSTALLER]" "Robusta sucessfully installed.${CC}"
-        exit 0
 
     else
+
         # If Helm is not installed, print an error message and exit.
         log "${RED}[ERROR]" "[INSTALLER]" "Helm is not installed. Exiting...${CC}"
         log "${YELLOW}[INFO]" "[INSTALLER]" "Install Helm.${CC}"
@@ -33,6 +33,17 @@ rb_installer() {
     fi
 }
 
+load_playbook_action() {
+    log "${CYAN}[INFO]" "[INSTALLER]" "Loading playbook actions.${CC}"
+    # enabling persistent volume in robusta configuration file
+    sed -i '4i\playbooksPersistentVolume: true' "$PREFLIGHT_DIR_PATH/$HELM_VALUES"
+    helm upgrade robusta robusta/robusta --values="$PREFLIGHT_DIR_PATH/$HELM_VALUES" --namespace=robusta
+    #pushing our playbook action
+    robusta playbooks push "$PLAYBOOK_DIR_PATH" --namespace=robusta
+    log "${CYAN}[INFO]" "[INSTALLER]" "Playbook actions loaded.${CC}"
+    exit 0
+}
 # Run the script.
 print_prompt
 rb_installer
+load_playbook_action
