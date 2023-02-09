@@ -1,4 +1,4 @@
-from robusta.api import *
+from robusta.api import logging,action,PersistentVolumeEvent,Finding,FindingSource,FindingType,MarkdownBlock
 
 
 @action
@@ -22,7 +22,7 @@ def delete_persistent_volume(event: PersistentVolumeEvent):
     # Create a Finding object to store and send the details of the deleted volume
     function_name = "delete_persistent_volume"
     finding = Finding(
-        title=f"*Persistent volume deleted",
+        title = "Persistent volume deleted",
         source=FindingSource.MANUAL,
         aggregation_key=function_name,
         finding_type=FindingType.REPORT,
