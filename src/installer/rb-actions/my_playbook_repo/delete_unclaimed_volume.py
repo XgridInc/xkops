@@ -1,3 +1,7 @@
+"""
+Module for deleting a persistent volume
+"""
+
 from robusta.api import (
     logging,
     action,
@@ -22,10 +26,10 @@ def delete_persistent_volume(event: PersistentVolumeEvent):
         logging.info("Failed to get the pod for deletion")
         return
     # Get the persistent volume
-    pv = event.get_persistentvolume()
+    persistent_volume = event.get_persistentvolume()
     # Get the name of the persistent volume
-    pv_name = pv.metadata.name
-    pv.delete()
+    pv_name = persistent_volume.metadata.name
+    persistent_volume.delete()
 
     # Create a Finding object to store and send the details of the deleted volume
     function_name = "delete_persistent_volume"
