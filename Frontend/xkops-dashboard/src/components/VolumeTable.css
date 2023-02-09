@@ -1,0 +1,16 @@
+.volume-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .volume-table th,
+  .volume-table td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .volume-table th {
+    background-color: #ddd;
+  }
+  

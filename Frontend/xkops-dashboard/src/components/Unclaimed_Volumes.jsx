@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import VolumeTable from "./VolumeTable";
+
 class Unclaimed_Volumes extends Component {
 
   constructor(props) {
@@ -31,7 +33,7 @@ class Unclaimed_Volumes extends Component {
   render() {
     return (
       <div>
-        {this.renderListing()}
+        <VolumeTable records={this.state.records} />
       </div>
     );
   }
