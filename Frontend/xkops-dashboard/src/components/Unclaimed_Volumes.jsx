@@ -1,30 +1,40 @@
-import React from "react";
+import React, { Component } from "react";
+class Unclaimed_Volumes extends Component {
 
-function Unclaimed_Volumes() {
-  return (
-    <div className="unclaimed-volumes">
-      <div class="container">
-        <div class="row align-items-center my-5">
-          <div class="col-lg-7">
-            <img
-              class="img-fluid rounded mb-4 mb-lg-0"
-              src="http://placehold.it/900x400"
-              alt=""
-            />
-          </div>
-          <div class="col-lg-5">
-            <h1 class="font-weight-light">Unclaimed Volumes</h1>
-            <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book.
-            </p>
-          </div>
-        </div>
+  constructor(props) {
+    super(props)
+    this.state = {
+      records: []
+    }
+  }
+
+  componentDidMount() {
+    fetch("http://a06fc35aeb33f46e3bf19742538467b1-1092220675.ap-southeast-1.elb.amazonaws.com/model/allPersistentVolumes")
+      .then(response => response.json())
+      .then(records => {
+        this.setState({
+          records: records.items.filter(record => record.status.phase === "Available")
+        })
+      })
+      .catch(error => console.log(error))
+  }
+
+  renderListing() {
+    let recordList = []
+    this.state.records.map(record => {
+      return recordList.push(<li key={record.metadata.name}>{record.metadata.name}</li>)
+    })
+
+    return recordList;
+  }
+
+  render() {
+    return (
+      <div>
+        {this.renderListing()}
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default Unclaimed_Volumes;
