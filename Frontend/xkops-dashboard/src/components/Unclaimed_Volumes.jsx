@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import VolumeTable from "./VolumeTable";
+import "./VolumeTable.css"
+import "./unclaimedVolume.css"
 
 class Unclaimed_Volumes extends Component {
 
@@ -33,7 +35,10 @@ class Unclaimed_Volumes extends Component {
   render() {
     return (
       <div>
+        <h1 className="header">XkOps - Unclaimed Volumes</h1>
+        <div className="table-container">
         <VolumeTable records={this.state.records} />
+        </div>
       </div>
     );
   }
