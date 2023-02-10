@@ -1,6 +1,0 @@
-repos:
-  - repo: https://github.com/pycqa/isort
-    rev: 5.5.4
-    hooks:
-      - id: isort
-        args: ["--profile", "black"]
