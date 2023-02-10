@@ -3,7 +3,7 @@ import VolumeTable from "./VolumeTable";
 import "./VolumeTable.css"
 import "./unclaimedVolume.css"
 
-class Unclaimed_Volumes extends Component {
+class UnclaimedVolumes extends Component {
 
   constructor(props) {
     super(props)
@@ -44,4 +44,4 @@ class Unclaimed_Volumes extends Component {
   }
 }
 
-export default Unclaimed_Volumes;
+export default UnclaimedVolumes;

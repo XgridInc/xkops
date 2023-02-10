@@ -1,9 +1,8 @@
 import {
   Navigation,
-  Footer,
   Home,
-  Abandoned_Workloads,
-  Unclaimed_Volumes,
+  AbandonedWorkloads,
+  UnclaimedVolumes,
 } from "./components";
 import { Route, Routes } from "react-router-dom";
 
@@ -13,10 +12,9 @@ function App() {
       <Navigation />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/unclaimed-volumes" element={<Unclaimed_Volumes />} />
-        <Route path="/abandoned-workloads" element={<Abandoned_Workloads />} />
+        <Route path="/unclaimed-volumes" element={<UnclaimedVolumes />} />
+        <Route path="/abandoned-workloads" element={<AbandonedWorkloads />} />
       </Routes>
-      <Footer />
     </>
   );
 }
