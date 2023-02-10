@@ -9,7 +9,7 @@ export RB_INSTALLER_SCRIPT_PATH=/src/installer/rb-installer.sh
 
 #rb-preflight directory path
 export PREFLIGHT_DIR_PATH=/src/pre-flight/rb-pre-flight
-export PLAYBOOK_DIR_PATH=/src/installer/rb_actions
+export PLAYBOOK_DIR_PATH=/src/installer/rb-actions
 # Set expected image names
 export EXPECTED_RUNNER_IMAGE="us-central1-docker.pkg.dev/genuine-flight-317411/devel/robusta-runner:0.10.8"
 export EXPECTED_FORWARDER_IMAGE="us-central1-docker.pkg.dev/genuine-flight-317411/devel/kubewatch:v2.0"
