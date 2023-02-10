@@ -17,7 +17,7 @@ export EXPECTED_FORWARDER_IMAGE="us-central1-docker.pkg.dev/genuine-flight-31741
 #Set expected values for runner and forwarder deployments
 export EXPECTED_RUNNER_NAME="robusta-runner"
 export EXPECTED_FORWARDER_NAME="robusta-forwarder"
-
+export NAMESPACE="robusta"
 
 #TODO: Give option to upload generated_values.yaml file through UI
 export HELM_VALUES=generated_values.yaml #File required to installed robusta

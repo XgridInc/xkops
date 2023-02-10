@@ -33,17 +33,19 @@ rb_installer() {
     fi
 }
 
-load_playbook_action() {
+#Load robusta custom remediation actions
+load_playbook_actions() {
     log "${CYAN}[INFO]" "[INSTALLER]" "Loading playbook actions.${CC}"
-    # enabling persistent volume in robusta configuration file
-    sed -i '4i\playbooksPersistentVolume: true' "$PREFLIGHT_DIR_PATH/$HELM_VALUES"
-    helm upgrade robusta robusta/robusta --values="$PREFLIGHT_DIR_PATH/$HELM_VALUES" --namespace=robusta
+    
     #pushing our playbook action
-    robusta playbooks push "$PLAYBOOK_DIR_PATH" --namespace=robusta
+    robusta playbooks push "$PLAYBOOK_DIR_PATH" --namespace=robusta >/dev/null
     log "${CYAN}[INFO]" "[INSTALLER]" "Playbook actions loaded.${CC}"
     exit 0
 }
+
+
+
 # Run the script.
 print_prompt
 rb_installer
-load_playbook_action
+load_playbook_actions

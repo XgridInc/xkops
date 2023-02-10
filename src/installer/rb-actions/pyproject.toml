@@ -4,6 +4,7 @@ version = "0.0.1"
 description = ""
 authors = ["wahaj <wahaj.ali@xgrid.co>"]
 
+# if playbook requires additional dependencies
 [tool.poetry.dependencies]
 
 [tool.poetry.dev-dependencies]

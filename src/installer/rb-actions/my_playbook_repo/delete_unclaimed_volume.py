@@ -1,9 +1,9 @@
 """
 Module for deleting a persistent volume
 """
-
+import logging
 from robusta.api import (Finding, FindingSource, FindingType, MarkdownBlock,
-                         PersistentVolumeEvent, action, logging)
+                         PersistentVolumeEvent, action)
 
 
 @action
@@ -16,7 +16,7 @@ def delete_persistent_volume(event: PersistentVolumeEvent):
     # Check if the persistent volume is present
     if not event.get_persistentvolume():
         # Log an error message if the volume is not found
-        logging.info("Failed to get the pod for deletion")
+        logging.error("Failed to get the persistent volume for deletion")
         return
     # Get the persistent volume
     persistent_volume = event.get_persistentvolume()
