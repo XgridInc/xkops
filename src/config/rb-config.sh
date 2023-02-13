@@ -2,6 +2,8 @@
 
 source /src/config/config.sh
 
+export RB_NAMESPACE=("robusta")
+
 #rb-preflight path
 export RB_PREFLIGHT_SCRIPT_PATH=/src/pre-flight/rb-pre-flight/rb-preflight.sh
 #rb-installer path

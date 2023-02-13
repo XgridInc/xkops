@@ -7,8 +7,8 @@ source /src/commons/common-functions.sh
 print_prompt() {
 
     # px_checker.sh: Script to detect Pixie in a K8s cluster.
-    log "${BBROWN}[INFO]" "[CHECKER]" "Starting checks to detect Pixie in Kubernetes cluster.${CC}"
-    log "${BROWN}[INFO]" "[CHECKER]" "Current Context: ${GREEN}$currentCtx${CC}"
+    log "${CYAN}[INFO]" "[CHECKER]" "Starting checks to detect Pixie in Kubernetes cluster.${CC}"
+    log "${CYAN}[INFO]" "[CHECKER]" "Current Context: $currentCtx${CC}"
 }
 
 #check whether the service account has permision to list deployments.
@@ -20,8 +20,8 @@ check_permissions
 # If any of the Pixie namespaces is not found, it returns with a non-zero exit code.
 kubectl_pxNS_checker() {
 
-    if ! kubectl get pods >/dev/null; then
-        log "${RED}[INFO]" "[CHECKER]" "kubectl exists, but can not reach kube_api server. Using curl instead.${CC}"
+    if ! kubectl get pods &>/dev/null; then
+        log "${CYAN}[INFO]" "[CHECKER]" "kubectl exists, but can not reach kube_api server. Using curl instead.${CC}"
         curl_pxNS_checker
     else
         olm_check=$(kubectl get ns | grep "$OLMNS" | awk '{print $1}')
@@ -29,10 +29,10 @@ kubectl_pxNS_checker() {
         pxOp_check=$(kubectl get ns | grep "$PXOPNS" | awk '{print $1}')
 
         if [[ "$olm_check" == olm && "$pl_check" == pl && "$pxOp_check" == px-operator ]]; then
-            log "${GREEN}[INFO]" "[CHECKER]" "Pixie namespaces found.${CC}"
+            log "${GREEN}[PASSED]" "[CHECKER]" "Pixie namespaces found.${CC}"
         else
-            log "${BOLD_RED}[ERROR]" "[CHECKER]" "Pixie namespaces not found. ${CC}"
-            log "${BOLD_RED}[ERROR]" "[CHECKER]" "Pixie not found in the cluster${CC}"
+            log "${RED}[ERROR]" "[CHECKER]" "Pixie namespaces not found. ${CC}"
+            log "${RED}[ERROR]" "[CHECKER]" "Pixie not found in the cluster${CC}"
             exit 0
         fi
     fi
@@ -53,11 +53,11 @@ curl_pxNS_checker() {
             --header "${HEADERS[@]}" |
             grep -i "$namespace" | grep name | head -2 | grep -oP '(?<="name": ")[^"]*'))
         if [[ $ns != "$namespace" ]]; then
-            log "${BOLD_RED}[ERROR]" "[CHECKER]" "$namespace namespace not found.${CC}"
-            log "${BOLD_RED}[ERROR]" "[CHECKER]" "Pixie not found in the cluster${CC}"
+            log "${RED}[ERROR]" "[CHECKER]" "$namespace namespace not found.${CC}"
+            log "${RED}[ERROR]" "[CHECKER]" "Pixie not found in the cluster${CC}"
             exit 0
         else
-            log "${GREEN}[INFO]" "[CHECKER]" "$namespace namespace found.${CC}"
+            log "${GREEN}[PASSED]" "[CHECKER]" "$namespace namespace found.${CC}"
             exit 1
         fi
     done
@@ -76,9 +76,9 @@ kubectl_pxDeploy_checker() {
         for dp in "${plDeploy[@]}"; do
             ns="$PLNS"
             if [[ $dp == "$PL_KELVIN" || $dp == "$PL_CLOUD_CONNECTOR" || $dp == "$PL_VIZIER_QUERY_BROKER" ]]; then
-                log "${GREEN}[INFO]" "[CHECKER]" "$dp deployment found in $ns namespace.${CC}"
+                log "${GREEN}[PASSED]" "[CHECKER]" "$dp deployment found in $ns namespace.${CC}"
             else
-                log "${BOLD_RED}[INFO]" "[CHECKER]" "$dp deployment not found in $ns namespace.${CC}"
+                log "${CYAN}[INFO]" "[CHECKER]" "$dp deployment not found in $ns namespace.${CC}"
 
             fi
         done
@@ -86,17 +86,17 @@ kubectl_pxDeploy_checker() {
         for dp in "${olmDeploy[@]}"; do
             ns="$OLMNS"
             if [[ $dp == "$OLM_CATALOG_OPERATOR" || $dp == "$OLM_OPERATOR" ]]; then
-                log "${GREEN}[INFO]" "[CHECKER]" "$dp deployment found in $ns namespace.${CC}"
+                log "${CYAN}[PASSED]" "[CHECKER]" "$dp deployment found in $ns namespace.${CC}"
                 exit 1
             else
-                log "${BOLD_RED}[INFO]" "[CHECKER]" "$dp deployment not found in $ns namespace.${CC}"
-                log "${BOLD_RED}[INFO]" "[CHECKER]" "Pixie not found in the cluster${CC}"
+                log "${CYAN}[INFO]" "[CHECKER]" "$dp deployment not found in $ns namespace.${CC}"
+                log "${CYAN}[INFO]" "[CHECKER]" "Pixie not found in the cluster${CC}"
                 exit 0
             fi
         done
 
     else
-        log "${BOLD_RED}[INFO]" "[CHECKER]" "Pixie not found in the cluster${CC}"
+        log "${CYAN}[INFO]" "[CHECKER]" "Pixie not found in the cluster${CC}"
         exit 0
     fi
 }
@@ -105,15 +105,15 @@ if command -v kubectl &>/dev/null; then
     currentCtx=$(kubectl config current-context)
     print_prompt
     check_permissions
-    log "${YELLOW}[INFO]" "[CHECKER]" "Checking for Pixie namespaces in the current cluster.${CC}"
+    log "${CYAN}[INFO]" "[CHECKER]" "Checking for Pixie namespaces in the current cluster.${CC}"
     kubectl_pxNS_checker
-    log "${YELLOW}[INFO]" "[CHECKER]" "Checking for Pixie Deployments in the current cluster.${CC}"
+    log "${CYAN}[INFO]" "[CHECKER]" "Checking for Pixie Deployments in the current cluster.${CC}"
     kubectl_pxDeploy_checker
 else
     currentCtx=$(kubectl config current-context)
     print_prompt
     check_permissions
-    log "${GREEN}[INFO]" "[CHECKER]" "Checking for Pixie namespaces in the current cluster.${CC}"
+    log "${CYAN}[INFO]" "[CHECKER]" "Checking for Pixie namespaces in the current cluster.${CC}"
     log "${RED}[ERROR]" "[CHECKER]" "kubectl not found. Using curl instead.${CC}"
     curl_pxNS_checker
 fi

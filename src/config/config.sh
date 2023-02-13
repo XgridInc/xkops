@@ -1,17 +1,10 @@
 #!/bin/bash
 
 #COLOR CODES
-export CYAN='\033[0;36m'
-export RED='\033[0;31m'
-export GREEN='\033[0;32m'
-export YELLOW='\033[0;33m'
+export CYAN='\033[0;36m' # Level = INFO
+export RED='\033[0;31m' # Level = ERROR
+export GREEN='\033[0;32m' # Level = PASSED
 export CC="\033[0m"
-export PURPLE='\033[0;35m'
-export BOLD_CYAN="\033[1;36m"
-export BOLD_RED="\033[1;31m"
-export BOLD_GREEN="\033[1;32m"
-export BROWN='\033[0;33m'
-export BBROWN='\033[1;33m'
 
 # Get the Kubernetes API server URL and CA certificate path
 export KUBERNETES_API_SERVER_URL="https://${KUBERNETES_SERVICE_HOST}:${KUBERNETES_SERVICE_PORT}"

@@ -12,11 +12,11 @@ print_prompt() {
 check_kubectl() {
 
     if ! command -v kubectl &>/dev/null; then
-        log "${CYAN}[INFO]" "[CHECKER]" "kubectl not found. Checking through curl."
+        log "${CYAN}[INFO]" "[CHECKER]" "kubectl not found. Checking through curl.${CC}"
         curl_rb_checker
 
     else
-        log "${CYAN}[INFO]" "[CHECKER]" "kubectl found. Checking through kubectl."
+        log "${CYAN}[INFO]" "[CHECKER]" "kubectl found. Checking through kubectl.${CC}"
         kubectl_rb_checker
 
     fi
@@ -35,10 +35,11 @@ kubectl_rb_checker() {
     found=0
 
     # Get a list of all namespaces
-    namespaces=$(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}')
+    # namespaces=$(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}')
+    mapfile -t namespaces < <(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}')
 
     # Iterate through each namespace
-    for namespace in $namespaces; do
+    for namespace in "${namespaces[@]}"; do
         # Get a list of all deployments in the namespace
         deployments=$(kubectl get deployments -n "$namespace" -o jsonpath='{.items[*].metadata.name}')
 
@@ -92,16 +93,16 @@ kubectl_rb_checker() {
 curl_rb_checker() {
 
     # Get a list of all namespaces in the cluster
-    namespaces=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/api/v1/namespaces")
+    mapfile -t namespaces < <(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/api/v1/namespaces")
 
     runner_found=false
     forwarder_found=false
 
     # Extract the names of the namespaces from the JSON response
-    namespaces=$(echo "$namespaces" | sed -n 's/.*"name": "\(.*\)",.*/\1/p')
+    mapfile -t namespaces < <(echo "${namespaces[@]}" | sed -n 's/.*"name": "\(.*\)",.*/\1/p')
 
     # Iterate through the namespaces
-    for ns in $namespaces; do
+    for ns in "${namespaces[@]}"; do
         # Check if the "robusta-runner" deployment exists in the namespace
         runner=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/apis/apps/v1/namespaces/$ns/deployments/$EXPECTED_RUNNER_NAME")
         if [ "$runner" != "Not Found" ]; then
