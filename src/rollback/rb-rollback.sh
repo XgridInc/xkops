@@ -11,11 +11,12 @@ rb_rollback() {
     if command -v helm &>/dev/null; then
         #Uninstall robusta using helm
         helm uninstall robusta -n robusta > /dev/null
-        log "${GREEN}[INFO]" "[ROLLBACK]" "Robusta has been deleted from your cluster${CC}"
+        kubectl delete namespace robusta > /dev/null
+        log "${GREEN}[PASSED]" "[ROLLBACK]" "Robusta has been deleted from your cluster${CC}"
     else
         # If Helm is not installed, print an error message and exit.
         log "${RED}[ERROR]" "[ROLLBACK]" "Helm is not installed. Exiting...${CC}"
-        log "${YELLOW}[INFO]" "[ROLLBACK]" "Install Helm.${CC}"
+        log "${CYAN}[INFO]" "[ROLLBACK]" "Install Helm.${CC}"
         exit 1
     fi
 }

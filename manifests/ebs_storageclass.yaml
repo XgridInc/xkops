@@ -1,0 +1,9 @@
+# This manifest creates a storage class which is an EBS provisioner that allows dynamic provisioning
+# of Amazon Elastic Block Store (EBS) volumes in a Kubernetes cluster
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: ebs-sc
+provisioner: ebs.csi.aws.com
+reclaimPolicy: Delete
+volumeBindingMode: WaitForFirstConsumer
