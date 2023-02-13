@@ -2,8 +2,14 @@
 Module for deleting a persistent volume
 """
 import logging
-from robusta.api import (Finding, FindingSource, FindingType, MarkdownBlock,
-                         PersistentVolumeEvent, action)
+from robusta.api import (
+    Finding,
+    FindingSource,
+    FindingType,
+    MarkdownBlock,
+    PersistentVolumeEvent,
+    action,
+)
 
 
 @action
