@@ -21,7 +21,7 @@ get_unclaimed_volume() {
     for i in $(echo "$pv_statuses" | grep -n "Available"); do
         line_num=$(echo "$i" | cut -d: -f1)
         name=$(echo "$pv_names" | sed -n "${line_num}p")
-        unclaimed_pv=${name//\"/}
+        unclaimed_pv=("${name//\"/}")
     done
 
 }
@@ -31,23 +31,28 @@ trigger_robusta_action() {
     # Trigger robusta action to delete unclaimed volume
     result=$(curl -X POST http://robusta-runner.robusta.svc.cluster.local/api/trigger -H 'Content-Type: application/json' -d '{"action_name": "delete_persistent_volume", "action_params": {"name": "'"$unclaimed_pv"'"}}' 2>/dev/null | head -n 1)
 
-    # Check the response of the delete action
+    # Check the response of the delete action if the response is success, it means pv is deleted successfully.
+    # We use this check to confirm if volume is deleted successfully
     if echo "$result" | grep -q '"success":true'; then
         echo "Unclaimed PV $unclaimed_pv deleted successfully"
-        unclaimed_pv=""
     else
         echo "PV not deleted"
     fi
 }
 
 # Verify the deletion of PV through Kubecost API
+# This function verifies the deleted volume. It stores already retireved volume in a separate variable and then gets pvs data through get_unclaimed_volume function
 verify_deletion() {
+    # We store already retrieved pv name in a variable to compare later
+    old_pv=$unclaimed_pv
+    unclaimed_pv=""
     # Get unclaimed volume from kubecost
     get_unclaimed_volume
-    if [ -z "$unclaimed_pv" ]; then
-        echo "Identified unclaimed PV was deleted and verified through Kubecost API"
+
+    if [[ "$old_pv" == "$unclaimed_pv" ]]; then
+        echo "Volume $old_pv is not deleted"
     else
-        echo "PV was not deleted from the cluster"
+        echo "PV deleted and confirmed"
     fi
 }
 
