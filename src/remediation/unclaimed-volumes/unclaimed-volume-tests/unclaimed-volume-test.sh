@@ -21,7 +21,7 @@ get_unclaimed_volume() {
     for i in $(echo "$pv_statuses" | grep -n "Available"); do
         line_num=$(echo "$i" | cut -d: -f1)
         name=$(echo "$pv_names" | sed -n "${line_num}p")
-        unclaimed_pv=("${name//\"/}")
+        unclaimed_pv=${name//\"/}
     done
 
 }
