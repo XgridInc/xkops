@@ -1,7 +1,8 @@
 """ XGRID WEBSITE PAGE TESTS """
-import config
 import selenium
 from selenium import webdriver
+
+import config
 
 # Create an instance of the Chrome driver
 options = webdriver.ChromeOptions()

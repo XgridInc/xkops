@@ -23,15 +23,25 @@ rb_installer() {
         kubectl -n robusta wait deployment robusta-runner robusta-forwarder --for=condition=Available --timeout=1h &>/dev/null
         watch_runner_logs
         log "${GREEN}[INFO]" "[INSTALLER]" "Robusta sucessfully installed.${CC}"
-        exit 0
 
     else
+
         # If Helm is not installed, print an error message and exit.
         log "${RED}[ERROR]" "[INSTALLER]" "Helm is not installed. Exiting...${CC}"
         log "${CYAN}[INFO]" "[INSTALLER]" "Install Helm.${CC}"
         exit 1
 
     fi
+}
+
+#Load robusta custom remediation actions
+load_playbook_actions() {
+    log "${CYAN}[INFO]" "[INSTALLER]" "Loading playbook actions.${CC}"
+    
+    #pushing our playbook action
+    robusta playbooks push "$PLAYBOOK_DIR_PATH" --namespace=robusta >/dev/null
+    log "${CYAN}[INFO]" "[INSTALLER]" "Playbook actions loaded.${CC}"
+    exit 0
 }
 
 watch_runner_logs() {
@@ -53,3 +63,4 @@ watch_runner_logs() {
 # Run the script.
 print_prompt
 rb_installer
+load_playbook_actions
