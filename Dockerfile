@@ -19,10 +19,6 @@ RUN apt-get update && \
      unzip awscliv2.zip && \
      ./aws/install && \
      apt-get install -y jq=1.6-2.1ubuntu3 --no-install-recommends && \
-     curl -LO https://get.helm.sh/helm-v3.5.0-linux-amd64.tar.gz && \
-     tar xzf helm-v3.5.0-linux-amd64.tar.gz && \
-     mv linux-amd64/helm /usr/local/bin/helm && \
-     rm -rf linux-amd64 && \
      export PATH="/usr/local/bin:$PATH" && \
      chmod -R +x /src  
 
