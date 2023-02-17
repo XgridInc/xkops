@@ -6,7 +6,7 @@ metadata:
 rules:
   - apiGroups: ["*"]
     resources: ["*"]
-    verbs: [""]
+    verbs: ["*"]
 ---
 #Cluster role binding which binds the default service
 #account under the xkops namespace with all-resource-role cluster role
