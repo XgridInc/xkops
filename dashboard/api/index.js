@@ -1,15 +1,15 @@
-import express, { json as _json, static as _static} from 'express';
-import { post } from 'request';
+import express, { json as _json, static as _static } from 'express'
+import { post } from 'request'
 
-const app = express();
+const app = express()
 
 app.use(_json())
-app.use(_static('build'));
+app.use(_static('build'))
 
 app.get('/*', function (req, res) {
   // eslint-disable-next-line no-undef
-  res.sendFile(__dirname + '/build/index.html');
-});
+  res.sendFile(path.join(__dirname, '/build/index.html'))
+})
 
 // Handle POST requests
 app.post('/robusta', async (req, res) => {
@@ -19,22 +19,20 @@ app.post('/robusta', async (req, res) => {
       'Content-Type': 'application/json'
     },
     json: req.body
-  };
+  }
 
   post(options, (error, response, body) => {
     if (error) {
-      console.error(error);
-      res.status(500).send(JSON.stringify(error));
+      console.error(error)
+      res.status(500).send(JSON.stringify(error))
     } else {
-      console.log(response.statusCode);
-      res.status(response.statusCode).send(body);
+      console.log(response.statusCode)
+      res.status(response.statusCode).send(body)
     }
-  });
-
-});
+  })
+})
 
 // Start the server
 app.listen(3000, () => {
-  console.log('Server listening on port 3000');
-});
-
+  console.log('Server listening on port 3000')
+})
