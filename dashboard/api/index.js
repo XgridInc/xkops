@@ -1,13 +1,13 @@
-import express, { json as _json, static as _static } from 'express'
-import { post } from 'request'
+const express = require('express')
+const request = require('request')
+const path = require('path')
 
 const app = express()
 
-app.use(_json())
-app.use(_static('build'))
+app.use(express.json())
+app.use(express.static('build'))
 
 app.get('/*', function (req, res) {
-  // eslint-disable-next-line no-undef
   res.sendFile(path.join(__dirname, '/build/index.html'))
 })
 
@@ -21,7 +21,7 @@ app.post('/robusta', async (req, res) => {
     json: req.body
   }
 
-  post(options, (error, response, body) => {
+  request.post(options, (error, response, body) => {
     if (error) {
       console.error(error)
       res.status(500).send(JSON.stringify(error))
