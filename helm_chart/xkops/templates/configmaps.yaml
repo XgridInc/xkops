@@ -1,0 +1,9 @@
+# TODO: This is a user specific file and must be removed in future
+# Configmap to be used by xkops deployment scripts
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xkops-config
+  namespace: {{ .Values.namespace.NAMESPACE_NAME }}
+data:
+  CLUSTER_NAME: {{ .Values.xkops_config.CLUSTER_NAME }}

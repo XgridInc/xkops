@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xk8s-deployment
+  namespace: {{ .Values.namespace.NAMESPACE_NAME }}
+spec:
+  replicas: {{ .Values.xkops_replicaCount }}
+  selector:
+    matchLabels:
+      app: xk8s
+  template:
+    metadata:
+      labels:
+        app: xk8s
+    spec:
+      volumes:
+        - name: {{ .Values.xkops_volumes.name }}
+          hostPath:
+            path: {{ .Values.xkops_volumes.hostPath.path }}
+      containers:
+        - name: xk8s
+          image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
+          command: ["/bin/sleep", "3650d"]
+          volumeMounts:
+            - name: {{ .Values.xkops_volumeMounts.name }}
+              mountPath: {{ .Values.xkops_volumeMounts.mountPath }}
+          env:
+            - name: PX_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-secret
+                  key: PX_API_KEY
+            - name: PX_DEPLOY_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-secret
+                  key: PX_DEPLOY_KEY
+            - name: SLACK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-secret
+                  key: SLACK_API_KEY
+            - name: SLACK_CHANNEL_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-secret
+                  key: SLACK_CHANNEL_NAME
+            - name: ROBUSTA_UI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-secret
+                  key: ROBUSTA_UI_API_KEY
+            - name: CLUSTER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: xkops-config
+                  key: CLUSTER_NAME
+          resources:
+            limits:
+              cpu: "{{ .Values.xkops_resources.limits.cpu }}"
+              memory: "{{ .Values.xkops_resources.limits.memory }}"
+            requests:
+              cpu: "{{ .Values.xkops_resources.requests.cpu }}"
+              memory: "{{ .Values.xkops_resources.requests.memory }}"
+      restartPolicy: {{ .Values.xkops_restartPolicy }}

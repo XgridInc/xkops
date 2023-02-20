@@ -1,0 +1,41 @@
+{{- range .Values.manifests }}
+{{- if eq (printf "%d" .priority) "1" }}
+{{ include .name }}
+{{- end }}
+{{- end }}
+
+{{- range .Values.manifests }}
+{{- if eq (printf "%d" .priority) "2" }}
+{{ include .name }}
+{{- end }}
+{{- end }}
+
+{{- range .Values.manifests }}
+{{- if eq (printf "%d" .priority) "3" }}
+{{ include .name }}
+{{- end }}
+{{- end }}
+
+{{- range .Values.manifests }}
+{{- if eq (printf "%d" .priority) "4" }}
+{{ include .name }}
+{{- end }}
+{{- end }}
+
+{{- range .Values.manifests }}
+{{- if eq (printf "%d" .priority) "5" }}
+{{ include .name }}
+{{- end }}
+{{- end }}
+
+{{- range .Values.manifests }}
+{{- if eq (printf "%d" .priority) "6" }}
+{{ include .name }}
+{{- end }}
+{{- end }}
+
+{{- range .Values.manifests }}
+{{- if eq (printf "%d" .priority) "7" }}
+{{ include .name }}
+{{- end }}
+{{- end }}
