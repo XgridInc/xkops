@@ -7,6 +7,7 @@ app.use(_json())
 app.use(_static('build'));
 
 app.get('/*', function (req, res) {
+  // eslint-disable-next-line no-undef
   res.sendFile(__dirname + '/build/index.html');
 });
 
