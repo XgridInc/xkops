@@ -13,7 +13,8 @@ class UnclaimedVolumes extends Component {
   }
 
   componentDidMount() {
-    fetch("http://a06fc35aeb33f46e3bf19742538467b1-1092220675.ap-southeast-1.elb.amazonaws.com/model/allPersistentVolumes")
+
+    fetch("http://a5b8a923cb83f4ceb962b6b9f4146d58-428396965.ap-southeast-1.elb.amazonaws.com/model/allPersistentVolumes")
       .then(response => response.json())
       .then(records => {
         this.setState({

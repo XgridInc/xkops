@@ -20,7 +20,7 @@ const VolumeTable = props => {
       body: JSON.stringify({
         "action_name": "delete_persistent_volume",
         "action_params": {
-          "name": "new-pv-volume",
+          "name": recordName,
           "namespace": "default"
         }
       })
