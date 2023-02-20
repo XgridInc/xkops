@@ -8,8 +8,8 @@ dashboard_replicaCount: 1
 
 # Set the container image details for xkops
 xkops_image:
-  repository: xgridxcbg/kaizen
-  tag: cc1a3c
+  repository: syedwahajali/helm
+  tag: latest
   pullPolicy: IfNotPresent
 
 # Set the container image details for dashboard
@@ -17,7 +17,6 @@ dashboard_image:
   repository: khanali198361/testui
   tag: latest
   pullPolicy: IfNotPresent
-
 
 # Override the name and fullname (including the release name) for the chart
 nameOverride: ""
@@ -61,15 +60,6 @@ namespace:
 # Add data from the ConfigMap
 xkops_config:
   CLUSTER_NAME: xgrid-website-migration
-
-# Add data from the secret
-xkops_secret:
-  data:
-    PX_API_KEY: cHgtYXBpLWE0NmE3YzZmLTM5MGYtNGY4NC1iZTg4LWRhMWI0NTYzOTcxZA==
-    PX_DEPLOY_KEY: cHgtZGVwLTZkZGM2MGY4LTA1MTktNDBlMS1hZmQ0LTg5MTZmYjRlYWRkMA==
-    SLACK_API_KEY: eG94Yi0zNzYwNjM5ODcwOTYwLTM3MzY5NjEzMTY2MTEtMEpvSnp2TXRjMkpMT2ZXanpUVmN6RUtt
-    SLACK_CHANNEL_NAME: cm9idXN0YS10ZXN0
-    ROBUSTA_UI_API_KEY: ZXlKaFkyTnZkVzUwWDJsa0lqb2dJbU01T1RBNU9ESTRMVEU1TURBdE5ERTBOUzFoT0RkaExUazBOV1kyT1dNNVptTXdPU0lzSUNKaGNHbGZhMlY1SWpvZ0ltVjVTbWhpUjJOcFQybEtTVlY2U1RGT2FVbHpTVzVTTldORFNUWkphM0JZVmtOS09TNWxlVXA1WWpKNGJFbHFiMmxaVnpWMlltbEpjMGx0Ykdoa1EwazJUVlJaZVU1RVJUTk5hbEY1VGtOM2FWcFlhSGRKYW05NFQxUk5OVTU2VVRST1JFa3dabEV1YUZKTWRqWlFRVzU0TVdOaGRrUjNiQzFwV1hsblFYSklOSEZCTUVSV1NGbHVja1EzTVVGemNYRlFkeUlzSUNKemRHOXlaVjkxY213aU9pQWlhSFIwY0hNNkx5OTRkbmxvY0c5NFptMTBjSFZ4Y1dWNWNXdHpieTV6ZFhCaFltRnpaUzVqYnlJc0lDSmxiV0ZwYkNJNklDSmhjR2wxYzJWeUxYaG5jbWxrTFhkbFluTnBkR1V0YldsbmNtRjBhVzl1TFRVNE16VTBOMEJ5YjJKMWMzUmhMbVJsZGlJc0lDSndZWE56ZDI5eVpDSTZJQ0k1WVRNMFkyWTJZaTFrTjJKakxUUmlZakl0WW1VeE5pMDRaamcwTWpJMFpEWXhNRGdpZlE9PQ==
 
 # List all manifests to apply in order of priority
 manifests:
