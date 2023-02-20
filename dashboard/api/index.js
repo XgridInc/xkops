@@ -1,11 +1,10 @@
-const express = require('express');
-const k8s = require('@kubernetes/client-node');
-const request = require('request');
+import express, { json as _json, static as _static} from 'express';
+import { post } from 'request';
 
 const app = express();
 
-app.use(express.json())
-app.use(express.static('build'));
+app.use(_json())
+app.use(_static('build'));
 
 app.get('/*', function (req, res) {
   res.sendFile(__dirname + '/build/index.html');
@@ -21,7 +20,7 @@ app.post('/robusta', async (req, res) => {
     json: req.body
   };
 
-  request.post(options, (error, response, body) => {
+  post(options, (error, response, body) => {
     if (error) {
       console.error(error);
       res.status(500).send(JSON.stringify(error));
@@ -37,3 +36,4 @@ app.post('/robusta', async (req, res) => {
 app.listen(3000, () => {
   console.log('Server listening on port 3000');
 });
+
