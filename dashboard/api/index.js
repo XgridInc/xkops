@@ -13,8 +13,25 @@ app.use(allowCrossDomain)
 app.use(express.json())
 app.use(express.static('build'))
 
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, '/build/index.html'))
+// // Handle GET requests
+app.get('/allPersistentVolumes', (req, res) => {
+  const options = {
+    url: 'http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9003/allPersistentVolumes',
+    headers: {
+      'User-Agent': 'request',
+      Accept: 'application/json'
+    }
+  }
+
+  request.get(options, (error, response, body) => {
+    if (error) {
+      console.error(error)
+      res.status(500).send(JSON.stringify(error))
+    } else {
+      console.log(response.statusCode)
+      res.status(response.statusCode).send(body)
+    }
+  })
 })
 
 // Handle POST requests
@@ -38,21 +55,8 @@ app.post('/robusta', async (req, res) => {
   })
 })
 
-// Handle GET requests
-app.get('/allPersistentVolumes', async (req, res) => {
-  const options = {
-    url: 'http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9003/allPersistentVolumes'
-  }
-
-  request.get(options, (error, response, body) => {
-    if (error) {
-      console.error(error)
-      res.status(500).send(JSON.stringify(error))
-    } else {
-      console.log(response.statusCode)
-      res.status(response.statusCode).send(body)
-    }
-  })
+app.get('/*', function (req, res) {
+  res.sendFile(path.join(__dirname, '/build/index.html'))
 })
 
 // Start the server

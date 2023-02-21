@@ -12,25 +12,14 @@ class UnclaimedVolumes extends Component {
   }
 
   async componentDidMount () {
-    let data = 'None'
-    data = await fetch('/allPersistentVolumes')
-    console.log(data.json())
-
-    // .then(records => {
-    //   this.setState({
-    //     records: records.items.filter(record => record.status.phase === 'Available')
-    //   })
-    // })
-    // .catch(error => console.log(error))
-
-    // fetch('/allPersistentVolumes')
-    //   .then(response => response.json())
-    //   .then(records => {
-    //     this.setState({
-    //       records: records.items.filter(record => record.status.phase === 'Available')
-    //     })
-    //   })
-    //   .catch(error => console.log(error))
+    fetch('/allPersistentVolumes')
+      .then(response => response.json())
+      .then(records => {
+        this.setState({
+          records: records.items.filter(record => record.status.phase === 'Available')
+        })
+      })
+      .catch(error => console.log(error))
   }
 
   renderListing () {
