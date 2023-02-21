@@ -8,10 +8,27 @@ spec:
   volumes:
     - name: log-volume
       hostPath:
-        path: /mnt/logs
+        path: /mnt/logs 
+  initContainers:
+    - name: terraform-init
+      image: abidiqbal/dockernew:latest
+      command: ["terraform", "apply", "-auto-approve"]
+      env:
+        #AWS_ACCESS_KEY_ID for terraform scripts to run TODO: to be removed and provided by user 
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: xkops-secret
+              key: AWS_ACCESS_KEY_ID
+        #AWS_SECRET_ACCESS_KEY for terraform scripts to run TODO: to be removed and provided by user 
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: xkops-secret
+              key: AWS_SECRET_ACCESS_KEY
   containers:
     - name: xk8s
-      image: xgridxcbg/kaizen:latest #use the built image here
+      image: syedwahajali/helm #use the built image here
       command: ["/bin/sleep", "3650d"]
       #Hostpath volume mounted on container path /tmp
       volumeMounts:
