@@ -11,7 +11,7 @@ spec:
         path: /mnt/logs 
   initContainers:
     - name: terraform-init
-      image: abidiqbal/dockernew:latest
+      image: abidiqbal/ebs-terraform:latest
       command: ["terraform", "apply", "-auto-approve"]
       env:
         #AWS_ACCESS_KEY_ID for terraform scripts to run TODO: to be removed and provided by user 
