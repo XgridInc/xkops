@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import "./VolumeTable.css";
-import DeleteModal from "./DeleteModal";
+import React, { useState } from 'react'
+import './VolumeTable.css'
+import DeleteModal from './DeleteModal'
 
 const VolumeTable = props => {
-  const [showModal, setShowModal] = useState(false);
-  const [recordName, setRecordName] = useState("");
+  const [showModal, setShowModal] = useState(false)
+  const [recordName, setRecordName] = useState('')
 
-  const toggleModal = (recordName = "") => {
-    setShowModal(!showModal);
-    setRecordName(recordName);
-  };
+  const toggleModal = (recordName = '') => {
+    setShowModal(!showModal)
+    setRecordName(recordName)
+  }
 
   const handleDelete = () => {
     fetch('/robusta', {
@@ -18,36 +18,36 @@ const VolumeTable = props => {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        "action_name": "delete_persistent_volume",
-        "action_params": {
-          "name": recordName,
-          "namespace": "default"
+        action_name: 'delete_persistent_volume',
+        action_params: {
+          name: recordName,
+          namespace: 'default'
         }
       })
     })
       .then(response => {
         if (response.ok) {
           console.log(response)
-          toggleModal();
+          toggleModal()
         } else {
           // API call failed
-          throw new Error('API call failed');
+          throw new Error('API call failed')
         }
       })
       .catch(error => {
         // Handle API call error
-        console.log("error here")
-        console.error(error);
-      });
-  };
+        console.log('error here')
+        console.error(error)
+      })
+  }
 
   const handleCancel = () => {
-    toggleModal();
-  };
+    toggleModal()
+  }
 
   return (
     <>
-      <table className="volume-table">
+      <table className='volume-table'>
         <thead>
           <tr>
             <th>Serial Number</th>
@@ -78,7 +78,7 @@ const VolumeTable = props => {
         />
       )}
     </>
-  );
-};
+  )
+}
 
 export default VolumeTable
