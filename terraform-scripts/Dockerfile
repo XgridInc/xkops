@@ -2,7 +2,7 @@
 FROM hashicorp/terraform:light
 
 # Copy the Terraform script into the container
-COPY main.tf .
+COPY ebs-provisioning.tf .
 
 # Initialize Terraform and download the required provider
 RUN terraform init
