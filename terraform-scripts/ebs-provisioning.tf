@@ -12,20 +12,24 @@ terraform {
 provider "aws" {
   region = "us-east-2"
 }
+
 # Cluster name for terraform scripts to be run on
 data "aws_eks_cluster" "example_cluster" {
   name = "Xkops-test-cluster"
 }
+
 # TLS Certificate for OIDC provider
 data "tls_certificate" "example" {
   url = data.aws_eks_cluster.example_cluster.identity[0].oidc[0].issuer
 }
+
 # Adds OIDC provider associated with the given cluster above 
 resource "aws_iam_openid_connect_provider" "example_cluster_oidc_provider" {
-  client_id_list = ["sts.amazonaws.com"]
+  client_id_list  = ["sts.amazonaws.com"]
   thumbprint_list = [data.tls_certificate.example.certificates[0].sha1_fingerprint]
-  url = "${data.aws_eks_cluster.example_cluster.identity.0.oidc.0.issuer}"
+  url             = data.aws_eks_cluster.example_cluster.identity.0.oidc.0.issuer
 }
+
 # Creates IAM Role with trust relationship set as ebs-csi-controller-sa
 resource "aws_iam_role" "eks_cluster" {
   name = "example-cluster-iam-role"
@@ -40,7 +44,7 @@ resource "aws_iam_role" "eks_cluster" {
         }
         Condition = {
           StringEquals = {
-            "${replace(data.aws_eks_cluster.example_cluster.identity.0.oidc.0.issuer, "https://", "")}:aud"= "sts.amazonaws.com",
+            "${replace(data.aws_eks_cluster.example_cluster.identity.0.oidc.0.issuer, "https://", "")}:aud" = "sts.amazonaws.com",
             "${replace(data.aws_eks_cluster.example_cluster.identity.0.oidc.0.issuer, "https://", "")}:sub" = "system:serviceaccount:kube-system:ebs-csi-controller-sa"
           }
         }
@@ -52,11 +56,12 @@ resource "aws_iam_role" "eks_cluster" {
 # Attaches AmazonEBSCSIDriverPolicy to above created IAM Role
 resource "aws_iam_role_policy_attachment" "eks_cluster_ebs_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-  role = aws_iam_role.eks_cluster.name
+  role       = aws_iam_role.eks_cluster.name
 }
+
 # Adds Amazon EBS CSI Driver add-on in the EKS cluster given above
 resource "aws_eks_addon" "ebs_csi" {
-  addon_name = "aws-ebs-csi-driver"
-  cluster_name = data.aws_eks_cluster.example_cluster.name
+  addon_name               = "aws-ebs-csi-driver"
+  cluster_name             = data.aws_eks_cluster.example_cluster.name
   service_account_role_arn = aws_iam_role.eks_cluster.arn
 }
