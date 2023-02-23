@@ -14,13 +14,20 @@ terraform {
 }
 
 #This code configures the AWS provider to use the us-east-2 region. The AWS provider is used to interact with resources in an AWS account, such as creating and managing EC2 instances.
+variable "region" {
+  type = string
+}
+variable "cluster_name" {
+  type = string
+}
 provider "aws" {
-  region = "ap-southeast-1"
+  region = var.region
 }
 
 # Cluster name for terraform scripts to be run on
 data "aws_eks_cluster" "Eks_cluster" {
-  name = "xgrid-website-migration"
+  # name = "xgrid-website-migration"
+  name=var.cluster_name
 }
 
 # TLS Certificate for OIDC provider
