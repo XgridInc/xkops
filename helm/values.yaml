@@ -17,7 +17,7 @@ dashboard_replicaCount: 1
 
 # Set the container image details for xkops
 xkops_image:
-  repository: syedwahajali/helm
+  repository: xgridxcbg/kaizen
   tag: latest
   pullPolicy: IfNotPresent
 
