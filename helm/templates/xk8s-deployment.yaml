@@ -17,10 +17,24 @@ spec:
         - name: {{ .Values.xkops_volumes.name }}
           hostPath:
             path: {{ .Values.xkops_volumes.hostPath.path }}
+      initContainers:
+        - name: terraform-init
+          image: "{{ .Values.xkops_init_container.image.repository }}:{{ .Values.xkops_init_container.image.tag }}"
+          command: ["terraform", "apply", "-auto-approve"]
+          env:
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: xkops-secret
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: xkops-secret
+                key: AWS_SECRET_ACCESS_KEY
       containers:
         - name: xk8s
           image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
-          command: ["/bin/sleep", "3650d"]
           volumeMounts:
             - name: {{ .Values.xkops_volumeMounts.name }}
               mountPath: {{ .Values.xkops_volumeMounts.mountPath }}

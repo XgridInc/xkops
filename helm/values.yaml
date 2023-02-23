@@ -1,0 +1,99 @@
+# Default values for xkops and dashboard.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+xkops_init_container:
+  image:
+    repository: abidiqbal/ebs-terraform
+    tag: latest
+    pullPolicy: IfNotPresent
+
+namespace:
+  NAMESPACE_NAME: xkops
+
+# Set the number of replicas to deploy
+xkops_replicaCount: 1
+dashboard_replicaCount: 1
+
+# Set the container image details for xkops
+xkops_image:
+  repository: syedwahajali/helm
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Set the container image details for dashboard
+dashboard_image:
+  repository: khanali198361/testui
+  tag: latest
+  pullPolicy: IfNotPresent
+
+# Define the resource requirements and limits for the container
+xkops_resources:
+  limits:
+    cpu: "500m"
+    memory: "200Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+# Set up the volume mount for xkops
+xkops_volumeMounts:
+  name: log-volume
+  mountPath: /tmp
+  
+# Set up the persistent volume for xkops
+xkops_volumes:
+  name: log-volume
+  hostPath:
+    path: /mnt/logs
+
+# Set the restart policy for the container
+xkops_restartPolicy: Always
+
+#container port for dashboard
+dashboard_container_port: 3000
+
+dashboard_service_ports:
+  name: http
+  port: 80
+  targetPort: 3000
+# Set up tolerations and affinity, if necessary
+tolerations: []
+affinity: {}
+
+# Add data from the ConfigMap
+xkops_config:
+  CLUSTER_NAME: xgrid-website-migration
+
+# Add data from the secret
+xkops_secret:
+  data:
+    PX_API_KEY: cHgtYXBpLWE0NmE3YzZmLTM5MGYtNGY4NC1iZTg4LWRhMWI0NTYzOTcxZA==
+    PX_DEPLOY_KEY: cHgtZGVwLTZkZGM2MGY4LTA1MTktNDBlMS1hZmQ0LTg5MTZmYjRlYWRkMA==
+    SLACK_API_KEY: eG94Yi0zNzYwNjM5ODcwOTYwLTM3MzY5NjEzMTY2MTEtMEpvSnp2TXRjMkpMT2ZXanpUVmN6RUtt
+    SLACK_CHANNEL_NAME: cm9idXN0YS10ZXN0
+    ROBUSTA_UI_API_KEY: ZXlKaFkyTnZkVzUwWDJsa0lqb2dJbU01T1RBNU9ESTRMVEU1TURBdE5ERTBOUzFoT0RkaExUazBOV1kyT1dNNVptTXdPU0lzSUNKaGNHbGZhMlY1SWpvZ0ltVjVTbWhpUjJOcFQybEtTVlY2U1RGT2FVbHpTVzVTTldORFNUWkphM0JZVmtOS09TNWxlVXA1WWpKNGJFbHFiMmxaVnpWMlltbEpjMGx0Ykdoa1EwazJUVlJaZVU1RVJUTk5hbEY1VGtOM2FWcFlhSGRKYW05NFQxUk5OVTU2VVRST1JFa3dabEV1YUZKTWRqWlFRVzU0TVdOaGRrUjNiQzFwV1hsblFYSklOSEZCTUVSV1NGbHVja1EzTVVGemNYRlFkeUlzSUNKemRHOXlaVjkxY213aU9pQWlhSFIwY0hNNkx5OTRkbmxvY0c5NFptMTBjSFZ4Y1dWNWNXdHpieTV6ZFhCaFltRnpaUzVqYnlJc0lDSmxiV0ZwYkNJNklDSmhjR2wxYzJWeUxYaG5jbWxrTFhkbFluTnBkR1V0YldsbmNtRjBhVzl1TFRVNE16VTBOMEJ5YjJKMWMzUmhMbVJsZGlJc0lDSndZWE56ZDI5eVpDSTZJQ0k1WVRNMFkyWTJZaTFrTjJKakxUUmlZakl0WW1VeE5pMDRaamcwTWpJMFpEWXhNRGdpZlE9PQ==
+
+# Override the name and fullname (including the release name) for the chart
+nameOverride: ""
+fullnameOverride: ""
+
+# List all manifests to apply in order of priority
+manifests:
+  - name: AllResourcesRole.yaml
+    priority: 1
+  - name: namespace.yaml
+    priority: 2
+  - name: configmaps.yaml
+    priority: 3
+  - name: secrets.yaml
+    priority: 4
+  - name: storage_class.yaml
+    priority: 5
+  - name: xk8s-deployment.yaml
+    priority: 6
+  - name: dashboard.yaml
+    priority: 7
+  - name: dashboard_service.yaml
+    priority: 8
+  
