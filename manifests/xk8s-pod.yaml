@@ -28,7 +28,7 @@ spec:
               key: AWS_SECRET_ACCESS_KEY
   containers:
     - name: xk8s
-      image: syedwahajali/helm #use the built image here
+      image: xgridxcbg/kaizen:latest #use the built image here
       command: ["/bin/sleep", "3650d"]
       #Hostpath volume mounted on container path /tmp
       volumeMounts:
