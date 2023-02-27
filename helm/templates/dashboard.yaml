@@ -17,6 +17,4 @@ spec:
         image: "{{ .Values.dashboard_image.repository }}:{{ .Values.dashboard_image.tag }}"
         ports:
         - containerPort: {{ .Values.dashboard_container_port }}
-
-
-
+        

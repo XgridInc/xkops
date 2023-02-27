@@ -7,3 +7,4 @@ metadata:
   namespace: {{ .Values.namespace.NAMESPACE_NAME }}
 data:
   CLUSTER_NAME: {{ .Values.xkops_config.CLUSTER_NAME }}
+  
