@@ -13,13 +13,14 @@ terraform {
   }
 }
 
-#This code configures the AWS provider to use the us-east-2 region. The AWS provider is used to interact with resources in an AWS account, such as creating and managing EC2 instances.
+# Defined variables for region name and cluster name to be used by terraform script
 variable "region" {
   type = string
 }
 variable "cluster_name" {
   type = string
 }
+# The AWS provider is used to interact with resources in an AWS account, such as creating and managing EC2 instances.
 provider "aws" {
   region = var.region
 }
