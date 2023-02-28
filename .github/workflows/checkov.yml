@@ -1,0 +1,29 @@
+---
+name: Checkov vulnerability scan
+
+on: [push]
+  
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Checkout the repository
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}        
+      
+      # Install checkov dependencies
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-pip
+          pip3 install checkov
+
+      # Run Checkov scan Xk8s directories
+      - name: Scans repo files and directories
+        run: |
+          checkov -d . --check CKV_SECRET_1,CKV_SECRET_2,\
+          CKV_SECRET_4,CKV_SECRET_6,CKV_SECRET_9,\
+          CKV_SECRET_12,CKV_SECRET_13,CKV_SECRET_14,\
+          CKV_SECRET_19
