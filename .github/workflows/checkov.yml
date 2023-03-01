@@ -20,7 +20,14 @@ jobs:
           sudo apt-get install -y python3-pip
           pip3 install checkov
 
-      # Run Checkov scan Xk8s directories
+      #################################################################################
+      # Checks to run; any other checks will be skipped.                              #
+      # Enter one or more items separated by commas.                                  #
+      # Each item may be either a Checkov check ID (CKV_AWS_123), a BC                #
+      # check ID (BC_AWS_GENERAL_123), or a severity (LOW, MEDIUM, HIGH, CRITICAL).   #
+      # If you use a severity, then all checks equal to or above the                  #
+      # lowest severity in the list will be included.                                 #
+      #################################################################################
       - name: Secret Resource Scan
         run: |
           checkov -d . --check CKV_SECRET_1,CKV_SECRET_2,\
@@ -39,3 +46,20 @@ jobs:
           checkov -d . --check CKV_K8S_1,CKV_K8S_2,CKV_K8S_3,\
           CKV_K8S_4,CKV_K8S_5,CKV_K8S_6,CKV_K8S_41,CKV_K8S_42,\
           CKV_K8S_49,CKV2_K8S_5
+
+      - name: Terraform Resource Scan
+        run: |
+          checkov -d . --check CKV_AWS_1,CKV_AWS_3,CKV_AWS_7,\
+          CKV_AWS_8,CKV_AWS_9,CKV_AWS_23,CKV_AWS_24CKV_AWS_25,\
+          CKV_AWS_32,CKV_AWS_33,CKV_AWS_38,CKV_AWS_39,CKV_AWS_40,\
+          CKV_AWS_41,CKV_AWS_45,CKV_AWS_46,CKV_AWS_49,CKV_AWS_51,\
+          CKV_AWS_58,CKV_AWS_60,CKV_AWS_59,CKV_AWS_61,CKV_AWS_62,\
+          CKV_AWS_63,CKV_AWS_88,CKV_AWS_100,CKV_AWS_103,CKV_AWS_106,\
+          CKV_AWS_107,CKV_AWS_108,CKV_AWS_109,CKV_AWS_110,CKV_AWS_111,\
+          CKV_AWS_127,CKV_AWS_130,CKV_AWS_131,CKV_AWS_136,CKV_AWS_138,\
+          CKV_AWS_148,CKV_AWS_149,CKV_AWS_150,CKV_AWS_152,CKV_AWS_153,\
+          CKV_AWS_163,CKV_AWS_171,CKV_AWS_183,CKV_AWS_184,CKV_AWS_189,\
+          CKV_AWS_200,CKV_AWS_204,CKV_AWS_260,CKV_AWS_273,CKV_AWS_274,\
+          CKV_AWS_275,CKV_AWS_277,CKV_AWS_283,CKV_AWS_286,CKV_AWS_287,\
+          CKV_AWS_288,CKV_AWS_289,CKV_AWS_290,CKV2_AWS_2,CKV2_AWS_5,CKV2_AWS_12,\
+          CKV2_AWS_15,CKV2_AWS_38,CKV2_AWS_44,
