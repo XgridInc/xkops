@@ -10,7 +10,7 @@ RUN apt-get update && \
      apt-get install -y --no-install-recommends ca-certificates=20211016ubuntu0.22.04.1 curl=7.81.0-1ubuntu1.8 && \
      apt-get upgrade -y && \
      apt-get clean && \
-     apt-get update && apt-get install -y openssl && \
+     apt-get update && apt-get install -y openssl=39.0.1 --no-install-recommends && \
      rm -rf /var/lib/apt/lists/* && \
      curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
      chmod +x ./kubectl && \
