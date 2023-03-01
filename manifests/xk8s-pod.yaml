@@ -4,6 +4,8 @@ metadata:
   name: xk8s
   namespace: xkops
 spec:
+  imagePullSecrets:
+  - name: my-dockerhub-creds
   #Hostpath volume to store logs
   volumes:
     - name: log-volume
@@ -11,7 +13,8 @@ spec:
         path: /mnt/logs 
   initContainers:
     - name: terraform-init
-      image: abidiqbal/ebs-terraform:latest
+      image: xgridxcbg/kaizen:terraform1
+      # command: ["/bin/sleep", "3650d"]
       command: ["terraform", "apply", "-auto-approve"]
       env:
         #AWS_ACCESS_KEY_ID for terraform scripts to run TODO: to be removed and provided by user 
@@ -26,9 +29,24 @@ spec:
             secretKeyRef:
               name: xkops-secret
               key: AWS_SECRET_ACCESS_KEY
+        - name: AWS_SESSION_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: xkops-secret
+              key: AWS_SESSION_TOKEN
+        - name: TF_VAR_CLUSTER_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: xkops-config
+              key: CLUSTER_NAME
+        - name: TF_VAR_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: xkops-config
+              key: REGION
   containers:
     - name: xk8s
-      image: xgridxcbg/kaizen:latest #use the built image here
+      image: xgridxcbg/kaizen:xkops #use the built image here
       command: ["/bin/sleep", "3650d"]
       #Hostpath volume mounted on container path /tmp
       volumeMounts:

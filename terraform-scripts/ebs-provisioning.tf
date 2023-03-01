@@ -13,22 +13,15 @@ terraform {
   }
 }
 
-# Defined variables for region name and cluster name to be used by terraform script
-variable "region" {
-  type = string
-}
-variable "cluster_name" {
-  type = string
-}
 # The AWS provider is used to interact with resources in an AWS account, such as creating and managing EC2 instances.
+# var is used here to pick the region value from environment which will be feeded through input values in helm.
 provider "aws" {
-  region = var.region
+  region = var.REGION
 }
 
 # Cluster name for terraform scripts to be run on
 data "aws_eks_cluster" "Eks_cluster" {
-  # name = "xgrid-website-migration"
-  name=var.cluster_name
+  name=var.CLUSTER_NAME
 }
 
 # TLS Certificate for OIDC provider
@@ -46,6 +39,7 @@ resource "aws_iam_openid_connect_provider" "Eks_cluster_oidc_provider" {
 # Creates IAM Role with trust relationship set as ebs-csi-controller-sa
 resource "aws_iam_role" "eks_cluster" {
   name = "XkOps-EBS-iam-role"
+  # Adds trust relationship in the role with ebs-csi-controller service account
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -72,7 +66,7 @@ resource "aws_iam_role_policy_attachment" "eks_cluster_ebs_policy_attachment" {
   role       = aws_iam_role.eks_cluster.name
 }
 
-# Adds Amazon EBS CSI Driver add-on in the EKS cluster given above
+# Adds Amazon EBS CSI Driver add-on in the existing EKS cluster provided above
 resource "aws_eks_addon" "ebs_csi" {
   addon_name               = "aws-ebs-csi-driver"
   cluster_name             = data.aws_eks_cluster.Eks_cluster.name
