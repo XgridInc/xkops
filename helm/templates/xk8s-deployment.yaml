@@ -4,7 +4,7 @@ metadata:
   name: xk8s-deployment
   namespace: "{{ .Values.namespace.NAMESPACE_NAME }}"
 spec:
-  replicas: {{ .Values.xkops_replicaCount }}
+  replicas: "{{ .Values.xkops_replicaCount }}"
   selector:
     matchLabels:
       app: xk8s
@@ -16,9 +16,9 @@ spec:
       imagePullSecrets:
         - name: my-dockerhub-creds
       volumes:
-        - name: {{ .Values.xkops_volumes.name }}
+        - name: "{{ .Values.xkops_volumes.name }}"
           hostPath:
-            path: {{ .Values.xkops_volumes.hostPath.path }}
+            path: "{{ .Values.xkops_volumes.hostPath.path }}"
       initContainers:
         - name: terraform-init
           image: "{{ .Values.xkops_init_container.image.repository }}:{{ .Values.xkops_init_container.image.tag }}"
@@ -53,8 +53,8 @@ spec:
         - name: xk8s
           image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
           volumeMounts:
-            - name: {{ .Values.xkops_volumeMounts.name }}
-              mountPath: {{ .Values.xkops_volumeMounts.mountPath }}
+            - name: "{{ .Values.xkops_volumeMounts.name }}"
+              mountPath: "{{ .Values.xkops_volumeMounts.mountPath }}"
           env:
             - name: PX_API_KEY
               valueFrom:
@@ -93,5 +93,5 @@ spec:
             requests:
               cpu: "{{ .Values.xkops_resources.requests.cpu }}"
               memory: "{{ .Values.xkops_resources.requests.memory }}"
-      restartPolicy: {{ .Values.xkops_restartPolicy }}
+      restartPolicy: "{{ .Values.xkops_restartPolicy }}"
       

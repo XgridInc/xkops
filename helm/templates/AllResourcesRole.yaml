@@ -18,7 +18,7 @@ metadata:
 subjects:
   - kind: ServiceAccount #Subject: default service account under xkops namespace
     name: default
-    namespace: {{ .Values.namespace.NAMESPACE_NAME }}
+    namespace: "{{ .Values.namespace.NAMESPACE_NAME }}"
 
 roleRef:
   kind: ClusterRole #Cluster role reference to be used for binding the subject with
