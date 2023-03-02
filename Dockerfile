@@ -11,9 +11,9 @@ RUN apt-get update && \
      apt-get upgrade -y && \
      apt-get clean && \
      rm -rf /var/lib/apt/lists/*y && \
-     # curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
-     # chmod +x ./kubectl && \
-     # mv ./kubectl /usr/local/bin/kubectl && \
+     curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+     chmod +x ./kubectl && \
+     mv ./kubectl /usr/local/bin/kubectl && \
      apt-get install -y unzip=6.0-26ubuntu3.1 --no-install-recommends && \
      # echo "y" | curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
      # unzip awscliv2.zip && \
