@@ -8,11 +8,42 @@ spec:
   volumes:
     - name: log-volume
       hostPath:
-        path: /mnt/logs
+        path: /mnt/logs 
+  initContainers:
+    - name: terraform-init
+      image: xgridxcbg/kaizen:terraform-v2
+      command: ["terraform", "apply", "-auto-approve"]
+      env:
+        #AWS_ACCESS_KEY_ID for terraform scripts to run TODO: to be removed and provided by user 
+        - name: AWS_ACCESS_KEY_ID
+          valueFrom:
+            secretKeyRef:
+              name: xkops-secret
+              key: AWS_ACCESS_KEY_ID
+        #AWS_SECRET_ACCESS_KEY for terraform scripts to run TODO: to be removed and provided by user 
+        - name: AWS_SECRET_ACCESS_KEY
+          valueFrom:
+            secretKeyRef:
+              name: xkops-secret
+              key: AWS_SECRET_ACCESS_KEY
+        - name: AWS_SESSION_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: xkops-secret
+              key: AWS_SESSION_TOKEN
+        - name: TF_VAR_CLUSTER_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: xkops-config
+              key: CLUSTER_NAME
+        - name: TF_VAR_REGION
+          valueFrom:
+            configMapKeyRef:
+              name: xkops-config
+              key: REGION
   containers:
     - name: xk8s
-      image: xgridxcbg/kaizen:latest #use the built image here
-
+      image: xgridxcbg/kaizen:xkops #use the built image here
       #Hostpath volume mounted on container path /tmp
       volumeMounts:
         - name: log-volume

@@ -20,3 +20,4 @@ RUN apt-get update && \
      apt-get install -y python3-pip=22.0.2+dfsg-1ubuntu0.2 --no-install-recommends && \
      chmod -R +x /src  
 CMD [ "make", "all" ]
+
