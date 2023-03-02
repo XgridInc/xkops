@@ -4,8 +4,6 @@ metadata:
   name: xk8s
   namespace: xkops
 spec:
-  imagePullSecrets:
-  - name: my-dockerhub-creds
   #Hostpath volume to store logs
   volumes:
     - name: log-volume
