@@ -22,6 +22,7 @@ check_kubectl_cost_plugin() {
         install_kubectl_cost
     fi
     # Checks if kubectl_cost plugin can retrieve cost data using kubecost-cost-analyzer service.
+    log_test "${CYAN}[INFO]" "[TEST]" "Verifying kubecost installation using kubectl cost plugin...${CC}"
     get_cost
 
 }
@@ -38,13 +39,16 @@ print_UI_links() {
 # This Function uses kubecost-cost-analyzer service to get cost data from the cluster.
 # If the data is retrieved successfully, it means kubecost is installed in the cluster and can access cluster resources.
 get_cost() {
-    if command -v kubectl cost namespace --show-all-resources &>/dev/null; then
 
-        log_test "${GREEN}[PASSED]" "[TEST]" "Kubecost cost plugin installed successfully.${CC}"
+    _=$(kubectl cost namespace --show-all-resources 2>&1)
+    if kubectl_exit_code=$? && [ $kubectl_exit_code -eq 0 ]; then
+        # Command succeeded it means kubecost is installed successfully
+        log_test "${GREEN}[PASSED]" "[TEST]" "Kubecost is installed successfully on your cluster.${CC}"
         print_UI_links
         exit 0
     else
-        log_test "${RED}[FAILED]" "[TEST]" "Kubecost cost plugin isn't installed in the cluster.${CC}"
+        # command failed which means kubecost is not installed successfully
+        log_test "${RED}[FAILED]" "[TEST]" "Kubecost is not installed on your cluster.${CC}"
         exit 1
     fi
 }
@@ -56,6 +60,7 @@ install_kubectl_cost() {
         curl -s -L https://github.com/kubecost/kubectl-cost/releases/latest/download/kubectl-cost-"$os"-"$arch".tar.gz | tar xz -C /tmp &&
         chmod +x /tmp/kubectl-cost &&
         mv /tmp/kubectl-cost /usr/local/bin/kubectl-cost
+    log_test "${GREEN}[PASSED]" "[TEST]" "kubectl cost plugin installed successfully${CC}"
 }
 
 print_prompt

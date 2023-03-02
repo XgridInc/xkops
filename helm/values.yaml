@@ -1,0 +1,94 @@
+# Default values for xkops and dashboard.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+xkops_init_container:
+  image:
+    repository: xgridxcbg/kaizen
+    tag: terraform-v2
+    pullPolicy: IfNotPresent
+
+namespace:
+  NAMESPACE_NAME: xkops
+
+# Set the container image details for xkops
+xkops_image:
+  repository: xgridxcbg/kaizen
+  tag: xkops
+  pullPolicy: IfNotPresent
+
+# Set the container image details for dashboard
+dashboard_image:
+  repository: xgridxcbg/kaizen
+  tag: 345acb
+  pullPolicy: IfNotPresent
+
+# Define the resource requirements and limits for the container
+xkops_resources:
+  limits:
+    cpu: "500m"
+    memory: "200Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+# Set up the volume mount for xkops
+xkops_volumeMounts:
+  name: log-volume
+  mountPath: /tmp
+  
+# Set up the persistent volume for xkops
+xkops_volumes:
+  name: log-volume
+  hostPath:
+    path: /mnt/logs
+
+# Set the restart policy for the container
+xkops_restartPolicy: Always
+
+dashboard_service_ports:
+  name: http
+  port: 80
+  targetPort: 3000
+# Set up tolerations and affinity, if necessary
+tolerations: []
+affinity: {}
+
+#provide your pixie API key (https://docs.px.dev/reference/admin/api-keys)
+PX_API_KEY: ""
+#provide your pixie deploy key (https://docs.px.dev/reference/admin/deploy-keys)
+PX_DEPLOY_KEY: ""
+#provide your Slack API key (https://slack.com/help/articles/215770388-Create-and-regenerate-API-tokens)
+SLACK_API_KEY: ""
+#provide your Slack channel name
+SLACK_CHANNEL_NAME: ""
+# Generate robusta API key using robusta-CLI
+ROBUSTA_UI_API_KEY: ""
+#AWS  credentisl
+AWS_ACCESS_KEY_ID: ""
+AWS_SECRET_ACCESS_KEY: ""
+AWS_SESSION_TOKEN: ""
+REGION: ""
+
+# Override the name and fullname (including the release name) for the chart
+nameOverride: ""
+fullnameOverride: ""
+
+# List all manifests to apply in order of priority
+manifests:
+  - name: AllResourcesRole.yaml
+    priority: 1
+  - name: namespace.yaml
+    priority: 2
+  - name: configmaps.yaml
+    priority: 3
+  - name: secrets.yaml
+    priority: 4
+  - name: storage_class.yaml
+    priority: 5
+  - name: xk8s-deployment.yaml
+    priority: 6
+  - name: dashboard.yaml
+    priority: 7
+  - name: dashboard_service.yaml
+    priority: 8

@@ -6,4 +6,5 @@ metadata:
   name: xkops-config
   namespace: xkops
 data:
-  CLUSTER_NAME: xgrid-website-migration
+  CLUSTER_NAME: xkops-cluster
+  REGION: ap-southeast-1

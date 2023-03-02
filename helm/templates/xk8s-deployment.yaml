@@ -1,0 +1,95 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xk8s-deployment
+  namespace: "{{ .Values.namespace.NAMESPACE_NAME }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xk8s
+  template:
+    metadata:
+      labels:
+        app: xk8s
+    spec:
+      volumes:
+        - name: "{{ .Values.xkops_volumes.name }}"
+          hostPath:
+            path: "{{ .Values.xkops_volumes.hostPath.path }}"
+      initContainers:
+        - name: terraform-init
+          image: "{{ .Values.xkops_init_container.image.repository }}:{{ .Values.xkops_init_container.image.tag }}"
+          command: ["terraform", "apply", "-auto-approve"]
+          env:
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: xkops-secret
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: xkops-secret
+                key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_SESSION_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: xkops-secret
+                key: AWS_SESSION_TOKEN
+          - name: TF_VAR_CLUSTER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: xkops-config
+                key: CLUSTER_NAME
+          - name: TF_VAR_REGION
+            valueFrom:
+              configMapKeyRef:
+                name: xkops-config
+                key: REGION
+      containers:
+        - name: xk8s
+          image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
+          volumeMounts:
+            - name: "{{ .Values.xkops_volumeMounts.name }}"
+              mountPath: "{{ .Values.xkops_volumeMounts.mountPath }}"
+          env:
+            - name: PX_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-secret
+                  key: PX_API_KEY
+            - name: PX_DEPLOY_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-secret
+                  key: PX_DEPLOY_KEY
+            - name: SLACK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-secret
+                  key: SLACK_API_KEY
+            - name: SLACK_CHANNEL_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-secret
+                  key: SLACK_CHANNEL_NAME
+            - name: ROBUSTA_UI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-secret
+                  key: ROBUSTA_UI_API_KEY
+            - name: CLUSTER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: xkops-config
+                  key: CLUSTER_NAME
+          resources:
+            limits:
+              cpu: "{{ .Values.xkops_resources.limits.cpu }}"
+              memory: "{{ .Values.xkops_resources.limits.memory }}"
+            requests:
+              cpu: "{{ .Values.xkops_resources.requests.cpu }}"
+              memory: "{{ .Values.xkops_resources.requests.memory }}"
+      restartPolicy: "{{ .Values.xkops_restartPolicy }}"
+      
