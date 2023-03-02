@@ -13,6 +13,8 @@ spec:
       labels:
         app: xk8s
     spec:
+      imagePullSecrets:
+        - name: my-dockerhub-creds
       volumes:
         - name: {{ .Values.xkops_volumes.name }}
           hostPath:
@@ -32,6 +34,21 @@ spec:
               secretKeyRef:
                 name: xkops-secret
                 key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_SESSION_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: xkops-secret
+                key: AWS_SESSION_TOKEN
+          - name: TF_VAR_CLUSTER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: xkops-config
+                key: CLUSTER_NAME
+          - name: TF_VAR_REGION
+            valueFrom:
+              configMapKeyRef:
+                name: xkops-config
+                key: REGION
       containers:
         - name: xk8s
           image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"

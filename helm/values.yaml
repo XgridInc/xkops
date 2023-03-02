@@ -2,10 +2,26 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
+#provide your pixie API key (https://docs.px.dev/reference/admin/api-keys)
+PX_API_KEY: ""
+#provide your pixie deploy key (https://docs.px.dev/reference/admin/deploy-keys)
+PX_DEPLOY_KEY: ""
+#provide your Slack API key (https://slack.com/help/articles/215770388-Create-and-regenerate-API-tokens)
+SLACK_API_KEY: ""
+#provide your Slack channel name
+SLACK_CHANNEL_NAME: ""
+# Generate robusta API key using robusta-CLI
+ROBUSTA_UI_API_KEY: ""
+#AWS  credentisl
+AWS_ACCESS_KEY_ID: ""
+AWS_SECRET_ACCESS_KEY: ""
+AWS_SESSION_TOKEN: ""
+REGION: ""
+
 xkops_init_container:
   image:
-    repository: abidiqbal/ebs-terraform
-    tag: latest
+    repository: xgridxcbg/kaizen
+    tag: terraform1
     pullPolicy: IfNotPresent
 
 namespace:
@@ -18,13 +34,13 @@ dashboard_replicaCount: 1
 # Set the container image details for xkops
 xkops_image:
   repository: xgridxcbg/kaizen
-  tag: latest
+  tag: xkops
   pullPolicy: IfNotPresent
 
 # Set the container image details for dashboard
 dashboard_image:
-  repository: khanali198361/testui
-  tag: latest
+  repository: xgridxcbg/kaizen
+  tag: 345acb
   pullPolicy: IfNotPresent
 
 # Define the resource requirements and limits for the container
@@ -61,9 +77,7 @@ dashboard_service_ports:
 tolerations: []
 affinity: {}
 
-# Add data from the ConfigMap
-xkops_config:
-  CLUSTER_NAME: xgrid-website-migration
+
 
 # Override the name and fullname (including the release name) for the chart
 nameOverride: ""
