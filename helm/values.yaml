@@ -46,8 +46,6 @@ xkops_volumes:
 # Set the restart policy for the container
 xkops_restartPolicy: Always
 
-
-
 dashboard_service_ports:
   name: http
   port: 80
