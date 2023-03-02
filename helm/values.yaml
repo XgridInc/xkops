@@ -11,10 +11,6 @@ xkops_init_container:
 namespace:
   NAMESPACE_NAME: xkops
 
-# Set the number of replicas to deploy
-xkops_replicaCount: 1
-dashboard_replicaCount: 1
-
 # Set the container image details for xkops
 xkops_image:
   repository: xgridxcbg/kaizen
@@ -50,9 +46,7 @@ xkops_volumes:
 # Set the restart policy for the container
 xkops_restartPolicy: Always
 
-#container port for dashboard
-dashboard_container_port: 
-  port: 3000
+
 
 dashboard_service_ports:
   name: http
