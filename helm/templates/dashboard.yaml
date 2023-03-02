@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: my-react-app
 spec:
-  replicas: {{ .Values.dashboard_replicaCount }}
+  replicas: 1
   selector:
     matchLabels:
       app: my-react-app
