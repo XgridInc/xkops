@@ -12,7 +12,7 @@ spec:
   containers:
     - name: xk8s
       image: xgridxcbg/kaizen:latest #use the built image here
-      command: ["/bin/sleep", "3650d"]
+
       #Hostpath volume mounted on container path /tmp
       volumeMounts:
         - name: log-volume

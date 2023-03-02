@@ -96,8 +96,7 @@ kc_rollback:
 	$(INTERPRETER) $(KC_ROLLBACK) || echo "KC_ROLLBACK Exit 1"
 
 #target to install all tools
-all:
-	$(MAKE) px_all  
+all:  
 	$(MAKE) rb_all
 	$(MAKE) kc_all
 
