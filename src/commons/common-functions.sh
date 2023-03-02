@@ -66,7 +66,7 @@ helm_installer() {
     if command -v helm &>/dev/null; then
         log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Helm has been installed successfully.${CC}"
     else
-        log "${RED}[ERROR]" "[PRERobusta-FLIGHT]" "Helm is not installed. Exiting...${CC}"
+        log "${RED}[ERROR]" "[PRE-FLIGHT]" "Helm is not installed. Exiting...${CC}"
         exit 1
     fi
 }
