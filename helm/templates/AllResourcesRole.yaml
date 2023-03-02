@@ -1,0 +1,26 @@
+#Cluster role which gives permissions to list,create,delete,update to all resources.
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: all-resource-role
+rules:
+  - apiGroups: ["*"]
+    resources: ["*"]
+    verbs: ["*"]
+---
+#Cluster role binding which binds the default service
+#account under the xkops namespace with all-resource-role cluster role
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: all-resource-role-binding
+subjects:
+  - kind: ServiceAccount #Subject: default service account under xkops namespace
+    name: default
+    namespace: "{{ .Values.namespace.NAMESPACE_NAME }}"
+
+roleRef:
+  kind: ClusterRole #Cluster role reference to be used for binding the subject with
+  name: all-resource-role
+  apiGroup: rbac.authorization.k8s.io
