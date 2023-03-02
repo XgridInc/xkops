@@ -81,12 +81,14 @@ kc_preflight:
 kc_install:
 	$(INTERPRETER) $(KC_INSTALLER)
 
+kc_test:
+	$(INTERPRETER) $(KC_TEST)
 #Flow control of kc_all
 # RUN KC_CHECKER if returns Exit 0 -> RUN KC_PRE_FLIGHT else if returns Exit 1 -> echo "KC_CHECKER Exit 1"
 # RUN KC_PRE_FLIGHT if returns Exit 0 -> RUN KC_INSTALLER else if returns Exit 1 -> echo "KC_PRE_FLIGHT Exit 1"
 # RUN KC_INSTALLER if returns Exit 1 -> echo "KC_INSTALLER Exit 1"
 kc_all:
-	$(INTERPRETER) $(KC_CHECKER) && ( $(INTERPRETER) $(KC_PRE_FLIGHT) && ( $(INTERPRETER) $(KC_INSTALLER) || echo "KC_INSTALLER Exit 1") || echo "KC_PRE_FLIGHT Exit 1" ) || echo "KC_CHECKER Exit 1"
+	$(INTERPRETER) $(KC_CHECKER) && ( $(INTERPRETER) $(KC_PRE_FLIGHT) && ( $(INTERPRETER) $(KC_INSTALLER) && ( $(INTERPRETER) $(KC_TEST) || echo "KC_TEST Exit 1")|| echo "KC_INSTALLER Exit 1") || echo "KC_PRE_FLIGHT Exit 1" ) || echo "KC_CHECKER Exit 1"
 
 #Flow control of kc_rollback
 #RUN KC_ROLLBACK if returns Exit 1 -> echo "KC_ROLLBACK Exit 1" 
