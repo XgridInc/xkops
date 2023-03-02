@@ -4,7 +4,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: xkops-config
-  namespace: {{ .Values.namespace.NAMESPACE_NAME }}
+  namespace: "{{ .Values.namespace.NAMESPACE_NAME }}"
 data:
   CLUSTER_NAME: {{ .Values.CLUSTER_NAME }}
   REGION: {{ .Values.REGION }}

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: xk8s-deployment
-  namespace: {{ .Values.namespace.NAMESPACE_NAME }}
+  namespace: "{{ .Values.namespace.NAMESPACE_NAME }}"
 spec:
   replicas: {{ .Values.xkops_replicaCount }}
   selector:
