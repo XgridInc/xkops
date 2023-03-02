@@ -20,14 +20,16 @@ jobs:
           sudo apt-get install -y python3-pip
           pip3 install checkov
 
-      #################################################################################
-      # Checks to run; any other checks will be skipped.                              #
-      # Enter one or more items separated by commas.                                  #
-      # Each item may be either a Checkov check ID (CKV_AWS_123), a BC                #
-      # check ID (BC_AWS_GENERAL_123), or a severity (LOW, MEDIUM, HIGH, CRITICAL).   #
-      # If you use a severity, then all checks equal to or above the                  #
-      # lowest severity in the list will be included.                                 #
-      #################################################################################
+      ####################################################################################################
+      # Checks to run; any other checks will be skipped.                                                 #
+      # Enter one or more items separated by commas.                                                     #
+      # Each item may be either a Checkov check ID (CKV_AWS_123), a BC                                   #
+      # check ID (BC_AWS_GENERAL_123), or a severity (LOW, MEDIUM, HIGH, CRITICAL).                      #
+      # If you use a severity, then all checks equal to or above the                                     #
+      # lowest severity in the list will be included.                                                    #
+      # Details of Scan Ids are mentioned in the document below.                                         #
+      # https://docs.google.com/document/d/1mUbZLQHpjRbBkglKyLL-S8qOUm2YhKVX4FbtX1BjHOk/edit?usp=sharing #
+      ####################################################################################################
       - name: Secret Resource Scan
         run: |
           checkov -d . --check CKV_SECRET_1,CKV_SECRET_2,\
