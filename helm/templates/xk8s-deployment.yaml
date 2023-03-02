@@ -13,8 +13,6 @@ spec:
       labels:
         app: xk8s
     spec:
-      imagePullSecrets:
-        - name: my-dockerhub-creds
       volumes:
         - name: "{{ .Values.xkops_volumes.name }}"
           hostPath:

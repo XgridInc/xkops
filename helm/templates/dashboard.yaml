@@ -12,8 +12,6 @@ spec:
       labels:
         app: my-react-app
     spec:
-      imagePullSecrets:
-        - name: my-dockerhub-creds
       containers:
       - name: my-react-app
         image: "{{ .Values.dashboard_image.repository }}:{{ .Values.dashboard_image.tag }}"
