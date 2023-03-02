@@ -12,6 +12,10 @@ px_installer() {
 
   #call get_eks_cluster_name to get the name of cluster
   #cluster_name=$(get_eks_cluster_name)
+
+  # Checking Helm in this function. If Helm is present, use it to install Pixie.
+  helm_checker
+
   log "${CYAN}[INFO]" "[INSTALLER]" "Deploying Pixie using Helm..${CC}"
   helm repo add pixie-operator https://pixie-operator-charts.storage.googleapis.com &>/dev/null
   helm repo update &>/dev/null

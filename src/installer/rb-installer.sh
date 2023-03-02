@@ -14,24 +14,15 @@ print_prompt() {
 # Install Robusta using Helm.
 rb_installer() {
 
-    #TODO: Set up error handling if helm installation fails
-    # Check if Helm is installed.
-    if command -v helm &>/dev/null; then
-        # If Helm is present, use it to install Robusta.
-        helm repo add robusta https://robusta-charts.storage.googleapis.com &>/dev/null && helm repo update &>/dev/null
-        helm install robusta robusta/robusta -f "$PREFLIGHT_DIR_PATH/generated_values.yaml" -n robusta --create-namespace &>/dev/null
-        kubectl -n robusta wait deployment robusta-runner robusta-forwarder --for=condition=Available --timeout=1h &>/dev/null
-        watch_runner_logs
-        log "${GREEN}[INFO]" "[INSTALLER]" "Robusta sucessfully installed.${CC}"
+  # Checking Helm in this function. If Helm is present, use it to install Robusta.
+  helm_checker
 
-    else
-
-        # If Helm is not installed, print an error message and exit.
-        log "${RED}[ERROR]" "[INSTALLER]" "Helm is not installed. Exiting...${CC}"
-        log "${CYAN}[INFO]" "[INSTALLER]" "Install Helm.${CC}"
-        exit 1
-
-    fi
+  # Installing Robusta using helm
+  helm repo add robusta https://robusta-charts.storage.googleapis.com &>/dev/null && helm repo update &>/dev/null
+  helm install robusta robusta/robusta -f "$PREFLIGHT_DIR_PATH/generated_values.yaml" -n robusta --create-namespace &>/dev/null
+  kubectl -n robusta wait deployment robusta-runner robusta-forwarder --for=condition=Available --timeout=1h &>/dev/null
+  watch_runner_logs
+  log "${GREEN}[INFO]" "[INSTALLER]" "Robusta successfully installed.${CC}"
 }
 
 #Load robusta custom remediation actions
