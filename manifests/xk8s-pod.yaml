@@ -13,8 +13,7 @@ spec:
         path: /mnt/logs 
   initContainers:
     - name: terraform-init
-      image: xgridxcbg/kaizen:terraform1
-      # command: ["/bin/sleep", "3650d"]
+      image: xgridxcbg/kaizen:terraform-v2
       command: ["terraform", "apply", "-auto-approve"]
       env:
         #AWS_ACCESS_KEY_ID for terraform scripts to run TODO: to be removed and provided by user 

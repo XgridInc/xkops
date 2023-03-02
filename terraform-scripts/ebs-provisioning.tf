@@ -15,6 +15,12 @@ terraform {
 
 # The AWS provider is used to interact with resources in an AWS account, such as creating and managing EC2 instances.
 # var is used here to pick the region value from environment which will be feeded through input values in helm.
+variable "REGION" {
+  type = string
+}
+variable "CLUSTER_NAME" {
+  type = string
+}
 provider "aws" {
   region = var.REGION
 }
