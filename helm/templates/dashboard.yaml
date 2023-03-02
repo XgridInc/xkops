@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: my-react-app
 spec:
-  replicas: "{{ .Values.dashboard_replicaCount }}"
+  replicas: {{ .Values.dashboard_replicaCount }}
   selector:
     matchLabels:
       app: my-react-app
@@ -18,5 +18,5 @@ spec:
       - name: my-react-app
         image: "{{ .Values.dashboard_image.repository }}:{{ .Values.dashboard_image.tag }}"
         ports:
-        - containerPort: "{{ .Values.dashboard_container_port }}"
+        - containerPort: {{ .Values.dashboard_container_port }}
         

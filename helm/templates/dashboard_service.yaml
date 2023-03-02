@@ -8,6 +8,6 @@ spec:
     app: my-react-app
   ports:
   - name: "{{ .Values.dashboard_service_ports.name }}"
-    port: "{{ .Values.dashboard_service_ports.port }}"
-    targetPort: "{{ .Values.dashboard_service_ports.targetPort }}"
+    port: {{ .Values.dashboard_service_ports.port }}
+    targetPort: {{ .Values.dashboard_service_ports.targetPort }}
     

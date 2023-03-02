@@ -4,7 +4,7 @@ metadata:
   name: xk8s-deployment
   namespace: "{{ .Values.namespace.NAMESPACE_NAME }}"
 spec:
-  replicas: "{{ .Values.xkops_replicaCount }}"
+  replicas: {{ .Values.xkops_replicaCount }}
   selector:
     matchLabels:
       app: xk8s
