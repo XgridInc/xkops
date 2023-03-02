@@ -19,4 +19,3 @@ spec:
         image: "{{ .Values.dashboard_image.repository }}:{{ .Values.dashboard_image.tag }}"
         ports:
         - containerPort: 3000
-        

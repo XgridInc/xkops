@@ -7,4 +7,3 @@ metadata:
 data:
   CLUSTER_NAME: "{{ .Values.CLUSTER_NAME }}"
   REGION: "{{ .Values.REGION }}"
-  
