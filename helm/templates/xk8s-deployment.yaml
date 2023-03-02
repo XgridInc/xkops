@@ -94,4 +94,3 @@ spec:
               cpu: "{{ .Values.xkops_resources.requests.cpu }}"
               memory: "{{ .Values.xkops_resources.requests.memory }}"
       restartPolicy: "{{ .Values.xkops_restartPolicy }}"
-      

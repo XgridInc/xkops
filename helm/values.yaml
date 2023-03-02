@@ -5,7 +5,7 @@
 xkops_init_container:
   image:
     repository: xgridxcbg/kaizen
-    tag: terraform1
+    tag: terraform-v2
     pullPolicy: IfNotPresent
 
 namespace:
