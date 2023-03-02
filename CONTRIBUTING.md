@@ -18,6 +18,19 @@ Check out the [issues page](https://github.com/X-CBG/xk8s/issues) for a list of 
 
 ## How to Contribute
 
+### Integrate Snyk with IDE
+
+[Integrate Snyk with your IDE](https://docs.snyk.io/ide-tools) to detect any vulnerability while writing code and fix them at runtime before pushing your code to github.
+
+following are the steps to integrate Snyk with your IDE.
+
+- Create an account on [Snyk](https://snyk.io/)
+- Install Snyk Extension on your IDE.
+- Configure Snyk Extension.
+- Authenticate with your Snyk account.
+
+Snyk extension uses snyk API token for authentication.
+
 ### Choosing an Issue
 
 Before getting started and setup with contributing, you'll want to have a look at and choose an issue to work on. Following is the basic workflow you want to work from:
