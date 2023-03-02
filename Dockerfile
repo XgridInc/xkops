@@ -20,7 +20,7 @@ RUN apt-get update && \
      ./aws/install && \
      apt-get install -y jq=1.6-2.1ubuntu3 --no-install-recommends && \
      export PATH="/usr/local/bin:$PATH" && \
-     apt-get install -y python3-pip=22.0.2+dfsg-1ubuntu0.1 --no-install-recommends && \
+     apt-get install -y python3-pip=22.0.2+dfsg-1ubuntu0.2 --no-install-recommends && \
      chmod -R +x /src  
 
 CMD [ "make", "all" ]
