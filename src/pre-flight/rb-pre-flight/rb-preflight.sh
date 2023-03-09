@@ -63,7 +63,7 @@ rb_cli_installer() {
         return
     else
         log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Python3-pip not found. Installing...${CC}"
-        apt-get update &> /dev/null && apt-get install -y python3-pip &> /dev/null
+        apt-get install -y python3-pip=22.0.2+dfsg-1ubuntu0.2 &> /dev/null
         if command -v pip3 &>/dev/null; then
             pip3 install -U robusta-cli --no-cache &> /dev/null
             return
