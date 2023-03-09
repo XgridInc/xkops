@@ -5,7 +5,7 @@ unclaimed_pv=""
 # This function get_unclaimed_volume is used to retrieve the list of unclaimed Persistent Volumes in a Kubernetes cluster using the Kubecost API
 get_unclaimed_volume() {
     # Define the API endpoint of Kubecost for Persistent volumes
-    endpoint="http://a06fc35aeb33f46e3bf19742538467b1-1092220675.ap-southeast-1.elb.amazonaws.com/model/allPersistentVolumes"
+    endpoint="http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9003/allPersistentVolumes"
 
     # Make a GET request to the API using curl
     response=$(curl -s "$endpoint")
