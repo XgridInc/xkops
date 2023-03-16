@@ -26,15 +26,16 @@ app.get('/allPersistentVolumes', (req, res) => {
     }
   }
 
-  request.get(options, (error, response, body) => {
-    if (error) {
-      console.error(error)
-      res.status(500).send(JSON.stringify(error))
-    } else {
-      console.log(response.statusCode)
-      res.status(response.statusCode).send(body)
-    }
-  })
+  handleRequest(req, res, options, 'get')
+  // request.get(options, (error, response, body) => {
+  //   if (error) {
+  //     console.error(error)
+  //     res.status(500).send(JSON.stringify(error))
+  //   } else {
+  //     console.log(response.statusCode)
+  //     res.status(response.statusCode).send(body)
+  //   }
+  // })
 })
 
 // Sends a POST request to trigger a Robusta test run using the Robusta Runner API with the
@@ -48,7 +49,23 @@ app.post('/robusta', async (req, res) => {
     json: req.body
   }
 
-  request.post(options, (error, response, body) => {
+  handleRequest(req, res, options, 'post')
+  // request.post(options, (error, response, body) => {
+  //   if (error) {
+  //     console.error(error)
+  //     res.status(500).send(JSON.stringify(error))
+  //   } else {
+  //     console.log(response.statusCode)
+  //     res.status(response.statusCode).send(body)
+  //   }
+  // })
+})
+
+// This function takes in the request, response, options,
+// and method as parameters and makes an HTTP request using the request library.
+// It handles errors and sends the response back to the client.
+function handleRequest (req, res, options, method) {
+  request[method](options, (error, response, body) => {
     if (error) {
       console.error(error)
       res.status(500).send(JSON.stringify(error))
@@ -57,7 +74,7 @@ app.post('/robusta', async (req, res) => {
       res.status(response.statusCode).send(body)
     }
   })
-})
+}
 
 // Serves the React app by sending the index.html file in the 'build' directory for all GET requests that don't match any other routes.
 app.get('/*', function (req, res) {
