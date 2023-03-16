@@ -68,8 +68,10 @@ ROBUSTA_UI_API_KEY: ""
 AWS_ACCESS_KEY_ID: ""
 AWS_SECRET_ACCESS_KEY: ""
 AWS_SESSION_TOKEN: ""
+#Region where cluster deployed
 REGION: ""
-
+#secret provider class for extracting secrets
+SECRET_PROVIDER_CLASS: ""
 # Override the name and fullname (including the release name) for the chart
 nameOverride: ""
 fullnameOverride: ""

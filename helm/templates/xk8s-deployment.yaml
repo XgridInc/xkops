@@ -20,7 +20,7 @@ spec:
           driver: secrets-store.csi.k8s.io
           readOnly: true
           volumeAttributes:
-            secretProviderClass: "xkops-secret-provider"
+            secretProviderClass: "{{ .Values.SECRET_PROVIDER_CLASS }}"
       - name: "{{ .Values.xkops_volumes.name }}"
         hostPath:
           path: "{{ .Values.xkops_volumes.hostPath.path }}"      
