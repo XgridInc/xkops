@@ -8,14 +8,12 @@ source /src/commons/common-functions.sh
 
 # Print a prompt to the user.
 print_prompt() {
+    
     log "${CYAN}[INFO]" "[INSTALLER]" "Initiating installation of Robusta in your cluster.${CC}"
 }
 
 # Install Robusta using Helm.
 rb_installer() {
-
-  # Checking Helm in this function. If Helm is present, use it to install Robusta.
-  helm_checker
 
   # Installing Robusta using helm
   helm repo add robusta https://robusta-charts.storage.googleapis.com &>/dev/null && helm repo update &>/dev/null
@@ -27,6 +25,7 @@ rb_installer() {
 
 #Load robusta custom remediation actions
 load_playbook_actions() {
+
     log "${CYAN}[INFO]" "[INSTALLER]" "Loading playbook actions.${CC}"
     
     #pushing our playbook action

@@ -12,9 +12,6 @@ kc_installer() {
     else
         log "${RED}[ERROR]" "[INSTALLER]" "Unable to find kubecost Deployment in cluster. Installing kubecost now...${CC}"
 
-        # Checking Helm in this function. If Helm is present, use it to install Kubecost.
-        helm_checker
-
         # It creates a namespace called kubecost, Adds repo in helm and installs kubecost
         _=$(
             helm repo add kubecost https://kubecost.github.io/cost-analyzer/
