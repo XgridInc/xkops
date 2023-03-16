@@ -23,13 +23,11 @@ variable "CLUSTER_NAME" {
 }
 provider "aws" {
   region = var.REGION
-  # region = "ap-southeast-1"
 }
 
 # Cluster name for terraform scripts to be run on
 data "aws_eks_cluster" "Eks_cluster" {
   name=var.CLUSTER_NAME
-  # name="xkops-cluster"
 }
 
 data "aws_iam_openid_connect_provider" "eks" {
