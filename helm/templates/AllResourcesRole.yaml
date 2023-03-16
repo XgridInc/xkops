@@ -203,3 +203,4 @@ roleRef:
   kind: ClusterRole #Cluster role reference to be used for binding the subject with
   name: all-resource-role
   apiGroup: rbac.authorization.k8s.io
+  
