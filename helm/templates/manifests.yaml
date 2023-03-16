@@ -39,9 +39,3 @@
 {{ include .name }}
 {{- end }}
 {{- end }}
-
-{{- range .Values.manifests }}
-{{- if eq (printf "%d" .priority) "8" }}
-{{ include .name }}
-{{- end }}
-{{- end }}
