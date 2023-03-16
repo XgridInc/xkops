@@ -9,11 +9,14 @@ const allowCrossDomain = function (req, res, next) {
   next()
 }
 
+// Allow cross-origin requests
 app.use(allowCrossDomain)
+// Parse incoming JSON data
 app.use(express.json())
+// Serve static files from the 'build' directory
 app.use(express.static('build'))
 
-// // Handle GET requests
+// Sends a GET request to retrieve information about all persistent volumes from a Kubernetes cluster using the Kubecost API.
 app.get('/allPersistentVolumes', (req, res) => {
   const options = {
     url: 'http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9003/allPersistentVolumes',
@@ -34,7 +37,8 @@ app.get('/allPersistentVolumes', (req, res) => {
   })
 })
 
-// Handle POST requests
+// Sends a POST request to trigger a Robusta test run using the Robusta Runner API with the 
+// request body containing the test configuration in JSON format.
 app.post('/robusta', async (req, res) => {
   const options = {
     url: 'http://robusta-runner.robusta.svc.cluster.local/api/trigger',
@@ -55,6 +59,7 @@ app.post('/robusta', async (req, res) => {
   })
 })
 
+// Serves the React app by sending the index.html file in the 'build' directory for all GET requests that don't match any other routes. 
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, '/build/index.html'))
 })

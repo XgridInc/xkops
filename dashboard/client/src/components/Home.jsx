@@ -15,10 +15,14 @@ function Home () {
           <div class='col-lg-5'>
             <h1 class='font-weight-light'>Home</h1>
             <p>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book.
+            XkOps is a platform for Kubernetes Risk Detection and Mitigation. 
+            It aims to help users identify potential security risks and observability gaps in their Kubernetes 
+            clusters by detecting the presence of certain tools and configurations. 
+            By providing information about the risk level and observability associated with these tools, 
+            as well as associated costs, this platform hopes to empower users to make informed decisions about how to mitigate those risks, improve their observability 
+            and optimize their clusters for cost efficiency. 
+            Additionally, the project includes features to help users install recommended tools and configurations in order to decrease the risk level of their cluster, 
+            enhance their visibility and also optimizating their cost usage. Whether you're new to Kubernetes or an experienced user, we hope this project will be a useful resource for managing the security, observability and cost efficiency of your clusters.
             </p>
           </div>
         </div>

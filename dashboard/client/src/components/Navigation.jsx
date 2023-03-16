@@ -1,6 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
+// Renders a navigation bar with links to the home page and a page displaying unclaimed volumes using the NavLink component from React Router. 
 function Navigation () {
   return (
     <div className='navigation'>
@@ -23,9 +24,6 @@ function Navigation () {
                 </NavLink>
               </li>
               <li className='nav-item'>
-                <NavLink className='nav-link' to='/abandoned-workloads'>
-                  Abandoned Workloads
-                </NavLink>
               </li>
             </ul>
           </div>

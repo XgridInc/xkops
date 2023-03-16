@@ -1,11 +1,11 @@
 import {
   Navigation,
   Home,
-  AbandonedWorkloads,
   UnclaimedVolumes
 } from './components'
 import { Route, Routes } from 'react-router-dom'
 
+//App function which tells how to render the application like Navigation and Routes
 function App () {
   return (
     <>
@@ -13,7 +13,6 @@ function App () {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/unclaimed-volumes' element={<UnclaimedVolumes />} />
-        <Route path='/abandoned-workloads' element={<AbandonedWorkloads />} />
       </Routes>
     </>
   )
