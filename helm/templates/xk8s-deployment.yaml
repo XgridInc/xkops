@@ -71,8 +71,8 @@ spec:
                   key: SLACK_API_KEY
             - name: SLACK_CHANNEL_NAME
               valueFrom:
-                secretKeyRef:
-                  name: xkops-secret
+                configMapKeyRef:
+                  name: xkops-config
                   key: SLACK_CHANNEL_NAME
             - name: ROBUSTA_UI_API_KEY
               valueFrom:
