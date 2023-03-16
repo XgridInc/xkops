@@ -25,17 +25,17 @@ spec:
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
-                name: xkops-secrets
+                name: xkops-secret
                 key: AWS_ACCESS_KEY_ID
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
-                name: xkops-secrets
+                name: xkops-secret
                 key: AWS_SECRET_ACCESS_KEY
           - name: AWS_SESSION_TOKEN
             valueFrom:
               secretKeyRef:
-                name: xkops-secrets
+                name: xkops-secret
                 key: AWS_SESSION_TOKEN
           - name: TF_VAR_CLUSTER_NAME
             valueFrom:
@@ -57,17 +57,17 @@ spec:
             - name: PX_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-secrets
+                  name: xkops-secret
                   key: PX_API_KEY
             - name: PX_DEPLOY_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-secrets
+                  name: xkops-secret
                   key: PX_DEPLOY_KEY
             - name: SLACK_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-secrets
+                  name: xkops-secret
                   key: SLACK_API_KEY
             - name: SLACK_CHANNEL_NAME
               valueFrom:
@@ -77,7 +77,7 @@ spec:
             - name: ROBUSTA_UI_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-secrets
+                  name: xkops-secret
                   key: ROBUSTA_UI_API_KEY
             - name: CLUSTER_NAME
               valueFrom:
