@@ -82,13 +82,11 @@ manifests:
     priority: 2
   - name: configmaps.yaml
     priority: 3
-  - name: secrets.yaml
-    priority: 4
   - name: storage_class.yaml
-    priority: 5
+    priority: 4
   - name: xk8s-deployment.yaml
-    priority: 6
+    priority: 5
   - name: dashboard.yaml
-    priority: 7
+    priority: 6
   - name: dashboard_service.yaml
-    priority: 8
+    priority: 7
