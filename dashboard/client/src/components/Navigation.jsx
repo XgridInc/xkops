@@ -1,7 +1,7 @@
 import React from 'react'
 import { NavLink } from 'react-router-dom'
 
-// Renders a navigation bar with links to the home page and a page displaying unclaimed volumes using the NavLink component from React Router. 
+// Renders a navigation bar with links to the home page and a page displaying unclaimed volumes using the NavLink component from React Router.
 function Navigation () {
   return (
     <div className='navigation'>
@@ -23,8 +23,7 @@ function Navigation () {
                   Unclaimed Volumes
                 </NavLink>
               </li>
-              <li className='nav-item'>
-              </li>
+              <li className='nav-item' />
             </ul>
           </div>
         </div>

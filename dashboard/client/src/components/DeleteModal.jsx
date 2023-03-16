@@ -1,11 +1,10 @@
 import React from 'react'
 import './DeleteModal.css'
 
-
-//The DeleteModal is a functional React component that displays 
-//a modal dialog box for confirming the deletion of a volume. 
-//It takes in props such as showModal, recordName, handleCancel, 
-//and handleDelete, and renders the modal using CSS classes and HTML elements.
+// The DeleteModal is a functional React component that displays
+// a modal dialog box for confirming the deletion of a volume.
+// It takes in props such as showModal, recordName, handleCancel,
+// and handleDelete, and renders the modal using CSS classes and HTML elements.
 
 const DeleteModal = props => {
   return (

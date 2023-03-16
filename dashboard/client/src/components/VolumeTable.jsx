@@ -3,11 +3,11 @@ import './VolumeTable.css'
 import DeleteModal from './DeleteModal'
 
 const VolumeTable = props => {
-  //Adding initial state using useState hook for showModal and recordName variables.
+  // Adding initial state using useState hook for showModal and recordName variables.
   const [showModal, setShowModal] = useState(false)
   const [recordName, setRecordName] = useState('')
 
-  //This function toggles the visibility of the DeleteModal component and sets the record name to be deleted.
+  // This function toggles the visibility of the DeleteModal component and sets the record name to be deleted.
   const toggleModal = (recordName = '') => {
     setShowModal(!showModal)
     setRecordName(recordName)
@@ -48,10 +48,10 @@ const VolumeTable = props => {
     toggleModal()
   }
 
-  //The code renders a table with volume records 
-  //and a delete button for each record. 
-  //It also conditionally renders a delete 
-  //confirmation modal when the user clicks on the delete button.
+  // The code renders a table with volume records
+  // and a delete button for each record.
+  // It also conditionally renders a delete
+  // confirmation modal when the user clicks on the delete button.
 
   return (
     <>

@@ -5,7 +5,7 @@ import {
 } from './components'
 import { Route, Routes } from 'react-router-dom'
 
-//App function which tells how to render the application like Navigation and Routes
+// App function which tells how to render the application like Navigation and Routes
 function App () {
   return (
     <>

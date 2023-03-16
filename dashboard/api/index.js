@@ -37,7 +37,7 @@ app.get('/allPersistentVolumes', (req, res) => {
   })
 })
 
-// Sends a POST request to trigger a Robusta test run using the Robusta Runner API with the 
+// Sends a POST request to trigger a Robusta test run using the Robusta Runner API with the
 // request body containing the test configuration in JSON format.
 app.post('/robusta', async (req, res) => {
   const options = {
@@ -59,7 +59,7 @@ app.post('/robusta', async (req, res) => {
   })
 })
 
-// Serves the React app by sending the index.html file in the 'build' directory for all GET requests that don't match any other routes. 
+// Serves the React app by sending the index.html file in the 'build' directory for all GET requests that don't match any other routes.
 app.get('/*', function (req, res) {
   res.sendFile(path.join(__dirname, '/build/index.html'))
 })
