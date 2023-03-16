@@ -165,6 +165,7 @@ rules:
       - list
       - watch
       - patch
+      - create
   - apiGroups: ["storage.k8s.io"]
     resources:
       - storageclasses
