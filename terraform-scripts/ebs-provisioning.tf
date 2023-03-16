@@ -30,16 +30,12 @@ data "aws_eks_cluster" "Eks_cluster" {
   name=var.CLUSTER_NAME
 }
 
-# TLS Certificate for OIDC provider
-data "tls_certificate" "XkOps" {
+data "aws_iam_openid_connect_provider" "eks" {
   url = data.aws_eks_cluster.Eks_cluster.identity[0].oidc[0].issuer
 }
 
-# Adds OIDC provider associated with the given cluster above 
-resource "aws_iam_openid_connect_provider" "Eks_cluster_oidc_provider" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.XkOps.certificates[0].sha1_fingerprint]
-  url             = data.aws_eks_cluster.Eks_cluster.identity[0].oidc[0].issuer
+locals {
+   eks_oidc_provider = data.aws_iam_openid_connect_provider.eks
 }
 
 # Creates IAM Role with trust relationship set as ebs-csi-controller-sa
@@ -53,7 +49,7 @@ resource "aws_iam_role" "eks_cluster" {
         Action = "sts:AssumeRoleWithWebIdentity"
         Effect = "Allow"
         Principal = {
-          Federated = aws_iam_openid_connect_provider.Eks_cluster_oidc_provider.arn
+          Federated =  local.eks_oidc_provider.arn
         }
         Condition = {
           StringEquals = {
