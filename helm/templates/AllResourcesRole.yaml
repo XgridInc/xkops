@@ -1,0 +1,206 @@
+#Cluster role which gives permissions to list,create,delete,update to all resources.
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: all-resource-role
+rules:
+  - apiGroups: [""]
+    resources: 
+      - configmaps
+      - daemonsets
+      - deployments
+      - endpoints
+      - events
+      - limitranges
+      - namespaces
+      - ingresses
+      - nodes
+      - persistentvolumeclaims
+      - persistentvolumes
+      - pods
+      - replicasets
+      - replicationcontrollers
+      - resourcequotas
+      - services
+      - serviceaccounts
+      - pods/status
+      - pods/exec
+      - pods/log
+      - secrets
+      - horizontalpodautoscalers.autoscaling
+      - cronjobs.batch
+      - jobs.batch
+      - events.events.k8s.io
+      - daemonsets.extensions
+      - deployments.extensions
+      - replicasets.extensions
+      - poddisruptionbudgets.policy
+      - storageclasses.storage.k8s.io
+      - daemonsets.apps
+      - deployments.apps
+      - replicasets.apps
+      - statefulsets.apps 
+      - configmaps
+      - endpoints
+      - nodes/metrics
+      - nodes/proxy
+      - nodes
+      - pods
+      - services
+    verbs: 
+      - get
+      - list
+      - watch
+      - create
+      - patch
+      - update
+      - delete
+  - apiGroups: ["rbac.authorization.k8s.io"]
+    resources:  
+      - clusterroles
+      - clusterrolebindings
+      - configmaps
+      - daemonsets
+      - deployments
+      - events
+      - namespaces
+      - nodes
+      - roles
+      - rolebindings
+      - persistentvolumes
+      - pods
+      - replicasets
+      - replicationcontrollers
+      - services
+      - serviceaccounts
+      - persistentvolumeclaims
+      - pods/status
+      - pods/exec
+      - pods/log
+      - endpoints
+      - limitranges
+      - resourcequotas
+      - horizontalpodautoscalers.autoscaling
+      - cronjobs.batch
+      - jobs.batch
+      - events.events.k8s.io
+      - daemonsets.extensions
+      - deployments.extensions
+      - replicasets.extensions
+      - poddisruptionbudgets.policy
+      - storageclasses.storage.k8s.io
+      - daemonsets.apps
+      - deployments.apps
+      - replicasets.apps
+      - statefulsets.apps
+    verbs: 
+      - get
+      - list
+      - watch
+      - create
+      - patch
+      - update
+      - delete
+  - apiGroups: ["autoscaling"]
+    resources: 
+      - horizontalpodautoscalers
+    verbs: 
+      - get
+      - list
+      - watch
+      - patch
+      - update
+  - apiGroups: ["extensions"]
+    resources: 
+      - podsecuritypolicies
+    resourceNames: 
+      - kubecost-grafana
+      - kubecost-cost-analyzer-psp
+    verbs:
+      - use
+  - apiGroups: ["apps", "extensions"]
+    resources: 
+      - daemonsets
+      - deployments
+      - deployments/scale
+      - ingresses
+      - replicasets
+      - replicasets/scale
+      - replicationcontrollers/scale
+      - statefulsets
+      - ingresses/status
+    verbs: 
+      - get
+      - list
+      - watch
+      - create
+      - patch
+      - update
+      - delete
+  - apiGroups: ["batch"]
+    resources: 
+      - cronjobs
+      - jobs
+    verbs: 
+      - get
+      - list
+      - watch
+      - create
+      - patch
+      - update
+      - delete
+  - apiGroups: ["events.k8s.io"]
+    resources:
+      - events
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups: ["policy"]
+    resources:
+      - poddisruptionbudgets
+      - podsecuritypolicies
+    verbs:
+      - get
+      - list
+      - watch
+      - patch
+      - create
+  - apiGroups: ["storage.k8s.io"]
+    resources:
+      - storageclasses
+    verbs:
+      - get
+      - list
+      - watch
+  - nonResourceURLs:
+    - "/metrics"
+    verbs:
+    - get
+---
+#Cluster role binding which binds the default service
+#account under the xkops namespace with all-resource-role cluster role
+
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: all-resource-role-binding
+subjects:
+  - kind: ServiceAccount #Subject: default service account under xkops namespace
+    name: xkops-secret-sa
+    namespace: xkops
+  - kind: ServiceAccount #Subject: kubecost-grafana service account under kubecost namespace
+    name: kubecost-grafana
+    namespace: kubecost
+  - kind: ServiceAccount #Subject: kubecost-prometheus-server service account under kubecost namespace
+    name: kubecost-prometheus-server
+    namespace: kubecost
+  - kind: ServiceAccount #Subject: kubecost-kube-state-metrics service account under kubecost namespace
+    name: kubecost-kube-state-metrics
+    namespace: kubecost
+  
+roleRef:
+  kind: ClusterRole #Cluster role reference to be used for binding the subject with
+  name: all-resource-role
+  apiGroup: rbac.authorization.k8s.io
+  

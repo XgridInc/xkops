@@ -11,15 +11,15 @@ export RB_INSTALLER_SCRIPT_PATH=/src/installer/rb-installer.sh
 
 #rb-preflight directory path
 export PREFLIGHT_DIR_PATH=/src/pre-flight/rb-pre-flight
-
+export PLAYBOOK_DIR_PATH=/src/installer/rb-actions
 # Set expected image names
-export EXPECTED_RUNNER_IMAGE="us-central1-docker.pkg.dev/genuine-flight-317411/devel/robusta-runner:0.10.8"
-export EXPECTED_FORWARDER_IMAGE="us-central1-docker.pkg.dev/genuine-flight-317411/devel/kubewatch:v2.0"
+export EXPECTED_RUNNER_IMAGE="us-central1-docker.pkg.dev/genuine-flight-317411/devel/robusta-runner:0.10.13"
+export EXPECTED_FORWARDER_IMAGE="us-central1-docker.pkg.dev/genuine-flight-317411/devel/kubewatch:v2.1"
 
 #Set expected values for runner and forwarder deployments
 export EXPECTED_RUNNER_NAME="robusta-runner"
 export EXPECTED_FORWARDER_NAME="robusta-forwarder"
-
+export NAMESPACE="robusta"
 
 #TODO: Give option to upload generated_values.yaml file through UI
 export HELM_VALUES=generated_values.yaml #File required to installed robusta

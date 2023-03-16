@@ -44,7 +44,7 @@ helm_checker() {
 
     log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Checking if helm is configured.${CC}"
     if command -v helm &>/dev/null; then
-        log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Helm configurations are obtained successfully.${CC}"
+        log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Helm configurations obtained successfully.${CC}"
         exit 0
     else
         log "${RED}[ERROR]" "[PRE-FLIGHT]" "Helm is not installed. Installing it now.${CC}"

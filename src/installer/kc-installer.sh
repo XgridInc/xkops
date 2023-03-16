@@ -20,13 +20,12 @@ kc_installer() {
 
         # Wait till kubecost prometheus-server pod is ready.
         _=$(kubectl -n kubecost wait pod --for=condition=Ready -l component=server --timeout=1h)
-        log "${GREEN}[INFO]" "[INSTALLER]" "Kubecost installed successfully.${CC}"
         create_kc_service
     fi
 }
 
 create_kc_service() {
-    kubectl -n kubecost expose deployment kubecost-cost-analyzer --port=80 --target-port=9090 --name=kubecost-ui-service --type=LoadBalancer &> /dev/null
+    kubectl -n kubecost expose deployment kubecost-cost-analyzer --port=80 --target-port=9090 --name=kubecost-ui-service --type=LoadBalancer &>/dev/null
 }
 
 # Calling functions defined above

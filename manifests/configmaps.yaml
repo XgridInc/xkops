@@ -1,9 +1,0 @@
-#TODO: This is a user specific file and must be removed in future
-#Configmap to be used by xkops deployment scripts
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: xkops-config
-  namespace: xkops
-data:
-  CLUSTER_NAME: xgrid-website-migration

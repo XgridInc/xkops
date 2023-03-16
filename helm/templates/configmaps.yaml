@@ -1,0 +1,11 @@
+# Configmap to be used by xkops deployment scripts
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: xkops-config
+  namespace: "{{ .Values.namespace.NAMESPACE_NAME }}"
+data:
+  CLUSTER_NAME: "{{ .Values.CLUSTER_NAME }}"
+  REGION: "{{ .Values.REGION }}"
+  SLACK_CHANNEL_NAME: "{{ .Values.SLACK_CHANNEL_NAME }}"
+  

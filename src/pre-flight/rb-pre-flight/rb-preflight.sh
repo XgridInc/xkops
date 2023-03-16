@@ -63,7 +63,7 @@ rb_cli_installer() {
         return
     else
         log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Python3-pip not found. Installing...${CC}"
-        apt-get update &> /dev/null && apt-get install -y python3-pip &> /dev/null
+        apt-get install -y python3-pip=22.0.2+dfsg-1ubuntu0.2 &> /dev/null
         if command -v pip3 &>/dev/null; then
             pip3 install -U robusta-cli --no-cache &> /dev/null
             return
@@ -81,8 +81,11 @@ generate_values_file() {
 
     log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Generating generated_values.yaml file.${CC}"
 
-    printf '%s\n' n n y y y | robusta gen-config --slack-api-key "$SLACK_API_KEY" --slack-channel "$SLACK_CHANNEL_NAME" --robusta-api-key "$ROBUSTA_UI_API_KEY" --cluster-name "$CLUSTER_NAME" --output-path "$PREFLIGHT_DIR_PATH/$1" &> /dev/null
-
+    printf '%s\n' n n y n | robusta gen-config --slack-api-key "$SLACK_API_KEY" --slack-channel "$SLACK_CHANNEL_NAME" --robusta-api-key "$ROBUSTA_UI_API_KEY" --cluster-name "$CLUSTER_NAME" --output-path "$PREFLIGHT_DIR_PATH/$1" > /dev/null
+    # enabling persistent volume in robusta configuration file
+    if ! grep -q 'playbooksPersistentVolume: true' "$PREFLIGHT_DIR_PATH/$HELM_VALUES"; then
+        sed -i '4i\playbooksPersistentVolume: true' "$PREFLIGHT_DIR_PATH/$HELM_VALUES"
+    fi
 }
 
 print_prompt
