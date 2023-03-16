@@ -7,4 +7,5 @@ metadata:
 data:
   CLUSTER_NAME: "{{ .Values.CLUSTER_NAME }}"
   REGION: "{{ .Values.REGION }}"
+  SLACK_CHANNEL_NAME: "{{ .Values.SLACK_CHANNEL_NAME }}"
   
