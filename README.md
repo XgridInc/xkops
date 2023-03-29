@@ -14,23 +14,19 @@ XkOps is a software platform designed to help users optimize the deployment and 
 ## Why XkOps?
 XkOps is a unified platform that provides true observability across Kubernetes clusters while being cost-optimized, fault-tolerant, and secure. With an abundance of tools available, implementing and managing multiple data platforms can become overwhelming and lead to additional costs. XkOps simplifies this by offering a single platform that provides a single source of truth, making it easier for users to gain insights and manage their cluster. Achieving optimal cost efficiency, state-of-the-art security, and dependable application performance through observability is a necessity for Kubernetes clusters. XkOps addresses this by encompassing the three core concepts of cost optimization, reliability, and security in a single platform.
 
-Check the below video for a quick demo of XkOps.
-
-[XkOps Demo](https://drive.google.com/file/d/1dqWMABhVz6Mlm0vEhFN4dKy-wP6v9CT2/view?usp=sharing)
-
 ## 🛠️ Use cases
 
-**Observability:** XkOps would provide detailed visibility into the behavior and performance of the applications running in the Kubernetes cluster, including metrics, logs, and traces. This would allow teams to identify and diagnose performance issues, such as bottlenecks or errors, and respond quickly to ensure the availability and stability of the applications.
+XkOps can be used for several use cases, including:
 
-**Cost management:** XkOps would provide cost and usage insights, including granular breakdowns of resource usage, and the ability to identify and address over-provisioning and under-utilization in a Kubernetes cluster. It would also provide cost forecasting and optimization recommendations, allowing teams to plan for future growth and manage expenses more effectively.
+**Observability:** XkOps provides detailed visibility into the behavior and performance of applications running in the Kubernetes cluster, including metrics, logs, and traces. This allows teams to identify and diagnose performance issues and respond quickly to ensure the availability and stability of the applications.
 
-**Security:** XkOps would provide detailed visibility into the behavior and performance of the applications deployed in a Kubernetes cluster, which can help teams identify and address security issues, such as misconfigurations or vulnerabilities. Additionally, XkOps would provide alerts and notifications of suspicious activity, allowing teams to respond quickly to potential security threats.
+**Cost Management:** XkOps provides cost and usage insights, including granular breakdowns of resource usage, and the ability to identify and address over-provisioning and under-utilization in a Kubernetes cluster. The platform also provides cost forecasting and optimization recommendations, allowing teams to plan for future growth and manage expenses more effectively.
 
-**Alerting:** XkOps would provide alerting capability to notify teams of issues in any Kubernetes cluster in near real-time, enabling them to quickly address problems before they become critical.
+**Security:** XkOps provides detailed visibility into the behavior and performance of applications deployed in a Kubernetes cluster, helping teams identify and address security issues, such as misconfigurations or vulnerabilities. The platform also provides alerts and notifications of suspicious activity, enabling teams to respond quickly to potential security threats.
 
-**Integration with other tools:** XkOps would integrate with other observability tools such as Prometheus, Grafana and Elasticsearch.
+**Alerting:** XkOps provides alerting capabilities to notify teams of issues in any Kubernetes cluster in near real-time, enabling them to quickly address problems before they become critical.
 
-**Reporting:** XkOps would allow for generating reports to share with the stakeholders about cost and performance and security of the Kubernetes cluster over time.
+**Reporting:** XkOps allows users to generate reports to share with stakeholders about the cost, performance, and security of the Kubernetes cluster over time.
 
 
 ## ➕ Dependencies
@@ -41,7 +37,10 @@ Check the below video for a quick demo of XkOps.
 - Clusterrole and Clusterrole binding to provide the necessary permissions for XkOps to access the Kubernetes API and resources, in order to run checker scripts.
 - Configmap containing data such as cluster name
 - Storage class with provisioner set as EBS to enable dynamic volume provisioning
+## Demo
+Check out the XkOps demo here.
 
+[XkOps Demo](https://drive.google.com/file/d/1dqWMABhVz6Mlm0vEhFN4dKy-wP6v9CT2/view?usp=sharing)
 ## 📒 Getting Started
 
 1. Clone the repository and change directory to the cloned repo:
