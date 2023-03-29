@@ -2,33 +2,36 @@
 
 ![Xgrid Logo](https://media-exp1.licdn.com/dms/image/C4D0BAQHn43yTM8np2Q/company-logo_200_200/0?e=2159024400&v=beta&t=HCCA_wnetIM7butwiHWBYnXgVzn4pjM9Dq5YDMMJIkE "Xgrid Logo")
 
-## A platform to determine risk factor of your Kubernetes clusters
 
 [![Lint Code Base](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml)
 [![Package and Publish Docker Image](https://github.com/X-CBG/xk8s/actions/workflows/build_publish_scan.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/build_publish_scan.yml)
 [![Shellcheck](https://github.com/X-CBG/xk8s/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/shellcheck.yml)
 
-## 💻 About the project
+## 💻 Overview
 
-XkOps is a platform for Kubernetes Risk Detection and Mitigation.
-It aims to help users identify potential security risks and observability
-gaps in their Kubernetes clusters by detecting the presence of certain tools and configurations.
-By providing information about the risk level and observability associated with these tools,
-as well as associated costs, this platform hopes to empower users to make
-informed decisions about how to mitigate those risks,
-improve their observability and optimize their clusters for cost efficiency.
-Additionally, the project includes features to help users install recommended tools
-and configurations in order to decrease the risk level of their cluster, enhance
-their visibility and also optimizating their cost usage.
-Whether you're new to Kubernetes or an experienced user, we hope this project will be a
-useful resource for managing the security, observability and cost efficiency of your clusters.
+XkOps is a software platform designed to help users optimize the deployment and management of Kubernetes clusters. The platform provides a comprehensive evaluation of costs, observability, and security. XkOps makes it easy for users to gain insights and manage their cluster by packaging leading open-source tools such as Kubecost, Robusta, and Pixie into a single, easy-to-deploy Docker image that runs as a Pod. This all-in-one solution consolidates the insights obtained from these tools, making it easier for users to make informed decisions and have centralized monitoring of their Kubernetes cluster.
+
+## Why XkOps?
+XkOps is a unified platform that provides true observability across Kubernetes clusters while being cost-optimized, fault-tolerant, and secure. With an abundance of tools available, implementing and managing multiple data platforms can become overwhelming and lead to additional costs. XkOps simplifies this by offering a single platform that provides a single source of truth, making it easier for users to gain insights and manage their cluster. Achieving optimal cost efficiency, state-of-the-art security, and dependable application performance through observability is a necessity for Kubernetes clusters. XkOps addresses this by encompassing the three core concepts of cost optimization, reliability, and security in a single platform.
+
+Check the below video for a quick demo of XkOps.
+
+[XkOps Demo](https://drive.google.com/file/d/1dqWMABhVz6Mlm0vEhFN4dKy-wP6v9CT2/view?usp=sharing)
 
 ## 🛠️ Use cases
 
-- Identifying observability gaps: By detecting the presence of certain observability tools and configurations, the project can help users understand where their cluster may have gaps in visibility and take steps to address those gaps.
-- Identifying potential security risks in a Kubernetes cluster: The project can detect the presence of certain tools and configurations that may present security risks, and provide information about the associated risk level. This can help users understand the potential vulnerabilities in their clusters and take steps to mitigate those risks.
-- Improving cluster security: By installing recommended tools and configurations, users can reduce the risk level of their clusters and improve the overall security of their environments.
-- Managing cloud costs: If the project is integrated with cloud providers, it can be used to monitor and manage the cost of running the clusters in cloud and take decisions such as scaling down or turning off clusters when not in use, to reduce cost.
+**Observability:** XkOps would provide detailed visibility into the behavior and performance of the applications running in the Kubernetes cluster, including metrics, logs, and traces. This would allow teams to identify and diagnose performance issues, such as bottlenecks or errors, and respond quickly to ensure the availability and stability of the applications.
+
+**Cost management:** XkOps would provide cost and usage insights, including granular breakdowns of resource usage, and the ability to identify and address over-provisioning and under-utilization in a Kubernetes cluster. It would also provide cost forecasting and optimization recommendations, allowing teams to plan for future growth and manage expenses more effectively.
+
+**Security:** XkOps would provide detailed visibility into the behavior and performance of the applications deployed in a Kubernetes cluster, which can help teams identify and address security issues, such as misconfigurations or vulnerabilities. Additionally, XkOps would provide alerts and notifications of suspicious activity, allowing teams to respond quickly to potential security threats.
+
+**Alerting:** XkOps would provide alerting capability to notify teams of issues in any Kubernetes cluster in near real-time, enabling them to quickly address problems before they become critical.
+
+**Integration with other tools:** XkOps would integrate with other observability tools such as Prometheus, Grafana and Elasticsearch.
+
+**Reporting:** XkOps would allow for generating reports to share with the stakeholders about cost and performance and security of the Kubernetes cluster over time.
+
 
 ## ➕ Dependencies
 
