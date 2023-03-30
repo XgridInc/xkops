@@ -11,8 +11,13 @@
 
 XkOps is a software platform designed to help users optimize the deployment and management of Kubernetes clusters. The platform provides a comprehensive evaluation of costs, observability, and security. XkOps makes it easy for users to gain insights and manage their cluster by packaging leading open-source tools such as Kubecost, Robusta, and Pixie into a single, easy-to-deploy Docker image that runs as a Pod. This all-in-one solution consolidates the insights obtained from these tools, making it easier for users to make informed decisions and have centralized monitoring of their Kubernetes cluster.
 
-## Why XkOps?
-XkOps is a unified platform that provides true observability across Kubernetes clusters while being cost-optimized, fault-tolerant, and secure. With an abundance of tools available, implementing and managing multiple data platforms can become overwhelming and lead to additional costs. XkOps simplifies this by offering a single platform that provides a single source of truth, making it easier for users to gain insights and manage their cluster. Achieving optimal cost efficiency, state-of-the-art security, and dependable application performance through observability is a necessity for Kubernetes clusters. XkOps addresses this by encompassing the three core concepts of cost optimization, reliability, and security in a single platform.
+Check the below video for a quick demo of XkOps.
+[![XkOps Demo](./screenshots/Demo-video.png)](https://drive.google.com/file/d/1dqWMABhVz6Mlm0vEhFN4dKy-wP6v9CT2/view?usp=sharing)
+
+## 💡 Why XkOps?
+XkOps is a unified platform that provides true observability across Kubernetes clusters while being cost-optimized, fault-tolerant, and secure. With an abundance of tools available, implementing and managing multiple data platforms can become overwhelming and lead to additional costs. 
+
+XkOps simplifies this by offering a single platform that provides a single source of truth, making it easier for users to gain insights and manage their cluster. Achieving optimal cost efficiency, state-of-the-art security, and dependable application performance through observability is a necessity for Kubernetes clusters. XkOps addresses this by encompassing the three core concepts of cost optimization, reliability, and security in a single platform.
 
 ## 🛠️ Use cases
 
@@ -30,66 +35,57 @@ XkOps can be used for several use cases, including:
 
 
 ## ➕ Dependencies
+Please note the following requirements for using the XkOps:
 
-- Internet connection required to download dependencies for installing tools.
-- Pod resource requirements are: Memory is 200MiB and CPU is 500m
-- Separate XkOps namespace
-- Clusterrole and Clusterrole binding to provide the necessary permissions for XkOps to access the Kubernetes API and resources, in order to run checker scripts.
-- Configmap containing data such as cluster name
-- Storage class with provisioner set as EBS to enable dynamic volume provisioning
-## Demo
-Check out the XkOps demo here.
-
-[XkOps Demo](https://drive.google.com/file/d/1dqWMABhVz6Mlm0vEhFN4dKy-wP6v9CT2/view?usp=sharing)
+- To install the necessary dependencies, an internet connection is required.
+- You will need an EKS cluster and an AWS IAM user with a minimum set of permissions listed in this [spreadsheet](https://docs.google.com/spreadsheets/d/1cuC-72oRJ7DB4HkvELpml5RLcA2clzCA7xBVd1z6fVw/edit?usp=sharing).
+- The pod resources must meet the minimum requirements of 200MiB memory and 500m CPU.
+- Please ensure that you use a separate XkOps namespace.
 ## 📒 Getting Started
+To install XkOps, please follow these steps
+### 🔐 Secret Manager Setup
+First, set up AWS secrets manager on your AWS account:
+- Refer to this [guide](https://docs.google.com/document/d/17fhQ0zJZtJGcWtnVD8NehUbFC-x9TrMP11XjyEFi370/edit?usp=sharing) for instructions on how to set up AWS secret manager OR
+- Use [this script](Place holder for file link-PR to be reviewed for this) to automate the setup process.
 
-1. Clone the repository and change directory to the cloned repo:
+### 📥 Install XkOps
+1. Clone the repository and navigate to the cloned repo:
+
 
     ```commandline
     git clone https://github.com/X-CBG/xk8s.git && cd xk8s
     ```
 
-2. From manifests folder create `ClusterRole` and `ClusterRoleBinding` in your cluster:
+2. Update values.yaml file and input your specific value for each key.
+
+
+3. Install XkOps using Helm:
 
     ```commandline
-    kubectl apply -f AllResourcesRole.yaml
+    helm install xkops ./helm -f values.yml
     ```
-
-3. Build the XkOps docker image:
+    
+4. After successful installation, obtain the link of the XkOps frontend service to access the dashboard:
 
     ```commandline
-    docker build -t myimage .
+    kubectl get svc -n xkops
     ```
 
-    You can also use one of the pre-built images from the [DockerHub repository](https://hub.docker.com/r/xgridxcbg/kaizen/tags "DockerHub repository")
-
-4. In the project go to the manifests folder and use the docker image in [`xk8s-pod.yaml`](https://github.com/X-CBG/xk8s/blob/master/manifests/xk8s-pod.yaml "xk8s-pod.yaml") manifest.
-
-    ```commandline
-    kubectl create -f xk8s-pod.yaml 
-    ```
-
-5. Create a pod in your Kubernetes cluster using this [`xk8s-pod.yaml`](https://github.com/X-CBG/xk8s/blob/master/manifests/xk8s-pod.yaml "`xk8s-pod.yaml`") and observe logs:
-
-    ```commandline
-    kubectl logs -f xk8s 
-    ```
-
-    or you can view logs at `log-volume` (mounted hostPath) volume.
+5. Create an unclaimed volume in your cluster and delete it using the delete button on the dashboard. You can verify the volume deletion action both from the dashboard and the cluster.
 
 ## 🚧 Road Map
-
-If you want to see a new feature or if you experience any issues/bugs while using XkOps feel free to [create a new issue](https://github.com/X-CBG/xk8s/issues "create a new issue") or send an email at nbajwa@xgrid.co or sidra.irshad@xgrid.co . Here are some features which are either under way or planned:
+To report a new feature request or to report any issues or bugs encountered while using XkOps, please feel free to [create a new issue](https://github.com/X-CBG/xk8s/issues "create a new issue") on the project's GitHub repository or contact the development team at nbajwa@xgrid.co or sidra.irshad@xgrid.co via email. The following features are currently either in progress or planned:
 
 - [X] Checking for observability tools in your Kubernetes cluster.
 - [X] Installing tools to mitigate risk.
-- [X] Robusta is used to monitor and troubleshoot cluster.
-- [X] Kubecost is used for cost optimization.
-- [X] Pixie is used to monitor system performance.
-- [ ] Determining risk factor based on metrics from your Kubernetes cluster.
+- [X] Using Robusta to monitor and troubleshoot clusters.
+- [X] Employing Kubecost for cost optimization.
+- [X] Utilizing Pixie to monitor system performance.
+- [x] Deployment using Helm charts.
+- [ ] Implementation of a user interface.
+- [ ] Determining risk factors based on metrics from your Kubernetes cluster.
 - [ ] Extracting logs from pod using a logging solution
-- [ ] User Interface
-- [ ] Using Helm charts for the deployment.
+
 
 ## 🧾 License
 
