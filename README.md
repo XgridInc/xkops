@@ -20,8 +20,7 @@ Check the below video for a quick demo of XkOps.
 ## 💡 Why XkOps?
 XkOps is a unified platform that provides true observability across Kubernetes clusters while being cost-optimized, fault-tolerant, and secure. With an abundance of tools available, implementing and managing multiple data platforms can become overwhelming and lead to additional costs.
 
-XkOps simplifies this by offering a single platform that provides a single source of truth, making it easier for users to gain insights and manage their cluster. Achieving optimal cost efficiency, state-of-the-art security, and dependable application performance through observability is a necessity for Kubernetes clusters.
-XkOps addresses this by encompassing the three core concepts of cost optimization, reliability, and security in a single platform.
+XkOps simplifies this by offering a single platform that provides a single source of truth, making it easier for users to gain insights and manage their cluster. Achieving optimal cost efficiency, state-of-the-art security, and dependable application performance through observability is a necessity for Kubernetes clusters. XkOps addresses this by encompassing the three core concepts of cost optimization, reliability, and security in a single integrated solution.
 
 ## 🛠️ Use cases
 
