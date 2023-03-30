@@ -33,7 +33,6 @@ XkOps can be used for several use cases, including:
 
 **Reporting:** XkOps allows users to generate reports to share with stakeholders about the cost, performance, and security of the Kubernetes cluster over time.
 
-
 ## ➕ Dependencies
 Please note the following requirements for using the XkOps:
 
@@ -50,27 +49,18 @@ First, set up AWS secrets manager on your AWS account:
 
 ### 📥 Install XkOps
 1. Clone the repository and navigate to the cloned repo:
-
-
     ```commandline
     git clone https://github.com/X-CBG/xk8s.git && cd xk8s
     ```
-
 2. Update values.yaml file and input your specific value for each key.
-
-
 3. Install XkOps using Helm:
-
     ```commandline
     helm install xkops ./helm -f values.yml
     ```
-    
 4. After successful installation, obtain the link of the XkOps frontend service to access the dashboard:
-
     ```commandline
     kubectl get svc -n xkops
     ```
-
 5. Create an unclaimed volume in your cluster and delete it using the delete button on the dashboard. You can verify the volume deletion action both from the dashboard and the cluster.
 
 ## 🚧 Road Map
@@ -85,7 +75,8 @@ To report a new feature request or to report any issues or bugs encountered whil
 - [ ] Implementation of a user interface.
 - [ ] Determining risk factors based on metrics from your Kubernetes cluster.
 - [ ] Extracting logs from pod using a logging solution
-
+## How to contribute
+If you would like to help contribute to this GitHub Action, please see CONTRIBUTING.md
 
 ## 🧾 License
 
