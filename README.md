@@ -10,9 +10,7 @@
 ## 💻 Overview
 
 Xkops is an integrated solution that combines widely-adopted open-source utilities to simplify Kubernetes management, emphasizing the enhancement of observability, reliability, security, and cost control in cluster operations which help users optimize the deployment and management of Kubernetes clusters. The platform provides a comprehensive evaluation of costs, observability, and security.
-
 XkOps provides an effortless way for users to manage their cluster and extract meaningful insights related to observerability and cost. The platform includes the installers of top-tier open-source tools, namely Kubecost, Robusta, and Pixie, which are bundled together into a single Docker image. This Docker image is then deployed as a Pod, simplifying the installation process of these tools.
-
 This all-in-one solution consolidates the insights obtained from these tools, making it easier for users to make informed decisions and have centralized monitoring of their Kubernetes cluster.
 
 Check the below video for a quick demo of XkOps.
