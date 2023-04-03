@@ -11,7 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -21,6 +21,6 @@ spec:
   selector:
     app: my-react-app
   ports:
-  - name: "{{ .Values.dashboard_service_ports.name }}"
-    port: 80
-    targetPort: 3000
+    - name: "{{ .Values.dashboard_service_ports.name }}"
+      port: 80
+      targetPort: 3000

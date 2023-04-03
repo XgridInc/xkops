@@ -16,7 +16,7 @@
 # Default values for xkops and dashboard.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
-
+---
 xkops_init_container:
   image:
     repository: xgridxcbg/kaizen
@@ -51,7 +51,7 @@ xkops_resources:
 xkops_volumeMounts:
   name: log-volume
   mountPath: /tmp
-  
+
 # Set up the persistent volume for xkops
 xkops_volumes:
   name: log-volume
@@ -69,23 +69,25 @@ dashboard_service_ports:
 tolerations: []
 affinity: {}
 
-#provide your pixie API key (https://docs.px.dev/reference/admin/api-keys)
+# provide your pixie API key (https://docs.px.dev/reference/admin/api-keys)
 PX_API_KEY: ""
-#provide your pixie deploy key (https://docs.px.dev/reference/admin/deploy-keys)
+# provide your pixie deploy key
+# (https://docs.px.dev/reference/admin/deploy-keys)
 PX_DEPLOY_KEY: ""
-#provide your Slack API key (https://slack.com/help/articles/215770388-Create-and-regenerate-API-tokens)
+# provide your Slack API key
+# (https://slack.com/help/articles/215770388-Create-and-regenerate-API-tokens)
 SLACK_API_KEY: ""
-#provide your Slack channel name
+# provide your Slack channel name
 SLACK_CHANNEL_NAME: ""
 # Generate robusta API key using robusta-CLI
 ROBUSTA_UI_API_KEY: ""
-#AWS  credentisl
+# AWS  credentisl
 AWS_ACCESS_KEY_ID: ""
 AWS_SECRET_ACCESS_KEY: ""
 AWS_SESSION_TOKEN: ""
-#Region where cluster deployed
+# Region where cluster deployed
 REGION: ""
-#secret provider class for extracting secrets
+# secret provider class for extracting secrets
 SECRET_PROVIDER_CLASS: ""
 # Override the name and fullname (including the release name) for the chart
 nameOverride: ""

@@ -14,7 +14,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
 source /src/config/kc-config.sh
 source /src/commons/common-functions.sh
 

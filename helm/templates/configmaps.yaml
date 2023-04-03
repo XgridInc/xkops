@@ -13,6 +13,7 @@
 # limitations under the License.
 
 # Configmap to be used by xkops deployment scripts
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -22,4 +23,3 @@ data:
   CLUSTER_NAME: "{{ .Values.CLUSTER_NAME }}"
   REGION: "{{ .Values.REGION }}"
   SLACK_CHANNEL_NAME: "{{ .Values.SLACK_CHANNEL_NAME }}"
-  
