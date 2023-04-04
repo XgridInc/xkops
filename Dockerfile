@@ -5,7 +5,7 @@ COPY Makefile /
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update && \
-     apt-get install -y make=4.3-4.1build1 --no-install-recommends  && \
+     apt-get install make=4.3-4.1build1 --no-install-recommends  && \
      apt-get install -y curl=7.81.0-1ubuntu1.10 --no-install-recommends  && \
      apt-get install -y --no-install-recommends ca-certificates=20211016ubuntu0.22.04.1 curl=7.81.0-1ubuntu1.10 && \
      apt-get upgrade -y && \
