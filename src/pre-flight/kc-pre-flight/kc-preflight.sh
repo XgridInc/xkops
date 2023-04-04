@@ -45,3 +45,4 @@ kubectl_installer() {
 print_prompt
 kubectl_checker
 helm_checker
+unpatch_default_storageclass

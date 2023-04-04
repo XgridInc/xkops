@@ -29,13 +29,13 @@ namespace:
 # Set the container image details for xkops
 xkops_image:
   repository: xgridxcbg/kaizen
-  tag: xkops-v2
+  tag: xkops-v3
   pullPolicy: Always
 
 # Set the container image details for dashboard
 dashboard_image:
   repository: xgridxcbg/kaizen
-  tag: 345acb
+  tag: dashboard
   pullPolicy: IfNotPresent
 
 # Define the resource requirements and limits for the container

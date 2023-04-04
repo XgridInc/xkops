@@ -105,4 +105,5 @@ generate_values_file() {
 print_prompt
 check_values_file
 helm_checker
+unpatch_default_storageclass
 exit 0
