@@ -4,6 +4,8 @@ Thank you for your interest in joining our team and contributing to our project!
 
 ## Code of Conduct
 
+Xgrid follows the [CNCF Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md).
+
 We expect all contributors and participants in the XkOps project to behave in a respectful and professional manner. Any forms of harassment, discrimination, or other unacceptable behavior will not be tolerated.
 
 If you experience or witness any violations, please contact the project maintainers at [xk8s@xgrid.co].
@@ -25,6 +27,8 @@ Check out the [issues page](https://github.com/X-CBG/xk8s/issues) for a list of 
 [Integrate Shellcheck with your IDE](https://github.com/koalaman/shellcheck) ShellCheck is a GPLv3 tool that gives warnings and suggestions for bash/sh shell scripts.
 
 [Integrate Black Formatter with your IDE](https://github.com/psf/black) Black is the uncompromising Python code formatter.
+
+[Integrate Checkov with your IDE](https://github.com/bridgecrewio/checkov) Find and fix misconfigurations in infrastructure-as-code manifests.
 
 ### Choosing an Issue
 
