@@ -20,16 +20,9 @@ Check out the [issues page](https://github.com/X-CBG/xk8s/issues) for a list of 
 
 ### Integrate Snyk with IDE
 
-[Integrate Snyk with your IDE](https://docs.snyk.io/ide-tools) to detect any vulnerability while writing code and fix them at runtime before pushing your code to github.
+[Integrate Hadolint with your IDE](https://github.com/hadolint/hadolint) A smarter Dockerfile linter that helps you build best practice Docker images.
 
-following are the steps to integrate Snyk with your IDE.
-
-- Create an account on [Snyk](https://snyk.io/)
-- Install Snyk Extension on your IDE.
-- Configure Snyk Extension.
-- Authenticate with your Snyk account.
-
-Snyk extension uses snyk API token for authentication.
+[Integrate Shellcheck with your IDE](https://github.com/koalaman/shellcheck) ShellCheck is a GPLv3 tool that gives warnings and suggestions for bash/sh shell scripts.
 
 ### Choosing an Issue
 

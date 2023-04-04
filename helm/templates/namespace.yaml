@@ -1,5 +1,5 @@
-#This manifest creates a namespace in which xkops deployment is created
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: "{{ .Values.namespace.NAMESPACE_NAME }}"
+# #This manifest creates a namespace in which xkops deployment is created
+# apiVersion: v1
+# kind: Namespace
+# metadata:
+#   name: "{{ .Values.namespace.NAMESPACE_NAME }}"
