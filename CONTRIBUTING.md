@@ -18,11 +18,13 @@ Check out the [issues page](https://github.com/X-CBG/xk8s/issues) for a list of 
 
 ## How to Contribute
 
-### Integrate Snyk with IDE
+### Integrate linters with IDE
 
 [Integrate Hadolint with your IDE](https://github.com/hadolint/hadolint) A smarter Dockerfile linter that helps you build best practice Docker images.
 
 [Integrate Shellcheck with your IDE](https://github.com/koalaman/shellcheck) ShellCheck is a GPLv3 tool that gives warnings and suggestions for bash/sh shell scripts.
+
+[Integrate Black Formatter with your IDE](https://github.com/psf/black) Black is the uncompromising Python code formatter.
 
 ### Choosing an Issue
 

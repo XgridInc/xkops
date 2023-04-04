@@ -1,7 +1,0 @@
-# User specific file
-# These values will be given by the end user and is required to install xkops helm chart.
-
-REGION: ap-southeast-1
-CLUSTER_NAME: xkops-clusters-1
-SLACK_CHANNEL_NAME: robusta-test
-SECRET_PROVIDER_CLASS: "xkops-secret-provider"
