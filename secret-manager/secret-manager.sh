@@ -17,8 +17,8 @@ echo "Enter the cluster region: "
 read -r region
 
 # Create the secret in the AWS Secrets Manager
-aws --region "$region" secretsmanager  create-secret --name xkops-creds-secrets --secret-string '{"AWS_ACCESS_KEY_ID":"<aws-access-key-id>", "AWS_SECRET_ACCESS_KEY":"<aws-secret-access-key>","AWS_SESSION_TOKEN":"<aws-session-token>","ROBUSTA_UI_API_KEY":"<robusta-ui-api-key>","SLACK_API_KEY":"<slack-api-key>","PX_API_KEY":"<pixie-api-key>","PX_DEPLOY_KEY":"<pixie-deploy-key>"}'  &> /dev/null
-secret_arn=$(aws secretsmanager describe-secret --secret-id xkops-creds-secrets --query ARN --output text)
+aws --region "$region" secretsmanager  create-secret --name secret-xkops --secret-string '{"AWS_ACCESS_KEY_ID":"<aws-access-key-id>", "AWS_SECRET_ACCESS_KEY":"<aws-secret-access-key>","AWS_SESSION_TOKEN":"<aws-session-token>","ROBUSTA_UI_API_KEY":"<robusta-ui-api-key>","SLACK_API_KEY":"<slack-api-key>","PX_API_KEY":"<pixie-api-key>","PX_DEPLOY_KEY":"<pixie-deploy-key>"}'  &> /dev/null
+secret_arn=$(aws secretsmanager describe-secret --secret-id secret-xkops --query ARN --output text)
 #Print Secret ARN
 #echo "Secret ARN: $secret_arn"
 
