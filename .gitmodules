@@ -1,0 +1,3 @@
+[submodule "pre-commit-config"]
+	path = pre-commit-config
+	url = git@github.com:X-CBG/git-precommit-hooks.git

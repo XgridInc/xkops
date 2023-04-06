@@ -181,3 +181,8 @@ validate_healthy_deployment() {
     fi
 done
 }
+
+unpatch_default_storageclass() {
+    #unpatching default gp2 storage class
+    kubectl patch storageclass gp2 -p '{"metadata": {"annotations":{"storageclass.kubernetes.io/is-default-class":"false"}}}'
+}
