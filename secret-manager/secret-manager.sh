@@ -36,3 +36,5 @@ read -r cluster_name
 eksctl utils associate-iam-oidc-provider --region="$region" --cluster="$cluster_name" --approve
 
 eksctl create iamserviceaccount --name xkops-secret-sa --namespace xkops --region="$region" --cluster "$cluster_name" --attach-policy-arn "$policy_arn" --approve --override-existing-serviceaccounts
+
+kubectl apply -f ./secretproviderclass.yaml
