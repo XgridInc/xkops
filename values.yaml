@@ -1,0 +1,6 @@
+# User specific file
+# These values will be given by the end user and is required to install xkops helm chart.
+
+REGION: abc
+CLUSTER_NAME: abc
+SLACK_CHANNEL_NAME: abc
