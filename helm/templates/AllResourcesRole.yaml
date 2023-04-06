@@ -173,6 +173,7 @@ rules:
       - get
       - list
       - watch
+      - patch
   - nonResourceURLs:
     - "/metrics"
     verbs:
@@ -187,7 +188,7 @@ metadata:
   name: all-resource-role-binding
 subjects:
   - kind: ServiceAccount #Subject: default service account under xkops namespace
-    name: xkops-secret-sa
+    name: xkops-secret-creds-sa
     namespace: xkops
   - kind: ServiceAccount #Subject: kubecost-grafana service account under kubecost namespace
     name: kubecost-grafana
