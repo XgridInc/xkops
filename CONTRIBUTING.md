@@ -4,12 +4,14 @@ Thank you for your interest in joining our team and contributing to our project!
 
 ## Code of Conduct
 
+Xgrid follows the [CNCF Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md).
+
 We expect all contributors and participants in the XkOps project to behave in a respectful and professional manner. Any forms of harassment, discrimination, or other unacceptable behavior will not be tolerated.
 
-If you experience or witness any violations, please contact the project maintainers at [xk8s@xgrid.co].
+If you experience or witness any violations, please contact the project maintainers at [xk8s@xgrid.co](xk8s@xgrid.co).
 
 ## Development Environment
-
+xk8s@xgrid.co
 Instructions for setting up the development environment can be found in the [README.md](https://github.com/X-CBG/xk8s/blob/master/README.md) file.
 
 ## Open Issues
@@ -18,18 +20,15 @@ Check out the [issues page](https://github.com/X-CBG/xk8s/issues) for a list of 
 
 ## How to Contribute
 
-### Integrate Snyk with IDE
+### Integrate linters with IDE
 
-[Integrate Snyk with your IDE](https://docs.snyk.io/ide-tools) to detect any vulnerability while writing code and fix them at runtime before pushing your code to github.
+[Integrate Hadolint with your IDE](https://github.com/hadolint/hadolint) A smarter Dockerfile linter that helps you build best practice Docker images.
 
-following are the steps to integrate Snyk with your IDE.
+[Integrate Shellcheck with your IDE](https://github.com/koalaman/shellcheck) ShellCheck is a GPLv3 tool that gives warnings and suggestions for bash/sh shell scripts.
 
-- Create an account on [Snyk](https://snyk.io/)
-- Install Snyk Extension on your IDE.
-- Configure Snyk Extension.
-- Authenticate with your Snyk account.
+[Integrate Black Formatter with your IDE](https://github.com/psf/black) Black is the uncompromising Python code formatter.
 
-Snyk extension uses snyk API token for authentication.
+[Integrate Checkov with your IDE](https://github.com/bridgecrewio/checkov) Find and fix misconfigurations in infrastructure-as-code manifests.
 
 ### Choosing an Issue
 
@@ -70,7 +69,8 @@ Examples of unacceptable behavior by participants include:
 
 ## Contact
 
-If you have any questions or need help, please reach out to us at [xk8s@xgrid.co].
+If you have any questions or need help, Join our Slack channel [XkOps Community](http://xkopscommunity.slack.com/) or contact us via email at [xk8s@xgrid.co](xk8s@xgrid.co).
+
 
 ## Acknowledgements
 
