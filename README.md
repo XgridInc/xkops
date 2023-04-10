@@ -16,7 +16,6 @@ This all-in-one solution consolidates the insights obtained from these tools, ma
 Check the below video for a quick demo of XkOps.
 [![XkOps Demo](./screenshots/Demo-video.png)](https://drive.google.com/file/d/1dqWMABhVz6Mlm0vEhFN4dKy-wP6v9CT2/view?usp=sharing)
 
-
 ## 💡 Why XkOps?
 XkOps is a unified platform that provides true observability across Kubernetes clusters while being cost-optimized, fault-tolerant, and secure. With an abundance of tools available, implementing and managing multiple data platforms can become overwhelming and lead to additional costs.
 
