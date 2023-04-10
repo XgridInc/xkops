@@ -1,11 +1,26 @@
-#Cluster role which gives permissions to list,create,delete,update to all resources.
+# Copyright (c) 2023, Xgrid Inc, https://xgrid.co
+
+# Licensed under the Apache License, Version 2.0 (the 'License');
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an 'AS IS' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Cluster roles for XkOps.
+---
 kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: all-resource-role
 rules:
   - apiGroups: [""]
-    resources: 
+    resources:
       - configmaps
       - daemonsets
       - deployments
@@ -39,7 +54,7 @@ rules:
       - daemonsets.apps
       - deployments.apps
       - replicasets.apps
-      - statefulsets.apps 
+      - statefulsets.apps
       - configmaps
       - endpoints
       - nodes/metrics
@@ -47,7 +62,7 @@ rules:
       - nodes
       - pods
       - services
-    verbs: 
+    verbs:
       - get
       - list
       - watch
@@ -56,7 +71,7 @@ rules:
       - update
       - delete
   - apiGroups: ["rbac.authorization.k8s.io"]
-    resources:  
+    resources:
       - clusterroles
       - clusterrolebindings
       - configmaps
@@ -93,7 +108,7 @@ rules:
       - deployments.apps
       - replicasets.apps
       - statefulsets.apps
-    verbs: 
+    verbs:
       - get
       - list
       - watch
@@ -102,24 +117,24 @@ rules:
       - update
       - delete
   - apiGroups: ["autoscaling"]
-    resources: 
+    resources:
       - horizontalpodautoscalers
-    verbs: 
+    verbs:
       - get
       - list
       - watch
       - patch
       - update
   - apiGroups: ["extensions"]
-    resources: 
+    resources:
       - podsecuritypolicies
-    resourceNames: 
+    resourceNames:
       - kubecost-grafana
       - kubecost-cost-analyzer-psp
     verbs:
       - use
   - apiGroups: ["apps", "extensions"]
-    resources: 
+    resources:
       - daemonsets
       - deployments
       - deployments/scale
@@ -129,7 +144,7 @@ rules:
       - replicationcontrollers/scale
       - statefulsets
       - ingresses/status
-    verbs: 
+    verbs:
       - get
       - list
       - watch
@@ -138,10 +153,10 @@ rules:
       - update
       - delete
   - apiGroups: ["batch"]
-    resources: 
+    resources:
       - cronjobs
       - jobs
-    verbs: 
+    verbs:
       - get
       - list
       - watch
@@ -175,13 +190,13 @@ rules:
       - watch
       - patch
   - nonResourceURLs:
-    - "/metrics"
+      - /metrics
     verbs:
-    - get
----
-#Cluster role binding which binds the default service
-#account under the xkops namespace with all-resource-role cluster role
+      - get
 
+# Cluster role binding which binds the default service account
+# under the xkops namespace with all-resource-role cluster role
+---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
@@ -190,18 +205,19 @@ subjects:
   - kind: ServiceAccount #Subject: default service account under xkops namespace
     name: xkops-secret-creds-sa
     namespace: xkops
-  - kind: ServiceAccount #Subject: kubecost-grafana service account under kubecost namespace
+  - kind: ServiceAccount  # kubecost-grafana service account
+    # under kubecost namespace
     name: kubecost-grafana
     namespace: kubecost
-  - kind: ServiceAccount #Subject: kubecost-prometheus-server service account under kubecost namespace
+  - kind: ServiceAccount  # kubecost-prometheus-server service account
+    # under kubecost namespace
     name: kubecost-prometheus-server
     namespace: kubecost
-  - kind: ServiceAccount #Subject: kubecost-kube-state-metrics service account under kubecost namespace
+  - kind: ServiceAccount  # kubecost-kube-state-metrics service account
+    # under kubecost namespace
     name: kubecost-kube-state-metrics
     namespace: kubecost
-  
 roleRef:
-  kind: ClusterRole #Cluster role reference to be used for binding the subject with
+  kind: ClusterRole  # Cluster role reference to be used for binding the subject
   name: all-resource-role
   apiGroup: rbac.authorization.k8s.io
-  
