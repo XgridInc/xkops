@@ -14,7 +14,8 @@ XkOps provides an effortless way for users to manage their cluster and extract m
 This all-in-one solution consolidates the insights obtained from these tools, making it easier for users to make informed decisions and have centralized monitoring of their Kubernetes cluster.
 
 Check the below video for a quick demo of XkOps.
-[![XkOps Demo](./screenshots/Demo-video.png)](https://drive.google.com/file/d/1dqWMABhVz6Mlm0vEhFN4dKy-wP6v9CT2/view?usp=sharing)
+
+[![XkOps Demo](./screenshots/Demo-video.png)](https://drive.google.com/file/d/10e1XhDil7To9Fadd7vRjVnE_6lQO9Xsl/view?usp=sharing)
 
 ## 💡 Why XkOps?
 XkOps is a unified platform that provides true observability across Kubernetes clusters while being cost-optimized, fault-tolerant, and secure. With an abundance of tools available, implementing and managing multiple data platforms can become overwhelming and lead to additional costs.
@@ -48,7 +49,7 @@ To install XkOps, please follow these steps
 ### 🔐 Secret Manager Setup
 First, set up AWS secrets manager on your AWS account:
 - Refer to this [guide](https://docs.google.com/document/d/17fhQ0zJZtJGcWtnVD8NehUbFC-x9TrMP11XjyEFi370/edit?usp=sharing) for instructions on how to set up AWS secret manager OR
-- Use [this script](Place holder for file link-PR to be reviewed for this) to automate the setup process.
+- Use [this script](https://github.com/X-CBG/xk8s/blob/master/secret-manager/secret-manager.sh) to automate the setup process.
 
 ### 📥 Install XkOps
 1. Clone the repository and navigate to the cloned repo:
@@ -79,7 +80,7 @@ To report a new feature request or to report any issues or bugs encountered whil
 - [ ] Determining risk factors based on metrics from your Kubernetes cluster.
 - [ ] Extracting logs from pod using a logging solution
 ## How to contribute
-If you would like to help contribute to this GitHub Action, please see CONTRIBUTING.md
+If you would like to help contribute to this GitHub Action, please see [CONTRIBUTING.md](https://github.com/X-CBG/xk8s/blob/master/CONTRIBUTING.md)
 
 ## 🧾 License
 
