@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# yamllint disable
+# yamllint disable-file
 {{- range .Values.manifests }}
 {{- if eq (printf "%d" .priority) "1" }}
 {{ include .name }}
