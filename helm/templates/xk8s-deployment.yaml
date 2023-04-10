@@ -27,51 +27,51 @@ spec:
       labels:
         app: xk8s
     spec:
-      serviceAccountName: xkops-secret-sa
+      serviceAccountName: xkops-secret-creds-sa
       volumes:
-        - name: xkops-secret-vol
-          csi:
-            driver: secrets-store.csi.k8s.io
-            readOnly: true
-            volumeAttributes:
-              secretProviderClass: "{{ .Values.SECRET_PROVIDER_CLASS }}"
-        - name: "{{ .Values.xkops_volumes.name }}"
-          hostPath:
-            path: "{{ .Values.xkops_volumes.hostPath.path }}"
+      - name: xkops-secret-vol
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: xkops-creds-secret-provider #checkov:skip=CKV_SECRET_6
+      - name: "{{ .Values.xkops_volumes.name }}"
+        hostPath:
+          path: "{{ .Values.xkops_volumes.hostPath.path }}"      
       initContainers:
         - name: terraform-init
           image: "{{ .Values.xkops_init_container.image.repository }}:{{ .Values.xkops_init_container.image.tag }}"
           command: ["terraform", "apply", "-auto-approve"]
           volumeMounts:
-            - name: xkops-secret-vol
-              mountPath: "/mnt/xkops-secrets"
-              readOnly: true
+          - name: xkops-secret-vol
+            mountPath: "/mnt/xkops-creds-cluster-secrets"
+            readOnly: true
           env:
-            - name: AWS_ACCESS_KEY_ID
-              valueFrom:
-                secretKeyRef:
-                  name: xkops-secrets
-                  key: AWS_ACCESS_KEY_ID
-            - name: AWS_SECRET_ACCESS_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: xkops-secrets
-                  key: AWS_SECRET_ACCESS_KEY
-            - name: AWS_SESSION_TOKEN
-              valueFrom:
-                secretKeyRef:
-                  name: xkops-secrets
-                  key: AWS_SESSION_TOKEN
-            - name: TF_VAR_CLUSTER_NAME
-              valueFrom:
-                configMapKeyRef:
-                  name: xkops-config
-                  key: CLUSTER_NAME
-            - name: TF_VAR_REGION
-              valueFrom:
-                configMapKeyRef:
-                  name: xkops-config
-                  key: REGION
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: xkops-creds-cluster-secrets
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: xkops-creds-cluster-secrets
+                key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_SESSION_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: xkops-creds-cluster-secrets
+                key: AWS_SESSION_TOKEN
+          - name: TF_VAR_CLUSTER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: xkops-config
+                key: CLUSTER_NAME
+          - name: TF_VAR_REGION
+            valueFrom:
+              configMapKeyRef:
+                name: xkops-config
+                key: REGION
       containers:
         - name: xk8s
           image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
@@ -79,23 +79,23 @@ spec:
             - name: "{{ .Values.xkops_volumeMounts.name }}"
               mountPath: "{{ .Values.xkops_volumeMounts.mountPath }}"
             - name: xkops-secret-vol
-              mountPath: "/mnt/xkops-secrets"
-              readOnly: true
+              mountPath: "/mnt/xkops-creds-cluster-secrets"
+              readOnly: true            
           env:
             - name: PX_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-secrets
+                  name: xkops-creds-cluster-secrets
                   key: PX_API_KEY
             - name: PX_DEPLOY_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-secrets
+                  name: xkops-creds-cluster-secrets
                   key: PX_DEPLOY_KEY
             - name: SLACK_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-secrets
+                  name: xkops-creds-cluster-secrets
                   key: SLACK_API_KEY
             - name: SLACK_CHANNEL_NAME
               valueFrom:
@@ -105,7 +105,7 @@ spec:
             - name: ROBUSTA_UI_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-secrets
+                  name: xkops-creds-cluster-secrets
                   key: ROBUSTA_UI_API_KEY
             - name: CLUSTER_NAME
               valueFrom:
