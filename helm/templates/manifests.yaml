@@ -13,9 +13,9 @@
 # limitations under the License.
 
 {{- range .Values.manifests }}
-{{- if eq (printf "%d" .priority) "1" }}
-{{ include .name }}
-{{- end }}
+  {{- if eq (printf "%d" .priority) "1" }}
+    {{ include .name }}
+  {{- end }}
 {{- end }}
 
 {{- range .Values.manifests }}
