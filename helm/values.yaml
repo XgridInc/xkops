@@ -12,11 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+---
 # Default values for xkops and dashboard.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
----
 xkops_init_container:
   image:
     repository: xgridxcbg/kaizen
