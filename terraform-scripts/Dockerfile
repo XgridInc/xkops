@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# Cluster roles for XkOps.
-
 # Use an official Terraform image as the base
 FROM hashicorp/terraform:light
 
