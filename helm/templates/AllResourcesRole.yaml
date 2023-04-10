@@ -188,6 +188,7 @@ rules:
       - get
       - list
       - watch
+      - patch
   - nonResourceURLs:
       - /metrics
     verbs:
@@ -201,8 +202,8 @@ apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: all-resource-role-binding
 subjects:
-  - kind: ServiceAccount  # default service account under xkops namespace
-    name: xkops-secret-sa
+  - kind: ServiceAccount #Subject: default service account under xkops namespace
+    name: xkops-secret-creds-sa
     namespace: xkops
   - kind: ServiceAccount  # kubecost-grafana service account
     # under kubecost namespace

@@ -28,7 +28,7 @@ namespace:
 # Set the container image details for xkops
 xkops_image:
   repository: xgridxcbg/kaizen
-  tag: xkops-v3
+  tag: xkops-v4
   pullPolicy: Always
 
 # Set the container image details for dashboard
