@@ -79,8 +79,10 @@ To report a new feature request or to report any issues or bugs encountered whil
 - [ ] Implementation of a user interface.
 - [ ] Determining risk factors based on metrics from your Kubernetes cluster.
 - [ ] Extracting logs from pod using a logging solution
-## How to contribute
-If you would like to help contribute to this GitHub Action, please see [CONTRIBUTING.md](https://github.com/X-CBG/xk8s/blob/master/CONTRIBUTING.md)
+## 🤝 How to contribute
+We invite you to contribute to XkOps, which is a community driven project.  If you plan on contributing code, kindly go through our [contribution guide](https://github.com/X-CBG/xk8s/blob/master/CONTRIBUTING.md).
+- To report a bug or request a feature, you can submit a [GitHub issue](https://github.com/X-CBG/xk8s/issues "create a new issue").
+- For real-time discussions and immediate assistance, please join our [Slack channel](http://xkopscommunity.slack.com/).
 
 ## 🧾 License
 
