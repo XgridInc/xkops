@@ -19,9 +19,9 @@
 {{- end }}
 
 {{- range .Values.manifests }}
-{{- if eq (printf "%d" .priority) "2" }}
-{{ include .name }}
-{{- end }}
+  {{- if eq (printf "%d" .priority) "2" }}
+    {{ include .name }}
+  {{- end }}
 {{- end }}
 
 {{- range .Values.manifests }}
