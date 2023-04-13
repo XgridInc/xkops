@@ -79,4 +79,3 @@ def test_addon_addition():
         assert addon_info['addon']['addonName'] == addon_name
     except subprocess.CalledProcessError as e:
         assert False, f"Addon {addon_name} does not exist"
-        
