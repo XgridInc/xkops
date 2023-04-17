@@ -1,30 +1,30 @@
 table {
-    width: 100%;
-    margin: 20px 0;
-    border-collapse: collapse;
+  width: 100%;
+  margin: 20px 0;
+  border-collapse: collapse;
 }
 
 th {
-    text-align: left;
-    background-color: #f2f2f2;
-    padding: 10px;
-    border: 1px solid #ccc;
+  text-align: left;
+  background-color: #f2f2f2;
+  padding: 10px;
+  border: 1px solid #ccc;
 }
 
 td {
-    padding: 10px;
-    border: 1px solid #ccc;
+  padding: 10px;
+  border: 1px solid #ccc;
 }
 
 .table-container {
-    width: 80%;
-    margin: 0 auto;
+  width: 80%;
+  margin: 0 auto;
 }
 
 .volume-table tbody td {
-    text-align: center;
+  text-align: center;
 }
 
 .volume-table thead th {
-    text-align: center;
+  text-align: center;
 }
