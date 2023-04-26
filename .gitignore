@@ -3,6 +3,8 @@ __pycache__
 .vscode
 # Local .terraform directories
 **/.terraform/*
+.pytest_cache
+.terraform.lock.hcl
 
 # .tfstate files
 *.tfstate
