@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# This is a cleaner script for secret manager automation.
+# It removes all the installed dependencies for setting up secret manager.
 helm repo remove secrets-store-csi-driver
 helm repo remove aws-secrets-manager
 helm uninstall -n kube-system csi-secrets-store
