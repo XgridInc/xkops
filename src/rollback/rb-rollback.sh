@@ -20,13 +20,26 @@ source /src/commons/common-functions.sh
 print_prompt() {
     log "${CYAN}[INFO]" "[ROLLBACK]" "Initiating rollback of Robusta in your cluster.${CC}"
 }
-
 rb_rollback() {
+
+    # This function uninstalls and deletes the robusta helm release and namespace using helm uninstall and kubectl delete commands, respectively. If Helm is not installed, the function logs an error message and exits.
+
     if command -v helm &>/dev/null; then
         #Uninstall robusta using helm
-        helm uninstall robusta -n robusta > /dev/null
-        kubectl delete namespace robusta > /dev/null
-        log "${GREEN}[PASSED]" "[ROLLBACK]" "Robusta has been deleted from your cluster${CC}"
+        if helm uninstall robusta -n robusta > /dev/null; then
+            log "${GREEN}[PASSED]" "[ROLLBACK]" "Robusta has been uninstalled from your cluster.${CC}"
+        else
+            log "${RED}[ERROR]" "[ROLLBACK]" "Failed to uninstall Robusta from your cluster. Exiting...${CC}"
+            exit 1
+        fi
+
+        if kubectl delete namespace robusta > /dev/null; then
+            log "${GREEN}[PASSED]" "[ROLLBACK]" "Robusta namespace has been deleted from your cluster.${CC}"
+        else
+            log "${RED}[ERROR]" "[ROLLBACK]" "Failed to delete Robusta namespace from your cluster. Exiting...${CC}"
+            exit 1
+        fi
+            log "${GREEN}[PASSED]" "[ROLLBACK]" "Robusta has been deleted from your cluster${CC}"
     else
         # If Helm is not installed, print an error message and exit.
         log "${RED}[ERROR]" "[ROLLBACK]" "Helm is not installed. Exiting...${CC}"
@@ -34,6 +47,19 @@ rb_rollback() {
         exit 1
     fi
 }
+# rb_rollback() {
+#     if command -v helm &>/dev/null; then
+#         #Uninstall robusta using helm
+#         helm uninstall robusta -n robusta > /dev/null
+#         kubectl delete namespace robusta > /dev/null
+#         log "${GREEN}[PASSED]" "[ROLLBACK]" "Robusta has been deleted from your cluster${CC}"
+#     else
+#         # If Helm is not installed, print an error message and exit.
+#         log "${RED}[ERROR]" "[ROLLBACK]" "Helm is not installed. Exiting...${CC}"
+#         log "${CYAN}[INFO]" "[ROLLBACK]" "Install Helm.${CC}"
+#         exit 1
+#     fi
+# }
 
 print_prompt
 rb_rollback

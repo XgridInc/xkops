@@ -48,9 +48,18 @@ kubectl_kc_checker() {
     kubectl_kcImage_checker
 }
 
-# Function finds namespace that we are looking for using kubectl tool.
+# Function finds kubecost namespace that we are looking for using kubectl tool.
 kubectl_kcNS_checker() {
-    returnedNamespace=$(kubectl -n kubecost get ns --no-headers 2>&1 | grep -i kubecost | awk '{print $1}')
+    returnedNamespace=$(kubectl -n kubecost get ns --no-headers 2>&1)
+
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for kubecost namespace.${CC}"
+        exit 1 # Exit with a non-zero code to indicate failure.
+    fi
+
+    returnedNamespace=$(echo "$returnedNamespace" | grep -i kubecost | awk '{print $1}')
 
     if [ "$returnedNamespace" == "kubecost" ]; then
         log "${GREEN}[INFO]" "[CHECKER]" "Namespace $returnedNamespace found in the cluster.${CC}"
@@ -63,6 +72,13 @@ kubectl_kcNS_checker() {
 # This function checks whether kubecost deployment is present in the cluster or not.
 kubectl_kcDeploy_checker() {
     kubecostDeploy=$(kubectl -n kubecost get deploy --no-headers 2>&1 | grep -i kubecost-cost-analyzer | awk '{print $1}')
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for kubecost deployment.${CC}"
+        exit 1 # Exit the script with a non-zero code to indicate failure.
+    fi
+
     if [ "$kubecostDeploy" == "kubecost-cost-analyzer" ]; then
         log "${GREEN}[INFO]" "[CHECKER]" "Kubecost deployment found in cluster.${CC}"
     else
@@ -74,6 +90,13 @@ kubectl_kcDeploy_checker() {
 # This function checks whether image used by kubecost deployment is correct or not.
 kubectl_kcImage_checker() {
     kubecostImage=("$(kubectl -n kubecost get deployment kubecost-cost-analyzer -o=jsonpath='{$.spec.template.spec.containers[:1].image}')")
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for kubecost image.${CC}"
+        exit 1 # Exit the script with a non-zero code to indicate failure.
+    fi
+    
     image="${kubecostImage:0:27}"
     deployment="kubecost-cost-analyzer"
     if [[ $image == "gcr.io/kubecost1/cost-model" ]]; then
@@ -92,6 +115,12 @@ curl_kc_checker() {
     kc_deploy=$(curl --silent "$KUBERNETES_API_SERVER_URL"/apis/apps/v1/deployments \
         --cacert "$CA_CERT_PATH" \
         --header "${HEADERS[@]}")
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while curling the Kubernetes API server.${CC}"
+        exit 1 # Exit the script with a non-zero code to indicate failure.
+    fi
 
     # Extracting Name and Image from Kubecost Deployment.
     kc_deploy_name=$(echo "$kc_deploy" | grep -o '"name": "[^"]*' | head -n1)
@@ -103,11 +132,11 @@ curl_kc_checker() {
         # Checking the correctness of image in Kubecost Deployment.
         if ! [[ $kc_deploy_image == *"$KC_IMAGE"* ]]; then
             log "${RED}[ERROR]" "[CHECKER]" "Kubecost not found.${CC}"
-            exit 0
+            exit 0 
         fi
     else
         log "${RED}[ERROR]" "[CHECKER]" "Kubecost not found.${CC}"
-        exit 0
+        exit 0 
     fi
 
     log "${GREEN}[INFO]" "[CHECKER]" "Kubecost Exists In Your Cluster.${CC}"

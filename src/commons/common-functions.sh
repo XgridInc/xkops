@@ -74,18 +74,41 @@ helm_installer() {
     
     # This function downloads helm 3 binary using curl and installs it.
     
+    log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Downloading and installing Helm.${CC}"
     
-    _=$(curl -s -O https://get.helm.sh/helm-v3.10.0-linux-amd64.tar.gz >/dev/null)
-    _=$(tar -zxvf helm-v3.10.0-linux-amd64.tar.gz >/dev/null)
-    _=$(cp ./linux-amd64/helm /usr/local/bin/)
-    if command -v helm &>/dev/null; then
-        log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Helm has been installed successfully.${CC}"
+    if curl -s -O https://get.helm.sh/helm-v3.10.0-linux-amd64.tar.gz >/dev/null &&
+        tar -zxvf helm-v3.10.0-linux-amd64.tar.gz >/dev/null &&
+        cp ./linux-amd64/helm /usr/local/bin/; then
+        if command -v helm &>/dev/null; then
+            log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Helm has been installed successfully.${CC}"
+            return 0
+        else
+            log "${RED}[ERROR]" "[PRE-FLIGHT]" "Helm is not installed. Exiting...${CC}"
+            return 1
+        fi
     else
-        log "${RED}[ERROR]" "[PRE-FLIGHT]" "Helm is not installed. Exiting...${CC}"
-        exit 1
+        log "${RED}[ERROR]" "[PRE-FLIGHT]" "Failed to download and install Helm. Exiting...${CC}"
+        return 1
     fi
 }
-
+# helm_installer() {
+    
+#     # Parameters
+#     # :None
+    
+#     # This function downloads helm 3 binary using curl and installs it.
+    
+    
+#     _=$(curl -s -O https://get.helm.sh/helm-v3.10.0-linux-amd64.tar.gz >/dev/null)
+#     _=$(tar -zxvf helm-v3.10.0-linux-amd64.tar.gz >/dev/null)
+#     _=$(cp ./linux-amd64/helm /usr/local/bin/)
+#     if command -v helm &>/dev/null; then
+#         log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Helm has been installed successfully.${CC}"
+#     else
+#         log "${RED}[ERROR]" "[PRE-FLIGHT]" "Helm is not installed. Exiting...${CC}"
+#         exit 1
+#     fi
+# }
 
 check_permissions() {
 
@@ -93,24 +116,57 @@ check_permissions() {
     # :None
 
     # This function checks if service account has permission to list deployments.
-    # If the service account has no permisions then the script will terminate.
-    
+    # If the service account has no permissions then the script will terminate.
+
     FORBIDDEN_ERROR_MESSAGE="Forbidden"
+
+    log "${CYAN}[INFO]" "[CHECKER]" "Checking if service account has permissions to list deployments.${CC}"
 
     deploy_permission=$(curl --silent "$KUBERNETES_API_SERVER_URL/apis/apps/v1/deployments" \
         --cacert "$CA_CERT_PATH" \
         --header "${HEADERS[@]}")
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Failed to get deployment permissions. Exiting...${CC}"
+        exit 1
+    fi
 
     # Extract the "reason" field from the response.
     reason=$(echo "$deploy_permission" | grep -o '"reason": "[^"]*')
 
     # Check if the "reason" field contains the word "Forbidden"
     if [[ $reason == *"$FORBIDDEN_ERROR_MESSAGE"* ]]; then
-        log "${RED}[ERROR]" "[CHECKER]" "Forbidden, cannot list deployments. Exiting${CC}"
-        log "${CYAN}[INFO]" "[CHECKER]" "Create clusterrole and clusterrole binding with enough permissions ${CC}"
+        log "${RED}[ERROR]" "[CHECKER]" "Forbidden, cannot list deployments. Exiting.${CC}"
+        log "${CYAN}[INFO]" "[CHECKER]" "Create clusterrole and clusterrole binding with enough permissions.${CC}"
         exit 1
+    else
+        log "${GREEN}[INFO]" "[CHECKER]" "Service account has permissions to list deployments.${CC}"
     fi
 }
+# check_permissions() {
+
+#     # Parameters
+#     # :None
+
+#     # This function checks if service account has permission to list deployments.
+#     # If the service account has no permisions then the script will terminate.
+    
+#     FORBIDDEN_ERROR_MESSAGE="Forbidden"
+
+#     deploy_permission=$(curl --silent "$KUBERNETES_API_SERVER_URL/apis/apps/v1/deployments" \
+#         --cacert "$CA_CERT_PATH" \
+#         --header "${HEADERS[@]}")
+
+#     # Extract the "reason" field from the response.
+#     reason=$(echo "$deploy_permission" | grep -o '"reason": "[^"]*')
+
+#     # Check if the "reason" field contains the word "Forbidden"
+#     if [[ $reason == *"$FORBIDDEN_ERROR_MESSAGE"* ]]; then
+#         log "${RED}[ERROR]" "[CHECKER]" "Forbidden, cannot list deployments. Exiting${CC}"
+#         log "${CYAN}[INFO]" "[CHECKER]" "Create clusterrole and clusterrole binding with enough permissions ${CC}"
+#         exit 1
+#     fi
+# }
 
 pod_status_verifier() {
 
@@ -149,7 +205,6 @@ pod_status_verifier() {
     done
 }
 
-
 get_eks_cluster_name() {
 
     # Parameters
@@ -163,10 +218,15 @@ get_eks_cluster_name() {
 
     # Get the cluster name associated with the current context
     cluster_name=$(kubectl config get-contexts "$current_context" | awk '{print $3}' | grep -Eo 'arn:aws:eks:[a-zA-Z0-9-]*:[0-9]*:[cluster/[a-zA-Z0-9-]*|@[a-zA-Z0-9-]*')
-    export cluster_name
-    rm -rf root/.kube/config
-    # Print the cluster name
-    return "$cluster_name"
+    if [[ -z $cluster_name ]]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Failed to get EKS cluster name. Exiting.${CC}"
+        exit 1
+    else
+        export cluster_name
+        rm -rf root/.kube/config
+        # Print the cluster name
+        return "$cluster_name"
+    fi
 }
 
 # The wrapper_function ensures that the deployment and pods in a namespace are fully operational by waiting for them to be in a running state.
