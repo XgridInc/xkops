@@ -14,6 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Skip this check
 # shellcheck source=/dev/null
 source /src/config/kc-config.sh
 source /src/commons/common-functions.sh
