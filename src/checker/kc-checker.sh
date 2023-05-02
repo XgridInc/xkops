@@ -14,10 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# shellcheck source=/dev/null
 source /src/config/kc-config.sh
 source /src/commons/common-functions.sh
 
-# Function that starts basic execution of the script
+# Function that starts basic execution of the checker script
 print_prompt() {
     log "${CYAN}[INFO]" "[CHECKER]" "Detecting Kubecost in the Kubernetes cluster.${CC}"
 }
@@ -96,7 +97,7 @@ kubectl_kcImage_checker() {
         log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for kubecost image.${CC}"
         exit 1 # Exit the script with a non-zero code to indicate failure.
     fi
-    
+
     image="${kubecostImage:0:27}"
     deployment="kubecost-cost-analyzer"
     if [[ $image == "gcr.io/kubecost1/cost-model" ]]; then
@@ -132,11 +133,11 @@ curl_kc_checker() {
         # Checking the correctness of image in Kubecost Deployment.
         if ! [[ $kc_deploy_image == *"$KC_IMAGE"* ]]; then
             log "${RED}[ERROR]" "[CHECKER]" "Kubecost not found.${CC}"
-            exit 0 
+            exit 0
         fi
     else
         log "${RED}[ERROR]" "[CHECKER]" "Kubecost not found.${CC}"
-        exit 0 
+        exit 0
     fi
 
     log "${GREEN}[INFO]" "[CHECKER]" "Kubecost Exists In Your Cluster.${CC}"
