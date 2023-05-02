@@ -1,7 +1,5 @@
 # XkOps
 
-![Xgrid Logo](https://media-exp1.licdn.com/dms/image/C4D0BAQHn43yTM8np2Q/company-logo_200_200/0?e=2159024400&v=beta&t=HCCA_wnetIM7butwiHWBYnXgVzn4pjM9Dq5YDMMJIkE "Xgrid Logo")
-
 
 [![Lint Code Base](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml)
 [![Package and Publish Docker Image](https://github.com/X-CBG/xk8s/actions/workflows/build_publish_scan.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/build_publish_scan.yml)
@@ -68,7 +66,7 @@ First, set up AWS secrets manager on your AWS account:
 5. Create an unclaimed volume in your cluster and delete it using the delete button on the dashboard. You can verify the volume deletion action both from the dashboard and the cluster.
 
 ## 🚧 Road Map
-To report a new feature request or to report any issues or bugs encountered while using XkOps, please feel free to [create a new issue](https://github.com/X-CBG/xk8s/issues "create a new issue") on the project's GitHub repository or contact the development team at nbajwa@xgrid.co or sidra.irshad@xgrid.co via email. The following features are currently either in progress or planned:
+To report a new feature request or to report any issues or bugs encountered while using XkOps, please feel free to [create a new issue](https://github.com/X-CBG/xk8s/issues "create a new issue") on the project's GitHub repository or contact the development team at xkops_community@xgrid.co via email. The following features are currently either in progress or planned:
 
 - [X] Checking for observability tools in your Kubernetes cluster.
 - [X] Installing tools to mitigate risk.

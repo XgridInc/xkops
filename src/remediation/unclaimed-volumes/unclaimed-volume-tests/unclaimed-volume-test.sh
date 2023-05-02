@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-unclaimed_pv=""
+unclaimedPv=""
 
 # This function get_unclaimed_volume is used to retrieve the list of unclaimed Persistent Volumes in a Kubernetes cluster using the Kubecost API
 get_unclaimed_volume() {
@@ -25,17 +25,17 @@ get_unclaimed_volume() {
     response=$(curl -s "$endpoint")
 
     # Parse the response to get the list of all volumes
-    pv_names=$(echo "$response" | jq '.items[].metadata.name')
+    pvNames=$(echo "$response" | jq '.items[].metadata.name')
 
     # Gets statuses of all available volumes
-    pv_statuses=$(echo "$response" | jq '.items[].status.phase')
+    pvStatuses=$(echo "$response" | jq '.items[].status.phase')
 
     # Iterate over the list of statuses and get the name of those pv's whose status is available
 
-    for i in $(echo "$pv_statuses" | grep -n "Available"); do
-        line_num=$(echo "$i" | cut -d: -f1)
-        name=$(echo "$pv_names" | sed -n "${line_num}p")
-        unclaimed_pv=${name//\"/}
+    for i in $(echo "$pvStatuses" | grep -n "Available"); do
+        lineNum=$(echo "$i" | cut -d: -f1)
+        name=$(echo "$pvNames" | sed -n "${lineNum}p")
+        unclaimedPv=${name//\"/}
     done
 
 }
@@ -43,12 +43,12 @@ get_unclaimed_volume() {
 # This function trigger_robusta_action is used to trigger a delete action on an unclaimed Persistent Volume in a Kubernetes cluster using the Robusta API
 trigger_robusta_action() {
     # Trigger robusta action to delete unclaimed volume
-    result=$(curl -X POST http://robusta-runner.robusta.svc.cluster.local/api/trigger -H 'Content-Type: application/json' -d '{"action_name": "delete_persistent_volume", "action_params": {"name": "'"$unclaimed_pv"'"}}' 2>/dev/null | head -n 1)
+    result=$(curl -X POST http://robusta-runner.robusta.svc.cluster.local/api/trigger -H 'Content-Type: application/json' -d '{"action_name": "delete_persistent_volume", "action_params": {"name": "'"$unclaimedPv"'"}}' 2>/dev/null | head -n 1)
 
     # Check the response of the delete action if the response is success, it means pv is deleted successfully.
     # We use this check to confirm if volume is deleted successfully
     if echo "$result" | grep -q '"success":true'; then
-        echo "Unclaimed PV $unclaimed_pv deleted successfully"
+        echo "Unclaimed PV $unclaimedPv deleted successfully"
     else
         echo "PV not deleted"
     fi
@@ -58,13 +58,13 @@ trigger_robusta_action() {
 # This function verifies the deleted volume. It stores already retireved volume in a separate variable and then gets pvs data through get_unclaimed_volume function
 verify_deletion() {
     # We store already retrieved pv name in a variable to compare later
-    old_pv=$unclaimed_pv
-    unclaimed_pv=""
+    oldPv=$unclaimedPv
+    unclaimedPv=""
     # Get unclaimed volume from kubecost
     get_unclaimed_volume
 
-    if [[ "$old_pv" == "$unclaimed_pv" ]]; then
-        echo "Volume $old_pv is not deleted"
+    if [[ "$oldPv" == "$unclaimedPv" ]]; then
+        echo "Volume $oldPv is not deleted"
     else
         echo "PV deleted and confirmed"
     fi

@@ -30,7 +30,7 @@ px_installer() {
   log "${CYAN}[INFO]" "[INSTALLER]" "Deploying Pixie using Helm..${CC}"
   helm repo add pixie-operator https://pixie-operator-charts.storage.googleapis.com &>/dev/null
   helm repo update &>/dev/null
-  helm install pixie pixie-operator/pixie-operator-chart --set deployKey="$PX_DEPLOY_KEY" --set clusterName=xgrid-website-migration --namespace pl --create-namespace &>/dev/null
+  helm install pixie pixie-operator/pixie-operator-chart --set deployKey="$PX_DEPLOY_KEY" --set clusterName="${CLUSTER_NAME}" --namespace "${PLNS}" --create-namespace &>/dev/null
   log "${CYAN}[INFO]" "[INSTALLER]" "Waiting for Pixie deployments to become available ${CC}"
   
   # Calling wait_for_deploy/pod function with namespace as an argument
@@ -39,9 +39,9 @@ px_installer() {
   validate_healthy_deployment "$PLNS"
   
   # check for vizier status
-  vizier_status=0
-  while [ "$vizier_status" -ne 1 ]; do
-    vizier_status=$(px get viziers -o json | jq -c '. | select(.ClusterName == "xgrid-website-migration") | .Status')
+  vizierStatus=0
+  while [ "$vizierStatus" -ne 1 ]; do
+    vizierStatus=$(px get viziers -o json | jq -c '. | select(.ClusterName == "${CLUSTER_NAME}") | .Status')
   done
   log "${GREEN}[PASSED]" "[INSTALLER]" "Pixie has been deployed to your cluster${CC}"
   exit 0

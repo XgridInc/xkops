@@ -44,7 +44,7 @@ export HELM_VALUES=generated_values.yaml #File required to installed robusta
 # read -rp 'Enter slack channel name: ' slack_channel_name
 
 #These values are coming from environment variables set on container
-export CLUSTER_NAME=$CLUSTER_NAME
+
 export SLACK_API_KEY=$SLACK_API_KEY
 export SLACK_CHANNEL_NAME=$SLACK_CHANNEL_NAME
 export ROBUSTA_UI_API_KEY=$ROBUSTA_UI_API_KEY

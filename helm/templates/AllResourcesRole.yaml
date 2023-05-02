@@ -181,6 +181,21 @@ rules:
       - watch
       - patch
       - create
+  - apiGroups: ["apiregistration.k8s.io"]
+    resources:
+      - apiservices
+    verbs:
+      - get
+      - list
+  - apiGroups: ["networking.k8s.io"]
+    resources:
+      - ingresses
+      - networkpolicies
+    verbs:
+      - get
+      - list
+      - watch
+  
   - apiGroups: ["storage.k8s.io"]
     resources:
       - storageclasses
@@ -203,7 +218,7 @@ metadata:
   name: all-resource-role-binding
 subjects:
   - kind: ServiceAccount #Subject: default service account under xkops namespace
-    name: xkops-secret-creds-sa
+    name: xkops-my-secret-sa
     namespace: xkops
   - kind: ServiceAccount  # kubecost-grafana service account
     # under kubecost namespace

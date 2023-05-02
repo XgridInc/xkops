@@ -33,10 +33,10 @@ check_vizier() {
    
     #TODO: [noman-xg] check specifically against the name of the cluster instead of tailing.
     # Get status of Vizier.
-    vizier_status=$(px get viziers -o json | jq -c '. | select(.ClusterName == "xgrid-website-migration") | .Status')
+    vizierStatus=$(px get viziers -o json | jq -c '. | select(.ClusterName == "${CLUSTER_NAME}") | .Status')
     
     # check if Vizier is in healthy state or not.
-    if [ "$vizier_status" -ne 1 ]; then
+    if [ "$vizierStatus" -ne 1 ]; then
         log_test "${RED}[FAILED]" "[TEST]" "Pixie Vizier is not in healthy state.${CC}"
     else
         log_test "${GREEN}[PASSED]" "[TEST]" "Pixie Vizier is in healthy state.${CC}"
@@ -49,7 +49,7 @@ check_vizier() {
 px_demo_action() {
 
     log_test "${CYAN}[INFO]" "[TEST]" "Pixie Demo Action. ${CC}"
-    pod_name="$PX_TEST_NS/$TEST_POD"
+    podName="$PX_TEST_NS/$TEST_POD"
 
     #check whether the test namespace exists already or not
     if ! kubectl get namespace "$PX_TEST_NS" &>/dev/null; then
@@ -58,7 +58,7 @@ px_demo_action() {
     fi
     
     #check whether the test-pod in test namespace exists or not
-    if ! kubectl get pod "$pod_name" -n "$PX_TEST_NS" &>/dev/null; then
+    if ! kubectl get pod "$podName" -n "$PX_TEST_NS" &>/dev/null; then
         # Create a pod in the test namespace
         kubectl create -f /src/manifests/test-pod.yaml &>/dev/null
     fi
@@ -67,9 +67,9 @@ px_demo_action() {
     aws eks update-kubeconfig --region ap-southeast-1 --name xgrid-website-migration &>/dev/null
 
     # Execute a Pxl script to get pods info in a certain namespace. If it returns true, it means Pixie is successfully deployed and actively monitoring the cluster.
-    pod_found=$(px run px/pods -o json -- --namespace "$PX_TEST_NS"  | jq --arg pod_name "$pod_name" 'select(._tableName_ == "Pods List") and select(.pod == $pod_name)')    
+    podFound=$(px run px/pods -o json -- --namespace "$PX_TEST_NS"  | jq --arg pod_name "$podName" 'select(._tableName_ == "Pods List") and select(.pod == $podName)')    
 
-    if [[ $pod_found == "true" ]]; then
+    if [[ $podFound == "true" ]]; then
 
         log_test "${GREEN}[PASSED]" "[TEST]" "Successfully queried for test pod using Pixie. ${CC}"
     else
