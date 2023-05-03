@@ -83,4 +83,5 @@ repos:
     hooks:
       - id: checkov
         exclude: "(.pre-commit-config.yaml)"
+        files: .*\.(tf|yml|yaml|json)
         args: ['--quiet', '--compact', '--config-file=.checkov.yaml']
