@@ -82,7 +82,7 @@ repos:
     rev: 2.3.214
     hooks:
       - id: checkov
-        args: ["-d", ".", "--check", "CKV_SECRET_","CKV_SECRET_2",
+        args: ["-d", ".", "--check", "CKV_SECRET_1","CKV_SECRET_2",
         "CKV_SECRET_4", "CKV_SECRET_6", "CKV_SECRET_9", "CKV_SECRET_12",
         "CKV_SECRET_13","CKV_SECRET_14","CKV_SECRET_19","CKV_DOCKER_1",
         "CKV_DOCKER_4", "CKV_DOCKER_5", "CKV_DOCKER_7", "CKV2_DOCKER_1",
