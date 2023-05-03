@@ -85,3 +85,9 @@ repos:
         exclude: "(.pre-commit-config.yaml)"
         files: .*\.(tf|yml|yaml|json)
         args: ['--quiet', '--compact', '--config-file=.checkov.yaml']
+  # Repository for shellcheck hook
+  - repo: https://github.com/koalaman/shellcheck-precommit
+    rev: v0.7.2
+    hooks:
+    -   id: shellcheck
+        args: ["--severity=error"]
