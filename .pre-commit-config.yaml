@@ -82,7 +82,7 @@ repos:
     rev: 2.3.214
     hooks:
       - id: checkov
-        args: ["-d", ".","-c", "CKV_DOCKER_1" ]
+        args: ["-c", "CKV_DOCKER_1" ]
   # Repository for shellcheck hook
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.7.2
