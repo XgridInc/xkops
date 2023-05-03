@@ -83,4 +83,3 @@ repos:
     hooks:
     -   id: shellcheck
         args: ["--severity=error"]
-# comment
