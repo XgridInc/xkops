@@ -16,6 +16,7 @@ FROM ubuntu:22.04
 
 COPY src /src
 COPY Makefile /
+#test
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update && \
