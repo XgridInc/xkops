@@ -4,7 +4,7 @@ name: Checkov vulnerability scan
 on:
   pull_request:
     branches: [master, main]
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,8 +13,8 @@ jobs:
       # Checkout the repository
       - uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}        
-      
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       # Install checkov dependencies
       - name: Install dependencies
         run: |
@@ -54,7 +54,7 @@ jobs:
       - name: Terraform Resource Scan
         run: |
           checkov -d . --check CKV_AWS_1,CKV_AWS_3,CKV_AWS_7,\
-          CKV_AWS_8,CKV_AWS_9,CKV_AWS_23,CKV_AWS_24CKV_AWS_25,\
+          CKV_AWS_8,CKV_AWS_9,CKV_AWS_23,CKV_AWS_24,CKV_AWS_25,\
           CKV_AWS_32,CKV_AWS_33,CKV_AWS_38,CKV_AWS_39,CKV_AWS_40,\
           CKV_AWS_41,CKV_AWS_45,CKV_AWS_46,CKV_AWS_49,CKV_AWS_51,\
           CKV_AWS_58,CKV_AWS_60,CKV_AWS_59,CKV_AWS_61,CKV_AWS_62,\
