@@ -16,6 +16,7 @@
 
 source /src/config/config.sh
 source /src/commons/common-functions.sh
+source /src/config/rb-config.sh
 
 print_prompt() {
     log "${CYAN}[INFO]" "[ROLLBACK]" "Initiating rollback of Robusta in your cluster.${CC}"
@@ -24,8 +25,8 @@ print_prompt() {
 rb_rollback() {
     if command -v helm &>/dev/null; then
         #Uninstall robusta using helm
-        helm uninstall robusta -n robusta > /dev/null
-        kubectl delete namespace robusta > /dev/null
+        helm uninstall robusta -n "${RB_NAMESPACE}" > /dev/null
+        kubectl delete namespace "${RB_NAMESPACE}" > /dev/null
         log "${GREEN}[PASSED]" "[ROLLBACK]" "Robusta has been deleted from your cluster${CC}"
     else
         # If Helm is not installed, print an error message and exit.

@@ -14,6 +14,6 @@
 
 # These values will be given by the end user and is required to install xkops helm chart.
 
-REGION: abc
-CLUSTER_NAME: abc
-SLACK_CHANNEL_NAME: abc
+REGION: ap-southeast-1
+CLUSTER_NAME: xkops-cluster-2
+SLACK_CHANNEL_NAME: robusta-test

@@ -29,4 +29,5 @@ SERVICE_ACCOUNT_TOKEN=$(cat /var/run/secrets/kubernetes.io/serviceaccount/token)
 
 # Set the HTTP headers
 export HEADERS=("Authorization: Bearer $SERVICE_ACCOUNT_TOKEN")
+export CLUSTER_NAME=$CLUSTER_NAME
 

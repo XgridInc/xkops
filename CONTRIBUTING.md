@@ -4,14 +4,14 @@ Thank you for your interest in joining our team and contributing to our project!
 
 ## Code of Conduct
 
-Xgrid follows the [CNCF Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md).
+Xkops follows the [CNCF Code of Conduct](https://github.com/cncf/foundation/blob/master/code-of-conduct.md).
 
 We expect all contributors and participants in the XkOps project to behave in a respectful and professional manner. Any forms of harassment, discrimination, or other unacceptable behavior will not be tolerated.
 
-If you experience or witness any violations, please contact the project maintainers at [xk8s@xgrid.co](xk8s@xgrid.co).
+If you experience or witness any violations, please contact our team at [xkops_community@xgrid.co](xkops_community@xgrid.co).
 
 ## Development Environment
-xk8s@xgrid.co
+xkops_community@xgrid.co
 Instructions for setting up the development environment can be found in the [README.md](https://github.com/X-CBG/xk8s/blob/master/README.md) file.
 
 ## Open Issues
@@ -69,7 +69,7 @@ Examples of unacceptable behavior by participants include:
 
 ## Contact
 
-If you have any questions or need help, Join our Slack channel [XkOps Community](http://xkopscommunity.slack.com/) or contact us via email at [xk8s@xgrid.co](xk8s@xgrid.co).
+If you have any questions or need help, Join our Slack channel [XkOps Community](http://xkopscommunity.slack.com/) or contact us via email at [xkops_community@xgrid.co](xkops_community@xgrid.co).
 
 
 ## Acknowledgements

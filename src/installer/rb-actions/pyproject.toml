@@ -2,7 +2,7 @@
 name = "my_playbook_repo"
 version = "0.0.1"
 description = ""
-authors = ["wahaj <wahaj.ali@xgrid.co>"]
+authors = ["xkops <xkops_community@xgrid.co>"]
 
 # if playbook requires additional dependencies
 [tool.poetry.dependencies]
