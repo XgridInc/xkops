@@ -53,32 +53,7 @@ check_values_file() {
         fi
     fi
 }
-# check_values_file() {
 
-#     log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Searching for generated_values.yaml files.${CC}"
-#     log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Pre-flight Directory: $PREFLIGHT_DIR_PATH${CC}."
-
-#     #Check if file exists in current directory (generated_values.yaml)
-#     if [[ -f "$PREFLIGHT_DIR_PATH/$HELM_VALUES" ]]; then
-#         log "${GREEN}[INFO]" "[PRE-FLIGHT]" "$HELM_VALUES found at $PREFLIGHT_DIR_PATH.${CC}"
-#     else
-#         #File not found
-#         #Check robusta-tool installation
-#         #Generate generated_values.yaml file
-#         log "${CYAN}[INFO]" "[PRE-FLIGHT]" "$HELM_VALUES not found in $PREFLIGHT_DIR_PATH. Generating...${CC}"
-#         rb_cli_checker
-#         generate_values_file "$HELM_VALUES"
-#         if [[ -f "$PREFLIGHT_DIR_PATH/$HELM_VALUES" ]]; then
-#             log "${GREEN}[INFO]" "[PRE-FLIGHT]" "generated_values.yaml generated at $PREFLIGHT_DIR_PATH${CC}."
-#         else
-#             log "${RED}[ERROR]" "[PRE-FLIGHT]" "generated_values.yaml not generated at $PREFLIGHT_DIR_PATH${CC}. Exiting...${CC}"
-#             log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Use Robusta CLI to create generated_values.yaml file at $PREFLIGHT_DIR_PATH${CC}."
-#             exit 1
-#         fi
-
-#     fi
-
-# }
 rb_cli_checker() {
 
     # This function checks if the Robusta CLI is installed and configured properly. If the Robusta CLI is not installed, the function will install it using rb_cli_installer.
@@ -107,27 +82,6 @@ rb_cli_checker() {
         fi
     fi
 }
-# rb_cli_checker() {
-
-#     log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Checking if Robusta-CLI is configured.${CC}"
-
-#     #Check if robusta-cli tool is present
-#     if command -v robusta &>/dev/null; then
-#         log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Robusta CLI is installed. $(robusta version).${CC}"
-#         return
-#     else
-#         #Install robusta-cli if not present
-#         log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Robusta CLI not found. Installing...${CC}"
-#         rb_cli_installer
-#         if command -v robusta &>/dev/null; then
-#             log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Robusta CLI is installed. $(robusta version)${CC}"
-#         else
-#             log "${RED}[ERROR]" "[PRE-FLIGHT]" "Robusta CLI failed to install. Exiting...${CC}"
-#             log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Install Robusta CLI.${CC}"
-#             exit 1
-#         fi
-#     fi
-# }
 
 rb_cli_installer() {
     #This functions installs pip and robusta-cli. Pip is required to install robusta-cli

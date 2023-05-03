@@ -41,10 +41,6 @@ kc_rollback() {
     fi
         log "${GREEN}[PASSED]" "[ROLLBACK]" "Kubecost has been deleted from your cluster${CC}"
 }
-# kc_rollback() {
-#     helm uninstall kubecost -n kubecost &>/dev/null
-#     kubectl delete namespace kubecost &>/dev/null
-#     log "${GREEN}[PASSED]" "[ROLLBACK]" "Kubecost has been deleted from your cluster${CC}"
-# }
+
 print_prompt
 kc_rollback

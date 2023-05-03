@@ -23,7 +23,7 @@ log() {
     # :var message: Message to log
 
     #This functions saves the messages passed to it in /tmp/app.log path.
-    
+
     local level=$1
     local function=$2
     local message=$3
@@ -68,14 +68,14 @@ helm_checker() {
 }
 
 helm_installer() {
-    
+
     # Parameters
     # :None
-    
+
     # This function downloads helm 3 binary using curl and installs it.
-    
+
     log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Downloading and installing Helm.${CC}"
-    
+
     if curl -s -O https://get.helm.sh/helm-v3.10.0-linux-amd64.tar.gz >/dev/null &&
         tar -zxvf helm-v3.10.0-linux-amd64.tar.gz >/dev/null &&
         cp ./linux-amd64/helm /usr/local/bin/; then
@@ -91,25 +91,6 @@ helm_installer() {
         return 1
     fi
 }
-# helm_installer() {
-    
-#     # Parameters
-#     # :None
-    
-#     # This function downloads helm 3 binary using curl and installs it.
-    
-    
-#     _=$(curl -s -O https://get.helm.sh/helm-v3.10.0-linux-amd64.tar.gz >/dev/null)
-#     _=$(tar -zxvf helm-v3.10.0-linux-amd64.tar.gz >/dev/null)
-#     _=$(cp ./linux-amd64/helm /usr/local/bin/)
-#     if command -v helm &>/dev/null; then
-#         log "${GREEN}[INFO]" "[PRE-FLIGHT]" "Helm has been installed successfully.${CC}"
-#     else
-#         log "${RED}[ERROR]" "[PRE-FLIGHT]" "Helm is not installed. Exiting...${CC}"
-#         exit 1
-#     fi
-# }
-
 check_permissions() {
 
     # Parameters
@@ -143,35 +124,11 @@ check_permissions() {
         log "${GREEN}[INFO]" "[CHECKER]" "Service account has permissions to list deployments.${CC}"
     fi
 }
-# check_permissions() {
-
-#     # Parameters
-#     # :None
-
-#     # This function checks if service account has permission to list deployments.
-#     # If the service account has no permisions then the script will terminate.
-    
-#     FORBIDDEN_ERROR_MESSAGE="Forbidden"
-
-#     deploy_permission=$(curl --silent "$KUBERNETES_API_SERVER_URL/apis/apps/v1/deployments" \
-#         --cacert "$CA_CERT_PATH" \
-#         --header "${HEADERS[@]}")
-
-#     # Extract the "reason" field from the response.
-#     reason=$(echo "$deploy_permission" | grep -o '"reason": "[^"]*')
-
-#     # Check if the "reason" field contains the word "Forbidden"
-#     if [[ $reason == *"$FORBIDDEN_ERROR_MESSAGE"* ]]; then
-#         log "${RED}[ERROR]" "[CHECKER]" "Forbidden, cannot list deployments. Exiting${CC}"
-#         log "${CYAN}[INFO]" "[CHECKER]" "Create clusterrole and clusterrole binding with enough permissions ${CC}"
-#         exit 1
-#     fi
-# }
 
 pod_status_verifier() {
 
     # Parameters
-    # :var namespaces: (list) | A list of namespaces 
+    # :var namespaces: (list) | A list of namespaces
 
     #This function check if the namespace exists
     #If it exists it checks whether all the pod in the namespace is running or not.
@@ -182,7 +139,7 @@ pod_status_verifier() {
     for namespace in "${namespaces[@]}"; do
 
         if kubectl get namespace "$namespace" &>/dev/null; then
-            
+
             # Get a list of pods in the namespace
             pods=$(kubectl get pods -n "$namespace" -o jsonpath='{.items[*].metadata.name}')
 

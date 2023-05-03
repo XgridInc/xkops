@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 # Copyright (c) 2023, Xgrid Inc, https://xgrid.co
 
@@ -36,9 +36,5 @@ pixie_rollback() {
     fi
       log "${GREEN}[INFO]" "[ROLLBACK]" "Pixie has been deleted from your cluster${CC}"
 }
-# pixie_rollback(){
-#   helm uninstall pixie -n pl &>/dev/null
-#   kubectl delete namespace pl &>/dev/null
-#   log "${GREEN}[INFO]" "[ROLLBACK]" "Pixie has been deleted from your cluster${CC}"
-# }
+
 pixie_rollback
