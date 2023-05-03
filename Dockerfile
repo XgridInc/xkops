@@ -17,6 +17,7 @@ FROM ubuntu:22.04
 COPY src /src
 COPY Makefile /
 
+#test
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update && \
      apt-get install -y make=4.3-4.1build1 --no-install-recommends  && \
