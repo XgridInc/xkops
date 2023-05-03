@@ -1,0 +1,85 @@
+# pre-commit configuration file
+
+# Repositories containing hooks
+repos:
+  # Repository for pre-commit hooks from pre-commit organization
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      # Hook to remove trailing whitespace
+      - id: trailing-whitespace
+      # Hook to ensure files end with a newline character
+      - id: end-of-file-fixer
+      # Hook to check YAML files for syntax errors
+      - id: check-yaml
+
+  # Repository for shellcheck hook
+  - repo: https://github.com/jumanjihouse/pre-commit-hooks
+    rev: 3.0.0
+    hooks:
+      # Hook to check shell scripts for syntax errors
+      - id: shellcheck
+        # Specify severity level of errors
+        args: [--severity=error]
+
+  # Repository for flake8 hook
+  - repo: https://github.com/pycqa/flake8
+    rev: 6.0.0
+    hooks:
+      # Hook to check Python files with flake8 linter
+      - id: flake8
+        # Specify maximum line length and ignored error codes
+        args: ['--max-line-length=88', '--ignore=E203,W503']
+
+  # Repository for black hook
+  - repo: https://github.com/ambv/black
+    rev: 22.12.0
+    hooks:
+      # Hook to format Python files using black
+      - id: black
+        # Specify version of Python to use
+        language_version: python3
+        # Specify maximum line length
+        args:
+          - --line-length=88
+
+  # Repository for pre-commit hooks for Terraform
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.77.0
+    hooks:
+      # Hook to format Terraform code using terraform fmt
+      - id: terraform_fmt
+      # Hook to validate Terraform code using terraform validate
+      - id: terraform_validate
+      # Hook to generate Terraform documentation using terraform-docs
+      - id: terraform_docs
+        # Specify file types to include in documentation generation
+        files: (\.tf|\.terraform\.lock\.hcl|\.md)$
+      # Hook to lint Terraform code using tflint
+      - id: terraform_tflint
+
+  # Repository for sqlfluff hook
+  - repo: https://github.com/sqlfluff/sqlfluff
+    rev: 1.4.5
+    hooks:
+      # Hook to lint SQL code using sqlfluff
+      - id: sqlfluff-lint
+
+  # Repository for detect-secrets hook
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.4.0
+    hooks:
+      # Hook to detect secrets in code using detect-secrets
+      - id: detect-secrets
+        # Specify hook name and entry point for the tool
+        name: Detect secrets
+        entry: detect-secrets-hook
+        # Specify files to exclude from the detection process
+        exclude: package.lock.json
+
+  # Repository for pre-commit hooks for Checkov
+  - repo: https://github.com/bridgecrewio/checkov.git
+    rev: 2.3.214
+    hooks:
+      - id: checkov
+        args: ["-d", ".", "--check", "CKV_SECRET_1"]
