@@ -83,7 +83,7 @@ repos:
     hooks:
       - id: checkov
         exclude: "(.pre-commit-config.yaml)"
-        args: ['--quiet', '--compact', '--config-file=.checkov_checks.yaml']
+        args: ['--quiet', '--compact', '--config-file=./.checkov_checks.yaml']
   # Repository for shellcheck hook
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.7.2
