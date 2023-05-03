@@ -14,7 +14,7 @@ This all-in-one solution consolidates the insights obtained from these tools, ma
 
 Check the below video for a quick demo of XkOps.
 
-[![XkOps Demo](./screenshots/Demo-video.png)](https://drive.google.com/file/d/10e1XhDil7To9Fadd7vRjVnE_6lQO9Xsl/view?usp=sharing)
+[![XkOps Demo](./images/Demo-video.png)](https://drive.google.com/file/d/10e1XhDil7To9Fadd7vRjVnE_6lQO9Xsl/view?usp=sharing)
 
 ## 🏗️ XkOps Architecture Diagram
 
