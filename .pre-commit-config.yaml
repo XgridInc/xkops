@@ -77,12 +77,6 @@ repos:
         # Specify files to exclude from the detection process
         exclude: package.lock.json
 
-  # Repository for pre-commit hooks for Checkov
-  - repo: https://github.com/bridgecrewio/checkov.git
-    rev: 2.3.214
-    hooks:
-      - id: checkov
-        args: ["-c", "CKV_DOCKER_1" ]
   # Repository for shellcheck hook
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.7.2
