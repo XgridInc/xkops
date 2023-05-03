@@ -82,8 +82,7 @@ repos:
     rev: 2.3.214
     hooks:
       - id: checkov
-        exclude: "(.pre-commit-config.yaml)"
-        args: ['--config-file=.checkov_checks.yaml']
+        args: ["-d", ".","-c", "CKV_DOCKER_1" ]
   # Repository for shellcheck hook
   - repo: https://github.com/koalaman/shellcheck-precommit
     rev: v0.7.2
