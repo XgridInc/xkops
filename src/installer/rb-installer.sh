@@ -22,7 +22,7 @@ source /src/commons/common-functions.sh
 
 # Print a prompt to the user.
 print_prompt() {
-    
+
     log "${CYAN}[INFO]" "[INSTALLER]" "Initiating installation of Robusta in your cluster.${CC}"
 }
 
@@ -31,8 +31,8 @@ rb_installer() {
 
   # Installing Robusta using helm
   helm repo add robusta https://robusta-charts.storage.googleapis.com &>/dev/null && helm repo update &>/dev/null
-  helm install robusta robusta/robusta -f "$PREFLIGHT_DIR_PATH/generated_values.yaml" -n "${RB_NAMESPACE}" --create-namespace &>/dev/null
-  kubectl -n "${RB_NAMESPACE}" wait deployment "${EXPECTED_RUNNER_NAME}" "${EXPECTED_FORWARDER_NAME}" --for=condition=Available --timeout=1h &>/dev/null
+  helm install robusta robusta/robusta -f "$PREFLIGHT_DIR_PATH/generated_values.yaml" -n "${RB_NAMESPACE[@]}" --create-namespace &>/dev/null
+  kubectl -n "${RB_NAMESPACE[@]}" wait deployment "${EXPECTED_RUNNER_NAME}" "${EXPECTED_FORWARDER_NAME}" --for=condition=Available --timeout=1h &>/dev/null
   watch_runner_logs
   log "${GREEN}[INFO]" "[INSTALLER]" "Robusta successfully installed.${CC}"
 }
@@ -41,9 +41,9 @@ rb_installer() {
 load_playbook_actions() {
 
     log "${CYAN}[INFO]" "[INSTALLER]" "Loading playbook actions.${CC}"
-    
+
     #pushing our playbook action
-    robusta playbooks push "$PLAYBOOK_DIR_PATH" --namespace="${RB_NAMESPACE}" >/dev/null
+    robusta playbooks push "$PLAYBOOK_DIR_PATH" --namespace="${RB_NAMESPACE[0]}" >/dev/null
     log "${CYAN}[INFO]" "[INSTALLER]" "Playbook actions loaded.${CC}"
     exit 0
 }
@@ -52,7 +52,7 @@ watch_runner_logs() {
 
     #This functions watches logs of robusta-runner and checks if all the actions are loaded
     #TODO: Add timeout if actions aren't loaded
-    
+
     kubectl -n robusta logs -f -l app=robusta-runner | while read -r line; do
         echo "$line" | grep -E ".*Serving Flask app 'robusta.runner.web'.*" &>/dev/null
         result=$?

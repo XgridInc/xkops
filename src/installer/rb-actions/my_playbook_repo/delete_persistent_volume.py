@@ -15,11 +15,9 @@ from robusta.api import (
 
 @action
 def delete_persistent_volume(event: PersistentVolumeEvent):
-
     """
     Deletes a persistent volume
     """
-
     # Check if the persistent volume is present
     if not event.get_persistentvolume():
         # Log an error message if the volume is not found

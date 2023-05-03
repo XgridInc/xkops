@@ -24,8 +24,8 @@ print_prompt() {
 
 #Rollback function for kubecost
 kc_rollback() {
-    helm uninstall kubecost -n "${KC_NAMESPACE}" &>/dev/null
-    kubectl delete namespace "${KC_NAMESPACE}" &>/dev/null
+    helm uninstall kubecost -n "${KC_NAMESPACE[@]}" &>/dev/null
+    kubectl delete namespace "${KC_NAMESPACE[@]}" &>/dev/null
     log "${GREEN}[PASSED]" "[ROLLBACK]" "Kubecost has been deleted from your cluster${CC}"
 }
 print_prompt

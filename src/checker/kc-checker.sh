@@ -52,7 +52,7 @@ kubectl_kc_checker() {
 kubectl_kc_ns_checker() {
     returnedNamespace=$(kubectl get ns --no-headers 2>&1 | grep -i kubecost | awk '{print $1}')
 
-    if [ "$returnedNamespace" == "${KC_NAMESPACE}" ]; then
+    if [ "$returnedNamespace" == "${KC_NAMESPACE[0]}" ]; then
         log "${GREEN}[INFO]" "[CHECKER]" "Namespace $returnedNamespace found in the cluster.${CC}"
     else
         log "${RED}[ERROR]" "[CHECKER]" "Namespace kubecost not found in the cluster.${CC}"
