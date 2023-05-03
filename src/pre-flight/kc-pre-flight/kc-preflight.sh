@@ -22,6 +22,7 @@ print_prompt() {
 }
 
 # Function to check if kubectl is installed in the cluster or not
+
 kubectl_checker() {
     log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Checking if kubectl is configured.${CC}"
     if command -v kubectl &>/dev/null; then
@@ -34,10 +35,27 @@ kubectl_checker() {
 
 # Function to install kubectl in the cluster
 kubectl_installer() {
+
+    # This function downloads latest release of kubectl and installs.
+
+    log "${CYAN}[INFO]" "[PRE-FLIGHT]" "Installing kubectl.${CC}"
+
     # Downloads latest release of kubectl and installs
-    _=$(curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl")
-    _=$(chmod +x ./kubectl)
-    _=$(mkdir -p "$HOME"/bin && cp ./kubectl "$HOME"/bin/kubectl && export PATH=$PATH:$HOME/bin)
+    if ! curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"; then
+        log "${RED}[ERROR]" "[PRE-FLIGHT]" "Failed to download kubectl. Exiting.${CC}"
+        exit 1
+    fi
+
+    if ! chmod +x ./kubectl; then
+        log "${RED}[ERROR]" "[PRE-FLIGHT]" "Failed to make kubectl executable. Exiting.${CC}"
+        exit 1
+    fi
+
+    if ! mkdir -p "$HOME"/bin && cp ./kubectl "$HOME"/bin/kubectl && export PATH=$PATH:$HOME/bin; then
+        log "${RED}[ERROR]" "[PRE-FLIGHT]" "Failed to install kubectl. Exiting.${CC}"
+        exit 1
+    fi
+
     log "${GREEN}[INFO]" "[PRE-FLIGHT]" "kubectl is installed successfully.${CC}"
 }
 
