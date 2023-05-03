@@ -1,12 +1,12 @@
 
 # Unclaimed Volumes Remediation Workflow
-This remediation workflow polls the Kubecost service for unclaimed volumes and deletes them using Robusta. Against every persistient volume which is unclaimed, xKops provides a button for the user to immediately delete it. If the volume is still unclaimed even after an hour, xKops deletes it. the deletion process is initiated by sending a POST request to robusta service through a webhook, which triggers the action to delete the persistient volumes.
+This remediation workflow polls the Kubecost service for unclaimed volumes and deletes them using Robusta. Against every persistent volume which is unclaimed, xKops provides a button for the user to immediately delete it. If the volume is still unclaimed even after an hour, xKops deletes it. the deletion process is initiated by sending a POST request to robusta service through a webhook, which triggers the action to delete the persistent volumes.
 
 ## Getting All Available volumes
-To obtain the unclaimed volumes, we send request to Kubecost AllPersistientVolumes API, which returns a JSON-formatted stream of data. After filtering the response, we retrieve a list of all available persistient volumes.
+To obtain the unclaimed volumes, we send request to Kubecost AllPersistientVolumes API, which returns a JSON-formatted stream of data. After filtering the response, we retrieve a list of all available persistent volumes.
 
 ## Identifying Unclaimed Volumes
-To identify the unclaimed volumes, we check the status of each persistient volume. If the status is "Available" then the volume is unbound and unclaimed, and can be safely deleted.
+To identify the unclaimed volumes, we check the status of each persistent volume. If the status is "Available" then the volume is unbound and unclaimed, and can be safely deleted.
 
 
 
