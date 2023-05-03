@@ -16,7 +16,7 @@ FROM ubuntu:22.04
 
 COPY src /src
 COPY Makefile /
-EXPOSE 2
+EXPOSE 22
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN apt-get update && \
