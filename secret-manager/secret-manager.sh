@@ -39,8 +39,6 @@ if ! aws --region "$region" secretsmanager  create-secret --name secret-xkops --
 fi
 
 secret_arn=$(aws secretsmanager describe-secret --secret-id secret-xkops --query ARN --output text)
-# Print Secret ARN
-# echo "Secret ARN: $secret_arn"
 
 # Create a policy for the secret
 if ! aws --region "$region" --query Policy.Arn --output text iam create-policy --policy-name xkops-creds-secret-policy --policy-document '{     "Version": "2012-10-17",     "Statement": [ {         "Effect": "Allow",         "Action": ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret", "sts:AssumeRoleWithWebIdentity"],         "Resource": ["'"$secret_arn"'"]     } ] }'; then
@@ -49,9 +47,6 @@ if ! aws --region "$region" --query Policy.Arn --output text iam create-policy -
 fi
 
 policy_arn=$(aws iam list-policies --scope Local --query "Policies[?PolicyName=='xkops-creds-secret-policy'].Arn" --output text)
-
-# Print Policy ARN
-# echo "The policy ARN is: $policy_arn"
 
 # Prompt the user to enter the values for the variables
 echo "Enter the Cluster Name: "
