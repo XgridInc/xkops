@@ -1,7 +1,7 @@
-on: [push]
-  # pull_request:
-  #   branches:
-  #     - master
+on:
+  pull_request:
+    branches: [master, main]
+    
 
 name: "Shellcheck"
 permissions: {}

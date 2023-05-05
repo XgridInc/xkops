@@ -9,9 +9,9 @@ name: Lint Code Base
 #############################
 # Start the job on pull req #
 #############################
-on: [push]
-  # pull_request:
-  #   branches: [master, main]
+on:
+  pull_request:
+    branches: [master, main]
 
 ###############
 # Set the Job #
