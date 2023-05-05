@@ -2,6 +2,7 @@
 name: Checkov vulnerability scan
 
 on: [push]
+#
 jobs:
   build:
     runs-on: self-hosted
