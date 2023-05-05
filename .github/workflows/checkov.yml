@@ -9,12 +9,12 @@ jobs:
 
     steps:
       # Checkout the repository
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           # token: ${{ secrets.GITHUB_TOKEN }}
           # Full git history is needed to get a proper
           # list of changed files within `super-linter`
-          fetch-depth: 2
+          ref: ${{ github.ref }}
 
       ####################################################################################################
       # Checks to run; any other checks will be skipped.                                                 #
