@@ -1,9 +1,9 @@
 ---
 name: Package and Publish Docker Image
 
-on:
-  pull_request:
-    branches: [master, main]
+on: [push]
+  # pull_request:
+  #   branches: [master, main]
 
 jobs:
   build:
