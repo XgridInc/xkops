@@ -2,10 +2,8 @@
 name: Checkov vulnerability scan
 
 on:
-  push:
-    branches: [master, main, self-hosted-runner]
-  # pull_request:
-  #     branches: [master, main]  
+  pull_request:
+      branches: [master, main]  
 jobs:
   build:
     runs-on: self-hosted
