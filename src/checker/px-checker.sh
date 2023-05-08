@@ -33,33 +33,33 @@ check_permissions
 # 1.0 Pixie namesapces check using kubectl.
 # If kubectl exists on the system this function uses kubectl to find the Pixie relevant namespaces.
 # If any of the Pixie namespaces is not found, it returns with a non-zero exit code.
-kubectl_pxNS_checker() {
+kubectl_px_ns_checker() {
     if ! kubectl get pods &>/dev/null; then
         log "${CYAN}[INFO]" "[CHECKER]" "kubectl exists, but can not reach kube_api server. Using curl instead.${CC}"
-        curl_pxNS_checker
+        curl_px_ns_checker
     else
-        olm_check=$(kubectl get ns 2>&1 | grep "$OLMNS" | awk '{print $1}')
+        olmCheck=$(kubectl get ns 2>&1 | grep "$OLMNS" | awk '{print $1}')
         errorCode=$?
         if [ $errorCode -ne 0 ]; then
             log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for $OLMNS namespace.${CC}"
             exit 1 # Exit the script with a non-zero code to indicate failure.
         fi
 
-        pl_check=$(kubectl get ns 2>&1 | grep "$PLNS" | awk '{print $1}')
+        plCheck=$(kubectl get ns 2>&1 | grep "$PLNS" | awk '{print $1}')
         errorCode=$?
         if [ $errorCode -ne 0 ]; then
             log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for $PLNS namespace.${CC}"
             exit 1 # Exit the script with a non-zero code to indicate failure.
         fi
 
-        pxOp_check=$(kubectl get ns 2>&1 | grep "$PXOPNS" | awk '{print $1}')
+        pxOpCheck=$(kubectl get ns 2>&1 | grep "$PXOPNS" | awk '{print $1}')
         errorCode=$?
         if [ $errorCode -ne 0 ]; then
             log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for $PXOPNS namespace.${CC}"
             exit 1 # Exit the script with a non-zero code to indicate failure.
         fi
 
-        if [[ "$olm_check" == olm && "$pl_check" == pl && "$pxOp_check" == px-operator ]]; then
+        if [[ "$olmCheck" == "${OLMNS}" && "$plCheck" == "${PLNS}" && "$pxOpCheck" == "${PXOPNS}" ]]; then
             log "${GREEN}[PASSED]" "[CHECKER]" "Pixie namespaces found.${CC}"
         else
             log "${RED}[ERROR]" "[CHECKER]" "Pixie namespaces not found. ${CC}"
@@ -72,7 +72,8 @@ kubectl_pxNS_checker() {
 # 1.1- Pixie namesapces check using curl.
 # If kubectl doesn't exist on the system this function uses curl to directly talk to kube_api server
 # to find the namespaces. If any of the Pixie namespaces is not found, it returns with a non-zero exit code.
-curl_pxNS_checker() {
+curl_px_ns_checker() {
+
     # these namespaces are pixie's specific and all the pixie's components are
     # deployed in those namespaces.
     declare -a arr=("$OLMNS" "$PXOPNS" "$PLNS")
@@ -102,7 +103,8 @@ curl_pxNS_checker() {
 # 2.1- Pixie deployments check using kubectl.
 # This function tries to check for Pixie deployments in the Pixie namespaces.
 # If deployments are not found the script exits with a non-zero status code.
-kubectl_pxDeploy_checker() {
+kubectl_px_deploy_checker() {
+
     mapfile -t plDeploy < <(kubectl get deploy -n "$PLNS" --no-headers 2>checker.log | awk '{print $1}')
     errorCode=$?
     if [ $errorCode -ne 0 ]; then
@@ -149,14 +151,14 @@ if command -v kubectl &>/dev/null; then
     print_prompt
     check_permissions
     log "${CYAN}[INFO]" "[CHECKER]" "Checking for Pixie namespaces in the current cluster.${CC}"
-    kubectl_pxNS_checker
+    kubectl_px_ns_checker
     log "${CYAN}[INFO]" "[CHECKER]" "Checking for Pixie Deployments in the current cluster.${CC}"
-    kubectl_pxDeploy_checker
+    kubectl_px_deploy_checker
 else
     currentCtx=$(kubectl config current-context)
     print_prompt
     check_permissions
     log "${CYAN}[INFO]" "[CHECKER]" "Checking for Pixie namespaces in the current cluster.${CC}"
     log "${RED}[ERROR]" "[CHECKER]" "kubectl not found. Using curl instead.${CC}"
-    curl_pxNS_checker
+    curl_px_ns_checker
 fi

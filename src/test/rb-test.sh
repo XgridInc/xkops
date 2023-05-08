@@ -30,10 +30,12 @@ check_robusta_pod_status() {
 
 check_robusta_actions() {
     node=$(kubectl get nodes -o jsonpath='{.items[0].metadata.name}')
-    results=$(robusta playbooks trigger node_running_pods_enricher name="$node" --namespace robusta)
+    results=$(robusta playbooks trigger node_running_pods_enricher name="$node" --namespace "${RB_NAMESPACE[0]}")
     substring='"success":true'
     if echo "$results" | grep -q "$substring"; then
         log_test "${GREEN}[PASSED]" "[TEST]" "Robusta actions are working.${CC}"
+        log "${GREEN}[INFO]" "[INSTALLER]" "Robusta successfully installed.${CC}"
+
         exit 0
     else
         log_test "${RED}[ERROR]" "[TEST]" "Robusta actions are not working.${CC}"

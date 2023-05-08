@@ -99,11 +99,11 @@ check_permissions() {
     # This function checks if service account has permission to list deployments.
     # If the service account has no permissions then the script will terminate.
 
-    FORBIDDEN_ERROR_MESSAGE="Forbidden"
+    forbiddenError="Forbidden"
 
     log "${CYAN}[INFO]" "[CHECKER]" "Checking if service account has permissions to list deployments.${CC}"
 
-    deploy_permission=$(curl --silent "$KUBERNETES_API_SERVER_URL/apis/apps/v1/deployments" \
+    deployments=$(curl --silent "$KUBERNETES_API_SERVER_URL/apis/apps/v1/deployments" \
         --cacert "$CA_CERT_PATH" \
         --header "${HEADERS[@]}")
     errorCode=$?
@@ -113,10 +113,10 @@ check_permissions() {
     fi
 
     # Extract the "reason" field from the response.
-    reason=$(echo "$deploy_permission" | grep -o '"reason": "[^"]*')
+    reason=$(echo "$deployments" | grep -o '"reason": "[^"]*')
 
     # Check if the "reason" field contains the word "Forbidden"
-    if [[ $reason == *"$FORBIDDEN_ERROR_MESSAGE"* ]]; then
+    if [[ $reason == *"$forbiddenError"* ]]; then
         log "${RED}[ERROR]" "[CHECKER]" "Forbidden, cannot list deployments. Exiting.${CC}"
         log "${CYAN}[INFO]" "[CHECKER]" "Create clusterrole and clusterrole binding with enough permissions.${CC}"
         exit 1
@@ -145,10 +145,10 @@ pod_status_verifier() {
 
             # Iterate over pods in the namespace to verify their status
             for pod in $pods; do
-                pod_status=$(kubectl get pod "$pod" -n "$namespace" -o jsonpath='{.status.phase}')
+                podStatus=$(kubectl get pod "$pod" -n "$namespace" -o jsonpath='{.status.phase}')
 
                 # If pod status is not Running or Completed, tool is not deployed successfully.
-                if [[ "$pod_status" != "Running" && "$pod_status" != "Succeeded" ]]; then
+                if [[ "$podStatus" != "Running" && "$podStatus" != "Succeeded" ]]; then
 
                     log_test "${RED}[ERROR]" "[TEST]" "$pod pod in  $namespace namespace is not in Running state.${CC}"
                 else
@@ -171,18 +171,18 @@ get_eks_cluster_name() {
 
 
     # Get the current context of the kubeconfig
-    current_context=$(kubectl config current-context)
+    currentContext=$(kubectl config current-context)
 
     # Get the cluster name associated with the current context
-    cluster_name=$(kubectl config get-contexts "$current_context" | awk '{print $3}' | grep -Eo 'arn:aws:eks:[a-zA-Z0-9-]*:[0-9]*:[cluster/[a-zA-Z0-9-]*|@[a-zA-Z0-9-]*')
-    if [[ -z $cluster_name ]]; then
+    clusterName=$(kubectl config get-contexts "$currentContext" | awk '{print $3}' | grep -Eo 'arn:aws:eks:[a-zA-Z0-9-]*:[0-9]*:[cluster/[a-zA-Z0-9-]*|@[a-zA-Z0-9-]*')
+    if [[ -z $clusterName ]]; then
         log "${RED}[ERROR]" "[CHECKER]" "Failed to get EKS cluster name. Exiting.${CC}"
         exit 1
     else
-        export cluster_name
+        export clusterName
         rm -rf root/.kube/config
         # Print the cluster name
-        return "$cluster_name"
+        return "$clusterName"
     fi
 }
 

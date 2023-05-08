@@ -12,10 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# We'll be using following prefixes with rules and variables. 
-# Pixie 	==> px 
-# Robusta   ==> rb 
-# Kubecost  ==> kc 
+# We'll be using following prefixes with rules and variables.
+# Pixie 	==> px
+# Robusta   ==> rb
+# Kubecost  ==> kc
 
 INTERPRETER  = bash
 
@@ -41,15 +41,15 @@ KC_ROLLBACK = /src/rollback/kc-rollback.sh
 KC_TEST = /src/test/kc-test.sh
 
 
-# Pixie relevant rules.  
-px_check: 
+# Pixie relevant rules.
+px_check:
 	$(INTERPRETER) $(PX_CHECKER)
 
 px_preflight:
 	$(INTERPRETER) $(PX_PRE_FLIGHT)
 
 px_install:
-	$(INTERPRETER) $(PX_INSTALLER) "$(PX_API_KEY)" 
+	$(INTERPRETER) $(PX_INSTALLER) "$(PX_API_KEY)"
 
 #Flow control of px_all
 # RUN PX_CHECKER if returns Exit 0 -> RUN PX_PRE_FLIGHT else if returns Exit 1 -> echo "PX_CHECKER Exit 1"
@@ -67,21 +67,21 @@ px_rollback:
 rb_check:
 	$(INTERPRETER) $(RB_CHECKER)
 
-rb_preflight: 
+rb_preflight:
 	$(INTERPRETER) $(RB_PRE_FLIGHT)
 
-rb_install: 
-	$(INTERPRETER) $(RB_INSTALLER) 
+rb_install:
+	$(INTERPRETER) $(RB_INSTALLER)
 
 #Flow control of rb_all
 # RUN RB_CHECKER if returns Exit 0 -> RUN RB_PRE_FLIGHT else if returns Exit 1 -> echo "RB_CHECKER Exit 1"
 # RUN RB_PRE_FLIGHT if returns Exit 0 -> RUN RB_INSTALLER else if returns Exit 1 -> echo "RB_PRE_FLIGHT Exit 1"
 # RUN RB_INSTALLER if returns Exit 1 -> echo "RB_INSTALLER Exit 1"
 rb_all:
-	$(INTERPRETER) $(RB_CHECKER) && ( $(INTERPRETER) $(RB_PRE_FLIGHT) && ( $(INTERPRETER) $(RB_INSTALLER) || echo "RB_INSTALLER Exit 1") || echo "RB_PRE_FLIGHT Exit 1" ) || echo "RB_CHECKER Exit 1"
+	$(INTERPRETER) $(RB_CHECKER) && ( $(INTERPRETER) $(RB_PRE_FLIGHT) && ( $(INTERPRETER) $(RB_INSTALLER) && ( $(INTERPRETER) $(RB_TEST) || echo "RB_TEST Exit 1")|| echo "RB_INSTALLER Exit 1") || echo "RB_PRE_FLIGHT Exit 1" ) || echo "RB_CHECKER Exit 1"
 
 #Flow control of rb_rollback
-#RUN RB_ROLLBACK if returns Exit 1 -> echo "RB_ROLLBACK Exit 1" 
+#RUN RB_ROLLBACK if returns Exit 1 -> echo "RB_ROLLBACK Exit 1"
 rb_rollback:
 	$(INTERPRETER) $(RB_ROLLBACK) || echo "RB_ROLLBACK Exit 1"
 
@@ -105,12 +105,12 @@ kc_all:
 	$(INTERPRETER) $(KC_CHECKER) && ( $(INTERPRETER) $(KC_PRE_FLIGHT) && ( $(INTERPRETER) $(KC_INSTALLER) && ( $(INTERPRETER) $(KC_TEST) || echo "KC_TEST Exit 1")|| echo "KC_INSTALLER Exit 1") || echo "KC_PRE_FLIGHT Exit 1" ) || echo "KC_CHECKER Exit 1"
 
 #Flow control of kc_rollback
-#RUN KC_ROLLBACK if returns Exit 1 -> echo "KC_ROLLBACK Exit 1" 
+#RUN KC_ROLLBACK if returns Exit 1 -> echo "KC_ROLLBACK Exit 1"
 kc_rollback:
 	$(INTERPRETER) $(KC_ROLLBACK) || echo "KC_ROLLBACK Exit 1"
 
 #target to install all tools
-all:  
+all:
 	$(MAKE) rb_all
 	$(MAKE) kc_all
 

@@ -46,7 +46,7 @@ check_kubectl_cost_plugin() {
 print_UI_links() {
     log_test "${CYAN}[INFO]" "[TEST]" "Robusta UI: ${GREEN}https://platform.robusta.dev/${CC}"
     log_test "${CYAN}[INFO]" "[TEST]" "Pixie UI: ${GREEN}https://work.withpixie.ai/live/clusters/xgrid-website-migration${CC}"
-    KC_LOADBALANCER=$(kubectl get svc kubecost-ui-service -n kubecost -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+    KC_LOADBALANCER=$(kubectl get svc kubecost-ui-service -n "${KC_NAMESPACE[@]}" -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
     log_test "${CYAN}[INFO]" "[TEST]" "Kubecost UI:${GREEN} $KC_LOADBALANCER ${CC}"
 }
 

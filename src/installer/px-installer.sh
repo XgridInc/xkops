@@ -67,10 +67,10 @@ px_installer() {
     fi
 
     # Check for vizier status
-    vizier_status=0
-    while [ "$vizier_status" -ne 1 ]; do
+    vizierStatus=0
+    while [ "$vizierStatus" -ne 1 ]; do
         if px get viziers -o json | jq -c '. | select(.ClusterName == "xgrid-website-migration") | .Status' &>/dev/null; then
-            vizier_status=1
+            vizierStatus=1
         fi
     done
 

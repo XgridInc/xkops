@@ -23,6 +23,7 @@ source /src/commons/common-functions.sh
 # Print a prompt to the user.
 print_prompt() {
 
+
     log "${CYAN}[INFO]" "[INSTALLER]" "Initiating installation of Robusta in your cluster.${CC}"
 }
 
@@ -56,7 +57,6 @@ rb_installer() {
     # Watching runner logs
     watch_runner_logs
 
-    log "${GREEN}[INFO]" "[INSTALLER]" "Robusta successfully installed.${CC}"
 }
 
 #Load robusta custom remediation actions
@@ -67,7 +67,7 @@ load_playbook_actions() {
     log "${CYAN}[INFO]" "[INSTALLER]" "Loading playbook actions.${CC}"
 
     # Pushing our playbook action
-    if ! robusta playbooks push "$PLAYBOOK_DIR_PATH" --namespace=robusta >/dev/null; then
+    if ! robusta playbooks push "$PLAYBOOK_DIR_PATH" --namespace="${RB_NAMESPACE[0]}" >/dev/null; then
         log "${RED}[ERROR]" "[INSTALLER]" "Failed to load playbook actions. Exiting.${CC}"
         exit 1
     fi

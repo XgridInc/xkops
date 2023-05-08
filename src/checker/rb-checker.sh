@@ -40,11 +40,11 @@ check_kubectl() {
 
 kubectl_rb_checker() {
     # Set the list of deployment names and image names to check
-    deployment_names=("${EXPECTED_RUNNER_NAME}" "${EXPECTED_FORWARDER_NAME}")
-    image_names=("${EXPECTED_RUNNER_IMAGE}" "${EXPECTED_FORWARDER_IMAGE}")
+    deploymentsName=("${EXPECTED_RUNNER_NAME}" "${EXPECTED_FORWARDER_NAME}")
+    imageNames=("${EXPECTED_RUNNER_IMAGE}" "${EXPECTED_FORWARDER_IMAGE}")
 
     # Get the number of deployments
-    num_deployments=${#deployment_names[@]}
+    totalDeployments=${#deploymentsName[@]}
 
     # Set a flag to indicate whether the deployment and image were found
     found=0
@@ -61,19 +61,19 @@ kubectl_rb_checker() {
         # Iterate through each deployment
         for deployment in $deployments; do
             # Iterate through each specified deployment name and image name
-            for i in $(seq 0 $((num_deployments - 1))); do
+            for i in $(seq 0 $((totalDeployments - 1))); do
                 # Check if the deployment matches the specified deployment name
-                if [ "$deployment" == "${deployment_names[$i]}" ]; then
+                if [ "$deployment" == "${deploymentsName[$i]}" ]; then
                     # Get the image for the deployment
-                    deployment_image=$(kubectl get deployment "$deployment" -n "$namespace" -o jsonpath='{.spec.template.spec.containers[0].image}')
+                    deploymentImage=$(kubectl get deployment "$deployment" -n "$namespace" -o jsonpath='{.spec.template.spec.containers[0].image}')
 
                     # Check if the image matches the specified image name
-                    if [ "$deployment_image" == "${image_names[$i]}" ]; then
+                    if [ "$deploymentImage" == "${imageNames[$i]}" ]; then
                         # Get the status of the pods in the deployment
-                        pod_status=$(kubectl get pods -n "$namespace" -l "app=$deployment" -o jsonpath='{.items[*].status.phase}')
+                        podStatus=$(kubectl get pods -n "$namespace" -l "app=$deployment" -o jsonpath='{.items[*].status.phase}')
 
                         # Check if any of the pods are not in the "Running" state
-                        if [[ "$pod_status" != *"Running"* ]]; then
+                        if [[ "$podStatus" != *"Running"* ]]; then
                             # Print an error message
                             log "${RED}[ERROR]" "[CHECKER]" "Deployment $deployment in namespace $namespace is not running.${CC}"
                             # Set the flag to indicate that the deployment and image were found
@@ -110,8 +110,8 @@ curl_rb_checker() {
     # Get a list of all namespaces in the cluster
     mapfile -t namespaces < <(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/api/v1/namespaces")
 
-    runner_found=false
-    forwarder_found=false
+    runnerFound=false
+    forwarderFound=false
 
     # Extract the names of the namespaces from the JSON response
     mapfile -t namespaces < <(echo "${namespaces[@]}" | sed -n 's/.*"name": "\(.*\)",.*/\1/p')
@@ -122,8 +122,8 @@ curl_rb_checker() {
         runner=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/apis/apps/v1/namespaces/$ns/deployments/$EXPECTED_RUNNER_NAME")
         if [ "$runner" != "Not Found" ]; then
             # Extract the image for the "robusta-runner" deployment from the JSON response
-            runner_image=$(echo "$runner" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
-            if [ "$runner_image" == "${EXPECTED_RUNNER_IMAGE}" ]; then
+            runnerImage=$(echo "$runner" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
+            if [ "$runnerImage" == "${EXPECTED_RUNNER_IMAGE}" ]; then
 
                 # Get the list of pods for the "robusta-runner" deployment
                 pods=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/api/v1/namespaces/$ns/pods?labelSelector=app%3Drobusta-runner")
@@ -133,7 +133,7 @@ curl_rb_checker() {
                     # Extract the status of the pod from the JSON response
                     status=$(echo "$pod" | grep '"phase": "Running"')
                     if [ -n "$status" ]; then
-                        runner_found=true
+                        runnerFound=true
                     fi
                 done <<<"$pods"
             fi
@@ -142,8 +142,8 @@ curl_rb_checker() {
         forwarder=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/apis/apps/v1/namespaces/$ns/deployments/$EXPECTED_FORWARDER_NAME")
         if [ "$forwarder" != "Not Found" ]; then
             # Extract the image for the "robusta-forwarder" deployment from the JSON response
-            forwarder_image=$(echo "$forwarder" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
-            if [ "$forwarder_image" == "${EXPECTED_FORWARDER_IMAGE}" ]; then
+            forwarderImage=$(echo "$forwarder" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
+            if [ "$forwarderImage" == "${EXPECTED_FORWARDER_IMAGE}" ]; then
 
                 # Get the list of pods for the "robusta-forwarder" deployment
                 pods=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" -H "Content-Type: application/json" "$KUBERNETES_API_SERVER_URL/api/v1/namespaces/$ns/pods?labelSelector=app%3Drobusta-forwarder")
@@ -153,7 +153,7 @@ curl_rb_checker() {
                     # Extract the status of the pod from the JSON response
                     status=$(echo "$pod" | grep '"phase": "Running"')
                     if [ -n "$status" ]; then
-                        forwarder_found=true
+                        forwarderFound=true
 
                     fi
                 done <<<"$pods"
@@ -161,7 +161,7 @@ curl_rb_checker() {
         fi
     done
 
-    if [[ "$runner_found" == true ]] && [[ "$forwarder_found" == true ]]; then
+    if [[ "$runnerFound" == true ]] && [[ "$forwarderFound" == true ]]; then
         log "${GREEN}[INFO]" "[CHECKER]" "Robusta Exists in your cluster.${CC}"
         exit 1
     else

@@ -28,13 +28,13 @@ def test_iam_role_creation():
     Raises:
         AssertionError: If the IAM role with the given name does not exist.
     """
-    iam_client = boto3.client("iam")
-    role_name = "XkOps-EBS-iam-role"
+    iamClient = boto3.client("iam")
+    roleName = "XkOps-EBS-iam-role"
     try:
-        role_response = iam_client.get_role(RoleName=role_name)
-        assert role_response["Role"]["RoleName"] == role_name
-    except iam_client.exceptions.NoSuchEntityException:
-        assert False, f"IAM role {role_name} does not exist"
+        roleResponse = iamClient.get_role(RoleName=roleName)
+        assert roleResponse["Role"]["RoleName"] == roleName
+    except iamClient.exceptions.NoSuchEntityException:
+        assert False, f"IAM role {roleName} does not exist"
 
 
 def test_iam_policy_attachment():
@@ -48,17 +48,17 @@ def test_iam_policy_attachment():
     Raises:
         AssertionError: If the IAM role does not have the expected policy attached.
     """
-    iam_client = boto3.client("iam")
-    role_name = "XkOps-EBS-iam-role"
-    policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-    attached_policies_response = iam_client.list_attached_role_policies(
-        RoleName=role_name
+    iamClient = boto3.client("iam")
+    roleName = "XkOps-EBS-iam-role"
+    policyArn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
+    attachedPoliciesResponse = iamClient.list_attached_role_policies(
+        RoleName=roleName
     )
-    for policy in attached_policies_response["AttachedPolicies"]:
-        if policy["PolicyArn"] == policy_arn:
+    for policy in attachedPoliciesResponse["AttachedPolicies"]:
+        if policy["PolicyArn"] == policyArn:
             break
     else:
-        assert False, f"IAM role {role_name} does not have the expected policy attached"
+        assert False, f"IAM role {roleName} does not have the expected policy attached"
 
 
 def test_addon_addition():
@@ -74,18 +74,18 @@ def test_addon_addition():
         AssertionError: If the add-on is not present in the cluster or if there is an error in the AWS CLI command.
 
     """
-    cluster_name = "xkops-cluster-2"
-    addon_name = "aws-ebs-csi-driver"
+    clusterName = "xkops-cluster-2"
+    addonName = "aws-ebs-csi-driver"
     region = "ap-southeast-1"
     try:
-        addon_info = subprocess.check_output(
+        addonInfo = subprocess.check_output(
             [
-                f"aws eks describe-addon --addon-name {addon_name} --cluster-name {cluster_name} --region {region}"
+                f"aws eks describe-addon --addon-name {addonName} --cluster-name {clusterName} --region {region}"
             ],
             shell=True,
             text=True,
         )
-        addon_info = json.loads(addon_info)
-        assert addon_info["addon"]["addonName"] == addon_name
+        addonInfo = json.loads(addonInfo)
+        assert addonInfo["addon"]["addonName"] == addonName
     except subprocess.CalledProcessError:
-        assert False, f"Addon {addon_name} does not exist"
+        assert False, f"Addon {addonName} does not exist"

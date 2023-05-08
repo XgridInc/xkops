@@ -27,7 +27,7 @@ export RB_INSTALLER_SCRIPT_PATH=/src/installer/rb-installer.sh
 export PREFLIGHT_DIR_PATH=/src/pre-flight/rb-pre-flight
 export PLAYBOOK_DIR_PATH=/src/installer/rb-actions
 # Set expected image names
-export EXPECTED_RUNNER_IMAGE="us-central1-docker.pkg.dev/genuine-flight-317411/devel/robusta-runner:0.10.13"
+export EXPECTED_RUNNER_IMAGE="us-central1-docker.pkg.dev/genuine-flight-317411/devel/robusta-runner:0.10.15"
 export EXPECTED_FORWARDER_IMAGE="us-central1-docker.pkg.dev/genuine-flight-317411/devel/kubewatch:v2.1"
 
 #Set expected values for runner and forwarder deployments
@@ -44,7 +44,7 @@ export HELM_VALUES=generated_values.yaml #File required to installed robusta
 # read -rp 'Enter slack channel name: ' slack_channel_name
 
 #These values are coming from environment variables set on container
-export CLUSTER_NAME=$CLUSTER_NAME
+
 export SLACK_API_KEY=$SLACK_API_KEY
 export SLACK_CHANNEL_NAME=$SLACK_CHANNEL_NAME
 export ROBUSTA_UI_API_KEY=$ROBUSTA_UI_API_KEY

@@ -15,19 +15,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: my-react-app
+  name: xkops-dashboard
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: my-react-app
+      app: xkops-dashboard
   template:
     metadata:
       labels:
-        app: my-react-app
+        app: xkops-dashboard
     spec:
       containers:
-        - name: my-react-app
+        - name: xkops-dashboard
           image: "{{ .Values.dashboard_image.repository }}:{{ .Values.dashboard_image.tag }}"
           ports:
             - containerPort: 3000

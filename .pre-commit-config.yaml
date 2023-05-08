@@ -13,6 +13,7 @@ repos:
       # Hook to check YAML files for syntax errors
       - id: check-yaml
 
+
   # Repository for shellcheck hook
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
     rev: 3.0.0

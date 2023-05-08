@@ -16,6 +16,7 @@
 
 source /src/commons/common-functions.sh
 source /src/config/config.sh
+source /src/config/kc-config.sh
 
 print_prompt() {
     log "${CYAN}[INFO]" "[ROLLBACK]" "Initiating rollback of Kubecost in your cluster.${CC}"
@@ -26,14 +27,8 @@ kc_rollback() {
 
     # This function uninstalls and deletes the kubecost helm release and namespace using helm uninstall and kubectl delete commands, respectively.
 
-    if helm uninstall kubecost -n kubecost &>/dev/null; then
-        log "${GREEN}[PASSED]" "[ROLLBACK]" "Kubecost has been uninstalled from your cluster.${CC}"
-    else
-        log "${RED}[ERROR]" "[ROLLBACK]" "Failed to uninstall Kubecost from your cluster. Exiting...${CC}"
-        exit 1
-    fi
 
-    if kubectl delete namespace kubecost &>/dev/null; then
+    if kubectl delete namespace "${KC_NAMESPACE[@]}" &>/dev/null; then
         log "${GREEN}[PASSED]" "[ROLLBACK]" "Kubecost namespace has been deleted from your cluster.${CC}"
     else
         log "${RED}[ERROR]" "[ROLLBACK]" "Failed to delete Kubecost namespace from your cluster. Exiting...${CC}"
