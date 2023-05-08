@@ -12,7 +12,7 @@ repos:
       - id: end-of-file-fixer
       # Hook to check YAML files for syntax errors
       - id: check-yaml
-        exclude: ^helm/templates/manifest.yaml
+
 
   # Repository for shellcheck hook
   - repo: https://github.com/jumanjihouse/pre-commit-hooks
