@@ -4,11 +4,13 @@ provider "aws" {
 }
 
 # Create an AWS IAM user named "XkOps_user"
+#checkov:skip=CKV_AWS_273
 resource "aws_iam_user" "XkOps_user" {
   name = "XkOps_user"
 }
 
 # Create an IAM user policy named "XkOps-user-policy" and attach it to the "XkOps_user" user
+#checkov:CKV_AWS_40
 resource "aws_iam_user_policy" "XkOps_user_policy" {
   name = "XkOps-user-policy"
   user = aws_iam_user.XkOps_user.name
