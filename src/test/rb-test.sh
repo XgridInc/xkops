@@ -34,6 +34,8 @@ check_robusta_actions() {
     substring='"success":true'
     if echo "$results" | grep -q "$substring"; then
         log_test "${GREEN}[PASSED]" "[TEST]" "Robusta actions are working.${CC}"
+        log "${GREEN}[INFO]" "[INSTALLER]" "Robusta successfully installed.${CC}"
+
         exit 0
     else
         log_test "${RED}[ERROR]" "[TEST]" "Robusta actions are not working.${CC}"

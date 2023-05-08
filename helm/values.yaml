@@ -68,6 +68,8 @@ dashboard_service_ports:
 tolerations: []
 affinity: {}
 
+secret_provider_class: xkops-my-secret-provider # pragma: allowlist secret
+
 # provide your pixie API key (https://docs.px.dev/reference/admin/api-keys)
 PX_API_KEY: ""
 # provide your pixie deploy key
@@ -94,17 +96,19 @@ fullnameOverride: ""
 
 # List all manifests to apply in order of priority
 manifests:
-  - name: AllResourcesRole.yaml
+  - name: xkops-clusterrole.yaml
     priority: 1
-  - name: namespace.yaml
+  - name: xkops-clusterrolebindings.yaml
     priority: 2
-  - name: configmaps.yaml
+  - name: namespace.yaml
     priority: 3
-  - name: storage_class.yaml
+  - name: configmaps.yaml
     priority: 4
-  - name: xk8s-deployment.yaml
+  - name: storage-class.yaml
     priority: 5
-  - name: dashboard.yaml
+  - name: xkops-deployment.yaml
     priority: 6
-  - name: dashboard_service.yaml
+  - name: dashboard.yaml
     priority: 7
+  - name: dashboard-service.yaml
+    priority: 8

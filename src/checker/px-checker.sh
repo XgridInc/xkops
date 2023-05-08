@@ -34,21 +34,37 @@ check_permissions
 # If kubectl exists on the system this function uses kubectl to find the Pixie relevant namespaces.
 # If any of the Pixie namespaces is not found, it returns with a non-zero exit code.
 kubectl_px_ns_checker() {
-
     if ! kubectl get pods &>/dev/null; then
         log "${CYAN}[INFO]" "[CHECKER]" "kubectl exists, but can not reach kube_api server. Using curl instead.${CC}"
         curl_px_ns_checker
     else
-        olmCheck=$(kubectl get ns | grep "$OLMNS" | awk '{print $1}')
-        plCheck=$(kubectl get ns | grep "$PLNS" | awk '{print $1}')
-        pxOpCheck=$(kubectl get ns | grep "$PXOPNS" | awk '{print $1}')
+        olmCheck=$(kubectl get ns 2>&1 | grep "$OLMNS" | awk '{print $1}')
+        errorCode=$?
+        if [ $errorCode -ne 0 ]; then
+            log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for $OLMNS namespace.${CC}"
+            exit 1 # Exit the script with a non-zero code to indicate failure.
+        fi
+
+        plCheck=$(kubectl get ns 2>&1 | grep "$PLNS" | awk '{print $1}')
+        errorCode=$?
+        if [ $errorCode -ne 0 ]; then
+            log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for $PLNS namespace.${CC}"
+            exit 1 # Exit the script with a non-zero code to indicate failure.
+        fi
+
+        pxOpCheck=$(kubectl get ns 2>&1 | grep "$PXOPNS" | awk '{print $1}')
+        errorCode=$?
+        if [ $errorCode -ne 0 ]; then
+            log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for $PXOPNS namespace.${CC}"
+            exit 1 # Exit the script with a non-zero code to indicate failure.
+        fi
 
         if [[ "$olmCheck" == "${OLMNS}" && "$plCheck" == "${PLNS}" && "$pxOpCheck" == "${PXOPNS}" ]]; then
             log "${GREEN}[PASSED]" "[CHECKER]" "Pixie namespaces found.${CC}"
         else
             log "${RED}[ERROR]" "[CHECKER]" "Pixie namespaces not found. ${CC}"
             log "${RED}[ERROR]" "[CHECKER]" "Pixie not found in the cluster${CC}"
-            exit 0
+            exit 0 # Exit the script with a non-zero code to indicate failure.
         fi
     fi
 }
@@ -67,6 +83,12 @@ curl_px_ns_checker() {
             --cacert "$CA_CERT_PATH" \
             --header "${HEADERS[@]}" |
             grep -i "$namespace" | grep name | head -2 | grep -oP '(?<="name": ")[^"]*'))
+        errorCode=$?
+        if [ $errorCode -ne 0 ]; then
+            log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for $namespace namespace.${CC}"
+            exit 1 # Exit the script with a non-zero code to indicate failure.
+        fi
+
         if [[ $ns != "$namespace" ]]; then
             log "${RED}[ERROR]" "[CHECKER]" "$namespace namespace not found.${CC}"
             log "${RED}[ERROR]" "[CHECKER]" "Pixie not found in the cluster${CC}"
@@ -84,17 +106,26 @@ curl_px_ns_checker() {
 kubectl_px_deploy_checker() {
 
     mapfile -t plDeploy < <(kubectl get deploy -n "$PLNS" --no-headers 2>checker.log | awk '{print $1}')
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for $PLNS deployments.${CC}"
+        exit 1 # Exit the script with a non-zero code to indicate failure.
+    fi
+
     mapfile -t olmDeploy < <(kubectl get deploy -n "$OLMNS" --no-headers 2>checker.log | awk '{print $1}')
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for $OLMNS deployments.${CC}"
+        exit 1 # Exit the script with a non-zero code to indicate failure.
+    fi
 
     if [[ ${#plDeploy[*]} -ne 0 && ${#olmDeploy[*]} -ne 0 ]]; then
-
         for dp in "${plDeploy[@]}"; do
             ns="$PLNS"
             if [[ $dp == "$PL_KELVIN" || $dp == "$PL_CLOUD_CONNECTOR" || $dp == "$PL_VIZIER_QUERY_BROKER" ]]; then
                 log "${GREEN}[PASSED]" "[CHECKER]" "$dp deployment found in $ns namespace.${CC}"
             else
                 log "${CYAN}[INFO]" "[CHECKER]" "$dp deployment not found in $ns namespace.${CC}"
-
             fi
         done
 
@@ -109,7 +140,6 @@ kubectl_px_deploy_checker() {
                 exit 0
             fi
         done
-
     else
         log "${CYAN}[INFO]" "[CHECKER]" "Pixie not found in the cluster${CC}"
         exit 0

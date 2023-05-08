@@ -1,0 +1,125 @@
+# Copyright (c) 2023, Xgrid Inc, https://xgrid.co
+
+# Licensed under the Apache License, Version 2.0 (the 'License');
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an 'AS IS' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xkops-deployment
+  namespace: "{{ .Values.namespace.NAMESPACE_NAME }}"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xkops
+  template:
+    metadata:
+      labels:
+        app: xkops
+    spec:
+      serviceAccountName: xkops-my-secret-sa
+      volumes:
+      - name: xkops-secret-vol
+        csi:
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes:
+            secretProviderClass: "{{ .Values.secret_provider_class }}" # pragma: allowlist secret
+      - name: "{{ .Values.xkops_volumes.name }}"
+        hostPath:
+          path: "{{ .Values.xkops_volumes.hostPath.path }}"
+      initContainers:
+        - name: terraform-init
+          image: "{{ .Values.xkops_init_container.image.repository }}:{{ .Values.xkops_init_container.image.tag }}"
+          command: ["terraform", "apply", "-auto-approve"]
+          # command: ["sleep", "3600"]
+          volumeMounts:
+          - name: xkops-secret-vol
+            mountPath: "/mnt/xkops-my-secret"
+            readOnly: true
+          env:
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: xkops-my-secret
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: xkops-my-secret
+                key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_SESSION_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: xkops-my-secret
+                key: AWS_SESSION_TOKEN
+          - name: TF_VAR_CLUSTER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: xkops-config
+                key: CLUSTER_NAME
+          - name: TF_VAR_REGION
+            valueFrom:
+              configMapKeyRef:
+                name: xkops-config
+                key: REGION
+      containers:
+        - name: xkops
+          image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
+          command: ["sleep","3600"]
+          volumeMounts:
+            - name: "{{ .Values.xkops_volumeMounts.name }}"
+              mountPath: "{{ .Values.xkops_volumeMounts.mountPath }}"
+            - name: xkops-secret-vol
+              mountPath: "/mnt/xkops-my-secret"
+              readOnly: true
+          env:
+            - name: PX_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-my-secret
+                  key: PX_API_KEY
+            - name: PX_DEPLOY_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-my-secret
+                  key: PX_DEPLOY_KEY
+            - name: SLACK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-my-secret
+                  key: SLACK_API_KEY
+            - name: SLACK_CHANNEL_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: xkops-config
+                  key: SLACK_CHANNEL_NAME
+            - name: ROBUSTA_UI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: xkops-my-secret
+                  key: ROBUSTA_UI_API_KEY
+            - name: CLUSTER_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: xkops-config
+                  key: CLUSTER_NAME
+          resources:
+            limits:
+              cpu: "{{ .Values.xkops_resources.limits.cpu }}"
+              memory: "{{ .Values.xkops_resources.limits.memory }}"
+            requests:
+              cpu: "{{ .Values.xkops_resources.requests.cpu }}"
+              memory: "{{ .Values.xkops_resources.requests.memory }}"
+      restartPolicy: "{{ .Values.xkops_restartPolicy }}"

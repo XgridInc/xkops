@@ -14,10 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# Skip this check
+# shellcheck source=/dev/null
 source /src/config/kc-config.sh
 source /src/commons/common-functions.sh
 
-# Function that starts basic execution of the script
+# Function that starts basic execution of the checker script
 print_prompt() {
     log "${CYAN}[INFO]" "[CHECKER]" "Detecting Kubecost in the Kubernetes cluster.${CC}"
 }
@@ -48,32 +50,55 @@ kubectl_kc_checker() {
     kubectl_kc_image_checker
 }
 
-# Function finds namespace that we are looking for using kubectl tool.
+# Function finds kubecost namespace that we are looking for using kubectl tool.
 kubectl_kc_ns_checker() {
-    returnedNamespace=$(kubectl get ns --no-headers 2>&1 | grep -i kubecost | awk '{print $1}')
+    returnedNamespace=$(kubectl get ns --no-headers 2>&1)
+
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for kubecost namespace.${CC}"
+        exit 1 # Exit with a non-zero code to indicate failure.
+    fi
+
+    returnedNamespace=$(echo "$returnedNamespace" | grep -i kubecost | awk '{print $1}')
 
     if [ "$returnedNamespace" == "${KC_NAMESPACE[0]}" ]; then
         log "${GREEN}[INFO]" "[CHECKER]" "Namespace $returnedNamespace found in the cluster.${CC}"
     else
-        log "${RED}[ERROR]" "[CHECKER]" "Namespace kubecost not found in the cluster.${CC}"
+        log "${RED}[INFO]" "[CHECKER]" "Namespace kubecost not found in the cluster.${CC}"
         exit 0
     fi
 }
 
 # This function checks whether kubecost deployment is present in the cluster or not.
 kubectl_kc_deployment_checker() {
-    kubecostDeploy=$(kubectl -n "${KC_NAMESPACE[@]}" get deploy --no-headers 2>&1 | grep -i kubecost-cost-analyzer | awk '{print $1}')
+    kubecostDeploy=$(kubectl -n "${KC_NAMESPACE[@]}" get deploy --no-headers 2>&1 | grep -i "${EXPECTED_KC_DEPLOY}" | awk '{print $1}')
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for kubecost deployment.${CC}"
+        exit 1 # Exit the script with a non-zero code to indicate failure.
+    fi
+
     if [ "$kubecostDeploy" == "${EXPECTED_KC_DEPLOY}" ]; then
         log "${GREEN}[INFO]" "[CHECKER]" "Kubecost deployment found in cluster.${CC}"
     else
-        log "${RED}[ERROR]" "[CHECKER]" "Unable to find kubecost Deployment in cluster.${CC}"
+        log "${RED}[INFO]" "[CHECKER]" "Unable to find kubecost Deployment in cluster.${CC}"
         exit 0
     fi
 }
 
 # This function checks whether image used by kubecost deployment is correct or not.
 kubectl_kc_image_checker() {
-    kubecostImage=("$(kubectl -n "${KC_NAMESPACE[@]}" get deployment kubecost-cost-analyzer -o=jsonpath='{$.spec.template.spec.containers[:1].image}')")
+    kubecostImage=("$(kubectl -n "${KC_NAMESPACE[@]}" get deployment "${EXPECTED_KC_DEPLOY}" -o=jsonpath='{$.spec.template.spec.containers[:1].image}')")
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for kubecost image.${CC}"
+        exit 1 # Exit the script with a non-zero code to indicate failure.
+    fi
+
     image="${kubecostImage:0:27}"
     if [[ $image == "${KC_IMAGE}" ]]; then
         log "${GREEN}[INFO]" "[CHECKER]" "Image[$image] found in Deployment [$EXPECTED_KC_DEPLOY] ${GREEN}is correct.${CC}"
@@ -91,6 +116,12 @@ curl_kc_checker() {
     deploymentsList=$(curl --silent "$KUBERNETES_API_SERVER_URL"/apis/apps/v1/deployments \
         --cacert "$CA_CERT_PATH" \
         --header "${HEADERS[@]}")
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while curling the Kubernetes API server.${CC}"
+        exit 1 # Exit the script with a non-zero code to indicate failure.
+    fi
 
     # Extracting Name and Image from Kubecost Deployment.
     kcDeployment=$(echo "$deploymentsList" | grep -o '"name": "[^"]*' | head -n1)
