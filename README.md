@@ -1,435 +1,110 @@
-# terraform-docs
+# XkOps
 
-[![Build Status](https://github.com/terraform-docs/terraform-docs/workflows/ci/badge.svg)](https://github.com/terraform-docs/terraform-docs/actions) [![GoDoc](https://pkg.go.dev/badge/github.com/terraform-docs/terraform-docs)](https://pkg.go.dev/github.com/terraform-docs/terraform-docs) [![Go Report Card](https://goreportcard.com/badge/github.com/terraform-docs/terraform-docs)](https://goreportcard.com/report/github.com/terraform-docs/terraform-docs) [![Codecov Report](https://codecov.io/gh/terraform-docs/terraform-docs/branch/master/graph/badge.svg)](https://codecov.io/gh/terraform-docs/terraform-docs) [![License](https://img.shields.io/github/license/terraform-docs/terraform-docs)](https://github.com/terraform-docs/terraform-docs/blob/master/LICENSE) [![Latest release](https://img.shields.io/github/v/release/terraform-docs/terraform-docs)](https://github.com/terraform-docs/terraform-docs/releases)
+![Xgrid Logo](https://media-exp1.licdn.com/dms/image/C4D0BAQHn43yTM8np2Q/company-logo_200_200/0?e=2159024400&v=beta&t=HCCA_wnetIM7butwiHWBYnXgVzn4pjM9Dq5YDMMJIkE "Xgrid Logo")
 
-![terraform-docs-teaser](./images/terraform-docs-teaser.png)
+[![Lint Code Base](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml)
+[![Package and Publish Docker Image](https://github.com/X-CBG/xk8s/actions/workflows/build_publish_scan.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/build_publish_scan.yml)
+[![Shellcheck](https://github.com/X-CBG/xk8s/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/shellcheck.yml)
 
-Sponsored by [Scalr - Terraform Automation & Collaboration Software](https://scalr.com/?utm_source=terraform-docs)
+## 💻 Overview
 
-<a href="https://www.scalr.com/?utm_source=terraform-docs" target="_blank"><img src="https://bit.ly/2T7Qm3U" alt="Scalr - Terraform Automation & Collaboration Software" width="175" height="40" /></a>
+Xkops is an integrated solution that combines widely-adopted open-source utilities to simplify Kubernetes management, emphasizing the enhancement of observability, reliability, security, and cost control in cluster operations which help users optimize the deployment and management of Kubernetes clusters. The platform provides a comprehensive evaluation of costs, observability, and security.
+XkOps provides an effortless way for users to manage their cluster and extract meaningful insights related to observerability and cost. The platform includes the installers of top-tier open-source tools, namely Kubecost, Robusta, and Pixie, which are bundled together into a single Docker image. This Docker image is then deployed as a Pod, simplifying the installation process of these tools.
+This all-in-one solution consolidates the insights obtained from these tools, making it easier for users to make informed decisions and have centralized monitoring of their Kubernetes cluster.
 
-## What is terraform-docs
+Check the below video for a quick demo of XkOps.
 
-A utility to generate documentation from Terraform modules in various output formats.
+[![XkOps Demo](./images/Demo-video.png)](https://drive.google.com/file/d/10e1XhDil7To9Fadd7vRjVnE_6lQO9Xsl/view?usp=sharing)
 
-## Installation
+## 🏗️ XkOps Architecture Diagram
 
-macOS users can install using [Homebrew]:
+![XkOps Architecture Diagram](./images/arch%20diagram.jpg "Architecture Digram")
 
-```bash
-brew install terraform-docs
-```
+## 💡 Why XkOps?
 
-or
+XkOps is a unified platform that provides true observability across Kubernetes clusters while being cost-optimized, fault-tolerant, and secure. With an abundance of tools available, implementing and managing multiple data platforms can become overwhelming and lead to additional costs.
 
-```bash
-brew install terraform-docs/tap/terraform-docs
-```
+XkOps simplifies this by offering a single platform that provides a single source of truth, making it easier for users to gain insights and manage their cluster. Achieving optimal cost efficiency, state-of-the-art security, and dependable application performance through observability is a necessity for Kubernetes clusters.
+XkOps addresses this by encompassing the three core concepts of cost optimization, reliability, and security in a single platform.
 
-Windows users can install using [Scoop]:
+## 🛠️ Use cases
 
-```bash
-scoop bucket add terraform-docs https://github.com/terraform-docs/scoop-bucket
-scoop install terraform-docs
-```
+XkOps can be used for several use cases, including:
 
-or [Chocolatey]:
+**Observability:** XkOps provides detailed visibility into the behavior and performance of applications running in the Kubernetes cluster, including metrics, logs, and traces. This allows teams to identify and diagnose performance issues and respond quickly to ensure the availability and stability of the applications.
 
-```bash
-choco install terraform-docs
-```
+**Cost Management:** XkOps provides cost and usage insights, including granular breakdowns of resource usage, and the ability to identify and address over-provisioning and under-utilization in a Kubernetes cluster. The platform also provides cost forecasting and optimization recommendations, allowing teams to plan for future growth and manage expenses more effectively.
 
-Stable binaries are also available on the [releases] page. To install, download the
-binary for your platform from "Assets" and place this into your `$PATH`:
+**Security:** XkOps provides detailed visibility into the behavior and performance of applications deployed in a Kubernetes cluster, helping teams identify and address security issues, such as misconfigurations or vulnerabilities. The platform also provides alerts and notifications of suspicious activity, enabling teams to respond quickly to potential security threats.
 
-```bash
-curl -Lo ./terraform-docs.tar.gz https://github.com/terraform-docs/terraform-docs/releases/download/v0.16.0/terraform-docs-v0.16.0-$(uname)-amd64.tar.gz
-tar -xzf terraform-docs.tar.gz
-chmod +x terraform-docs
-mv terraform-docs /usr/local/terraform-docs
-```
+**Alerting:** XkOps provides alerting capabilities to notify teams of issues in any Kubernetes cluster in near real-time, enabling them to quickly address problems before they become critical.
 
-**NOTE:** Windows releases are in `ZIP` format.
+**Reporting:** XkOps allows users to generate reports to share with stakeholders about the cost, performance, and security of the Kubernetes cluster over time.
 
-The latest version can be installed using `go install` or `go get`:
+## ➕ Dependencies
 
-```bash
-# go1.17+
-go install github.com/terraform-docs/terraform-docs@v0.16.0
-```
+Please note the following requirements for using the XkOps:
 
-```bash
-# go1.16
-GO111MODULE="on" go get github.com/terraform-docs/terraform-docs@v0.16.0
-```
+- To install the necessary dependencies, an internet connection is required.
+- You will need an EKS cluster and an AWS IAM user with a minimum set of permissions listed in this [spreadsheet](https://docs.google.com/spreadsheets/d/1cuC-72oRJ7DB4HkvELpml5RLcA2clzCA7xBVd1z6fVw/edit?usp=sharing).
+- The pod resources must meet the minimum requirements of 200MiB memory and 500m CPU.
+- Please ensure that you use a separate XkOps namespace.
 
-**NOTE:** please use the latest Go to do this, minimum `go1.16` is required.
+## 📒 Getting Started
 
-This will put `terraform-docs` in `$(go env GOPATH)/bin`. If you encounter the error
-`terraform-docs: command not found` after installation then you may need to either add
-that directory to your `$PATH` as shown [here] or do a manual installation by cloning
-the repo and run `make build` from the repository which will put `terraform-docs` in:
+To install XkOps, please follow these steps
 
-```bash
-$(go env GOPATH)/src/github.com/terraform-docs/terraform-docs/bin/$(uname | tr '[:upper:]' '[:lower:]')-amd64/terraform-docs
-```
+### 🔐 Secret Manager Setup
 
-## Usage
+First, set up AWS secrets manager on your AWS account:
 
-### Running the binary directly
+- Refer to this [guide](https://docs.google.com/document/d/17fhQ0zJZtJGcWtnVD8NehUbFC-x9TrMP11XjyEFi370/edit?usp=sharing) for instructions on how to set up AWS secret manager OR
+- Use [this script](https://github.com/X-CBG/xk8s/blob/master/secret-manager/secret-manager.sh) to automate the setup process.
 
-To run and generate documentation into README within a directory:
+### 📥 Install XkOps
 
-```bash
-terraform-docs markdown table --output-file README.md --output-mode inject /path/to/module
-```
+1. Clone the repository and navigate to the cloned repo:
 
-Check [`output`] configuration for more details and examples.
+    ```commandline
+    git clone https://github.com/X-CBG/xk8s.git && cd xk8s
+    ```
 
-### Using docker
+2. Update values.yaml file and input your specific value for each key.
+3. Install XkOps using Helm:
 
-terraform-docs can be run as a container by mounting a directory with `.tf`
-files in it and run the following command:
+    ```commandline
+    helm install xkops ./helm -f values.yml
+    ```
 
-```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.16.0 markdown /terraform-docs
-```
+4. After successful installation, obtain the link of the XkOps frontend service to access the dashboard:
 
-If `output.file` is not enabled for this module, generated output can be redirected
-back to a file:
+    ```commandline
+    kubectl get svc -n xkops
+    ```
 
-```bash
-docker run --rm --volume "$(pwd):/terraform-docs" -u $(id -u) quay.io/terraform-docs/terraform-docs:0.16.0 markdown /terraform-docs > doc.md
-```
-
-**NOTE:** Docker tag `latest` refers to _latest_ stable released version and `edge`
-refers to HEAD of `master` at any given point in time.
-
-### Using GitHub Actions
-
-To use terraform-docs GitHub Action, configure a YAML workflow file (e.g.
-`.github/workflows/documentation.yml`) with the following:
-
-```yaml
-name: Generate terraform docs
-on:
-  - pull_request
-
-jobs:
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.ref }}
-
-    - name: Render terraform docs and push changes back to PR
-      uses: terraform-docs/gh-actions@main
-      with:
-        working-dir: .
-        output-file: README.md
-        output-method: inject
-        git-push: "true"
-```
-
-Read more about [terraform-docs GitHub Action] and its configuration and
-examples.
-
-### pre-commit hook
-
-With pre-commit, you can ensure your Terraform module documentation is kept
-up-to-date each time you make a commit.
-
-First [install pre-commit] and then create or update a `.pre-commit-config.yaml`
-in the root of your Git repo with at least the following content:
-
-```yaml
-repos:
-  - repo: https://github.com/terraform-docs/terraform-docs
-    rev: "v0.16.0"
-    hooks:
-      - id: terraform-docs-go
-        args: ["markdown", "table", "--output-file", "README.md", "./mymodule/path"]
-```
-
-Then run:
-
-```bash
-pre-commit install
-pre-commit install-hooks
-```
-
-Further changes to your module's `.tf` files will cause an update to documentation
-when you make a commit.
-
-## Configuration
-
-terraform-docs can be configured with a yaml file. The default name of this file is
-`.terraform-docs.yml` and the path order for locating it is:
-
-1. root of module directory
-1. `.config/` folder at root of module directory
-1. current directory
-1. `.config/` folder at current directory
-1. `$HOME/.tfdocs.d/`
+5. Create an unclaimed volume in your cluster and delete it using the delete button on the dashboard. You can verify the volume deletion action both from the dashboard and the cluster.
 
-```yaml
-formatter: "" # this is required
+## 🚧 Road Map
 
-version: ""
+To report a new feature request or to report any issues or bugs encountered while using XkOps, please feel free to [create a new issue](https://github.com/X-CBG/xk8s/issues "create a new issue") on the project's GitHub repository or contact the development team at nbajwa@xgrid.co or sidra.irshad@xgrid.co via email. The following features are currently either in progress or planned:
 
-header-from: main.tf
-footer-from: ""
+- [X] Checking for observability tools in your Kubernetes cluster.
+- [X] Installing tools to mitigate risk.
+- [X] Using Robusta to monitor and troubleshoot clusters.
+- [X] Employing Kubecost for cost optimization.
+- [X] Utilizing Pixie to monitor system performance.
+- [x] Deployment using Helm charts.
+- [ ] Implementation of a user interface.
+- [ ] Determining risk factors based on metrics from your Kubernetes cluster.
+- [ ] Extracting logs from pod using a logging solution
 
-recursive:
-  enabled: false
-  path: modules
+## 🤝 How to contribute
 
-sections:
-  hide: []
-  show: []
+We invite you to contribute to XkOps, which is a community driven project.  If you plan on contributing code, kindly go through our [contribution guide](https://github.com/X-CBG/xk8s/blob/master/CONTRIBUTING.md).
 
-content: ""
+- To report a bug or request a feature, you can submit a [GitHub issue](https://github.com/X-CBG/xk8s/issues "create a new issue").
+- For real-time discussions and immediate assistance, please join our [Slack channel](http://xkopscommunity.slack.com/).
 
-output:
-  file: ""
-  mode: inject
-  template: |-
-    <!-- BEGIN_TF_DOCS -->
-    {{ .Content }}
-    <!-- END_TF_DOCS -->
+## 🧾 License
 
-output-values:
-  enabled: false
-  from: ""
-
-sort:
-  enabled: true
-  by: name
-
-settings:
-  anchor: true
-  color: true
-  default: true
-  description: false
-  escape: true
-  hide-empty: false
-  html: true
-  indent: 2
-  lockfile: true
-  read-comments: true
-  required: true
-  sensitive: true
-  type: true
-```
-
-## Content Template
-
-Generated content can be customized further away with `content` in configuration.
-If the `content` is empty the default order of sections is used.
-
-Compatible formatters for customized content are `asciidoc` and `markdown`. `content`
-will be ignored for other formatters.
-
-`content` is a Go template with following additional variables:
-
-- `{{ .Header }}`
-- `{{ .Footer }}`
-- `{{ .Inputs }}`
-- `{{ .Modules }}`
-- `{{ .Outputs }}`
-- `{{ .Providers }}`
-- `{{ .Requirements }}`
-- `{{ .Resources }}`
-
-and following functions:
-
-- `{{ include "relative/path/to/file" }}`
-
-These variables are the generated output of individual sections in the selected
-formatter. For example `{{ .Inputs }}` is Markdown Table representation of _inputs_
-when formatter is set to `markdown table`.
-
-Note that sections visibility (i.e. `sections.show` and `sections.hide`) takes
-precedence over the `content`.
-
-Additionally there's also one extra special variable avaialble to the `content`:
-
-- `{{ .Module }}`
-
-As opposed to the other variables mentioned above, which are generated sections
-based on a selected formatter, the `{{ .Module }}` variable is just a `struct`
-representing a [Terraform module].
-
-````yaml
-content: |-
-  Any arbitrary text can be placed anywhere in the content
-
-  {{ .Header }}
-
-  and even in between sections
-
-  {{ .Providers }}
-
-  and they don't even need to be in the default order
-
-  {{ .Outputs }}
-
-  include any relative files
-
-  {{ include "relative/path/to/file" }}
-
-  {{ .Inputs }}
-
-  # Examples
-
-  ```hcl
-  {{ include "examples/foo/main.tf" }}
-  ```
-
-  ## Resources
-
-  {{ range .Module.Resources }}
-  - {{ .GetMode }}.{{ .Spec }} ({{ .Position.Filename }}#{{ .Position.Line }})
-  {{- end }}
-````
-
-## Build on top of terraform-docs
-
-terraform-docs primary use-case is to be utilized as a standalone binary, but
-some parts of it is also available publicly and can be imported in your project
-as a library.
-
-```go
-import (
-    "github.com/terraform-docs/terraform-docs/format"
-    "github.com/terraform-docs/terraform-docs/print"
-    "github.com/terraform-docs/terraform-docs/terraform"
-)
-
-// buildTerraformDocs for module root `path` and provided content `tmpl`.
-func buildTerraformDocs(path string, tmpl string) (string, error) {
-    config := print.DefaultConfig()
-    config.ModuleRoot = path // module root path (can be relative or absolute)
-
-    module, err := terraform.LoadWithOptions(config)
-    if err != nil {
-        return "", err
-    }
-
-    // Generate in Markdown Table format
-    formatter := format.NewMarkdownTable(config)
-
-    if err := formatter.Generate(module); err != nil {
-        return "", err
-    }
-
-    // // Note: if you don't intend to provide additional template for the generated
-    // // content, or the target format doesn't provide templating (e.g. json, yaml,
-    // // xml, or toml) you can use `Content()` function instead of `Render()`.
-    // // `Content()` returns all the sections combined with predefined order.
-    // return formatter.Content(), nil
-
-    return formatter.Render(tmpl)
-}
-```
-
-## Plugin
-
-Generated output can be heavily customized with [`content`], but if using that
-is not enough for your use-case, you can write your own plugin.
-
-In order to install a plugin the following steps are needed:
-
-- download the plugin and place it in `~/.tfdocs.d/plugins` (or `./.tfdocs.d/plugins`)
-- make sure the plugin file name is `tfdocs-format-<NAME>`
-- modify [`formatter`] of `.terraform-docs.yml` file to be `<NAME>`
-
-**Important notes:**
-
-- if the plugin file name is different than the example above, terraform-docs won't
-be able to to pick it up nor register it properly
-- you can only use plugin thorough `.terraform-docs.yml` file and it cannot be used
-with CLI arguments
-
-To create a new plugin create a new repository called `tfdocs-format-<NAME>` with
-following `main.go`:
-
-```go
-package main
-
-import (
-    _ "embed" //nolint
-
-    "github.com/terraform-docs/terraform-docs/plugin"
-    "github.com/terraform-docs/terraform-docs/print"
-    "github.com/terraform-docs/terraform-docs/template"
-    "github.com/terraform-docs/terraform-docs/terraform"
-)
-
-func main() {
-    plugin.Serve(&plugin.ServeOpts{
-        Name:    "<NAME>",
-        Version: "0.1.0",
-        Printer: printerFunc,
-    })
-}
-
-//go:embed sections.tmpl
-var tplCustom []byte
-
-// printerFunc the function being executed by the plugin client.
-func printerFunc(config *print.Config, module *terraform.Module) (string, error) {
-    tpl := template.New(config,
-        &template.Item{Name: "custom", Text: string(tplCustom)},
-    )
-
-    rendered, err := tpl.Render("custom", module)
-    if err != nil {
-        return "", err
-    }
-
-    return rendered, nil
-}
-```
-
-Please refer to [tfdocs-format-template] for more details. You can create a new
-repository from it by clicking on `Use this template` button.
-
-## Documentation
-
-- **Users**
-  - Read the [User Guide] to learn how to use terraform-docs
-  - Read the [Formats Guide] to learn about different output formats of terraform-docs
-  - Refer to [Config File Reference] for all the available configuration options
-- **Developers**
-  - Read [Contributing Guide] before submitting a pull request
-
-Visit [our website] for all documentation.
-
-## Community
-
-- Discuss terraform-docs on [Slack]
-
-## License
-
-MIT License - Copyright (c) 2021 The terraform-docs Authors.
-
-[Chocolatey]: https://www.chocolatey.org
-[Config File Reference]: https://terraform-docs.io/user-guide/configuration/
-[`content`]: https://terraform-docs.io/user-guide/configuration/content/
-[Contributing Guide]: CONTRIBUTING.md
-[Formats Guide]: https://terraform-docs.io/reference/terraform-docs/
-[`formatter`]: https://terraform-docs.io/user-guide/configuration/formatter/
-[here]: https://golang.org/doc/code.html#GOPATH
-[Homebrew]: https://brew.sh
-[install pre-commit]: https://pre-commit.com/#install
-[`output`]: https://terraform-docs.io/user-guide/configuration/output/
-[releases]: https://github.com/terraform-docs/terraform-docs/releases
-[Scoop]: https://scoop.sh/
-[Slack]: https://slack.terraform-docs.io/
-[terraform-docs GitHub Action]: https://github.com/terraform-docs/gh-actions
-[Terraform module]: https://pkg.go.dev/github.com/terraform-docs/terraform-docs/terraform#Module
-[tfdocs-format-template]: https://github.com/terraform-docs/tfdocs-format-template
-[our website]: https://terraform-docs.io/
-[User Guide]: https://terraform-docs.io/user-guide/introduction/
+XkOps is distributed under the MIT License. See [LICENSE.md](https://github.com/X-CBG/xk8s/blob/master/LICENSE "LICENSE.md") for more information
