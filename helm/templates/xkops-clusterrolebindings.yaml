@@ -7,7 +7,7 @@ metadata:
   name: xkops-clusterrole-binding
 subjects:
   - kind: ServiceAccount #Subject: default service account under xkops namespace
-    name: xkops-my-secret-sa
+    name: xkops-secret-sa-v1
     namespace: xkops
   - kind: ServiceAccount  # kubecost-grafana service account
     # under kubecost namespace

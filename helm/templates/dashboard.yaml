@@ -26,6 +26,8 @@ spec:
       labels:
         app: xkops-dashboard
     spec:
+      imagePullSecrets:
+        - name: my-docker-creds
       containers:
         - name: xkops-dashboard
           image: "{{ .Values.dashboard_image.repository }}:{{ .Values.dashboard_image.tag }}"
