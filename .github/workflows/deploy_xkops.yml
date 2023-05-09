@@ -25,6 +25,22 @@ jobs:
           aws eks update-kubeconfig --name xkops-cluster-2 --region ap-southeast-1
           # kubectl cluster-info
           kubectl get pods
+
+      - name: Build Docker Image
+        run: |
+          docker build -f Dockerfile -t kaizen .
+
+      - name: Publish Docker Image
+        id: pub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          # Publish the Docker image to the registry with the commit hash as the version
+          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+          docker tag kaizen "$DOCKER_USERNAME/kaizen:xkops"
+          docker push "$DOCKER_USERNAME/kaizen:xkops"
+
       - name: deploy xkops using helm
         run: |
           helm install xkops ./helm -f values.yaml
