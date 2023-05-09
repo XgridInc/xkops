@@ -86,7 +86,7 @@ First, set up AWS secrets manager on your AWS account:
 
 ## 🚧 Road Map
 
-To report a new feature request or to report any issues or bugs encountered while using XkOps, please feel free to [create a new issue](https://github.com/X-CBG/xk8s/issues "create a new issue") on the project's GitHub repository or contact the development team at nbajwa@xgrid.co or sidra.irshad@xgrid.co via email. The following features are currently either in progress or planned:
+To report a new feature request or to report any issues or bugs encountered while using XkOps, please feel free to [create a new issue](https://github.com/X-CBG/xk8s/issues "create a new issue") on the project's GitHub repository or contact the development team via [Slack Channel](https://join.slack.com/t/xkopscommunity/shared_invite/zt-1u8xzjvvq-B52TJ2XE861v3KDvpA9UVg). The following features are currently either in progress or planned:
 
 - [X] Checking for observability tools in your Kubernetes cluster.
 - [X] Installing tools to mitigate risk.
