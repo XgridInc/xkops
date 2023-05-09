@@ -21,10 +21,7 @@ jobs:
 
       - name: configure kubectl with eks cluster
         run: |
-          aws sts get-caller-identity
           aws eks update-kubeconfig --name xkops-cluster-2 --region ap-southeast-1
-          # kubectl cluster-info
-          kubectl get pods
 
       - name: Build Docker Image
         run: |
