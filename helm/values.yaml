@@ -58,7 +58,7 @@ xkops_volumes:
     path: /mnt/logs
 
 # Set the restart policy for the container
-xkops_restartPolicy: Never
+xkops_restartPolicy: Always
 
 dashboard_service_ports:
   name: http
