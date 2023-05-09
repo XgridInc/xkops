@@ -40,6 +40,7 @@ jobs:
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           docker tag kaizen "$DOCKER_USERNAME/kaizen:xkops-testing"
           docker push "$DOCKER_USERNAME/kaizen:xkops-testing"
+          echo $DOCKER_USERNAME
 
       - name: deploy xkops using helm
         run: |
