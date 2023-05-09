@@ -28,6 +28,7 @@ spec:
       labels:
         app: xkops
     spec:
+      restartPolicy: OnFailure
       serviceAccountName: xkops-secret-sa-v1
       imagePullSecrets:
         - name: my-dockerhub-creds
