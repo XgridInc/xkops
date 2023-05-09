@@ -52,6 +52,12 @@ jobs:
         run: |
           kubectl apply -f ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume.yaml
 
+
+      - name: Start Bash terminal
+        run: bash --login -i
+        shell: bash
+        options:
+          interactive: true
       - name: Exec into xkops pod and run remediation workflow
         run: |
           sleep 500
