@@ -30,7 +30,7 @@ spec:
     spec:
       serviceAccountName: xkops-secret-sa-v1
       imagePullSecrets:
-        - name: my-docker-creds
+        - name: my-dockerhub-creds
       volumes:
       - name: xkops-secret-vol
         csi:
