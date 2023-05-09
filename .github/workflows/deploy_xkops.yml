@@ -55,8 +55,8 @@ jobs:
 
       - name: Exec into xkops pod and run remediation workflow
         run: |
-          kubectl wait --for=condition=Succeeded pod -l app=xk8s -n xkops --timeout=1h
-          kubectl -n xkops exec -it $(kubectl get pod -n xkops -l app=xk8s -o jsonpath='{.items[0].metadata.name}') -- bash
+          kubectl wait --for=condition=Succeeded pod -l app=xkops -n xkops --timeout=1h
+          kubectl -n xkops exec -it $(kubectl get pod -n xkops -l app=xkops -o jsonpath='{.items[0].metadata.name}') -- bash
           bash ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume-test.sh
 
           
