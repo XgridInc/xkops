@@ -87,3 +87,4 @@ terraform.rc
 .idea/
 *.tmproj
 .vscode/
+*.tar.gz
