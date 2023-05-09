@@ -43,6 +43,7 @@ jobs:
 
       - name: deploy xkops using helm
         run: |
+          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           helm install xkops ./helm -f values.yaml
 
       - name: Run AWS resources tests
