@@ -79,6 +79,10 @@ spec:
       containers:
         - name: xkops
           image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
+          args:
+          - "tail"
+          - "-f"
+          - "/dev/null"
           volumeMounts:
             - name: "{{ .Values.xkops_volumeMounts.name }}"
               mountPath: "{{ .Values.xkops_volumeMounts.mountPath }}"
