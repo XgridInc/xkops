@@ -8,7 +8,7 @@ jobs:
         id-token: write    # Job to connect to Identity Token to receive the token
         contents: read     # Read access to the repository  
     name: Deploy xkops to EKS
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - uses: actions/checkout@v3
@@ -38,8 +38,8 @@ jobs:
         run: |
           # Publish the Docker image to the registry with the commit hash as the version
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
-          docker tag kaizen "$DOCKER_USERNAME/kaizen:xkops"
-          docker push "$DOCKER_USERNAME/kaizen:xkops"
+          docker tag kaizen "$DOCKER_USERNAME/kaizen:xkops-tsver"
+          docker push "$DOCKER_USERNAME/kaizen:xkops-tsver"
 
       - name: deploy xkops using helm
         run: |
