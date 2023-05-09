@@ -28,7 +28,7 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build -f Dockerfile -t kaizen .
+          docker build --no-cache -f Dockerfile -t kaizen .
 
       - name: Publish Docker Image
         id: pub
