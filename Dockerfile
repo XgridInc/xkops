@@ -32,5 +32,3 @@ RUN apt-get update && \
      apt-get install -y jq=1.6-2.1ubuntu3 --no-install-recommends && \
      export PATH="/usr/local/bin:$PATH" && \
      chmod -R +x /src
-
-CMD [ "make", "all" ]
