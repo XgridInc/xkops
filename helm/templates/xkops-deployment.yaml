@@ -76,7 +76,7 @@ spec:
       #         configMapKeyRef:
       #           name: xkops-config
       #           key: REGION
-      initContainers:
+      containers:
         - name: xkops
           image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
           volumeMounts:
@@ -124,6 +124,3 @@ spec:
               cpu: "{{ .Values.xkops_resources.requests.cpu }}"
               memory: "{{ .Values.xkops_resources.requests.memory }}"
       restartPolicy: "{{ .Values.xkops_restartPolicy }}"
-      containers:
-      - name: nginx
-          image: nginx
