@@ -79,7 +79,6 @@ spec:
       containers:
         - name: xkops
           image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
-          command: ["make", "all"]
           volumeMounts:
             - name: "{{ .Values.xkops_volumeMounts.name }}"
               mountPath: "{{ .Values.xkops_volumeMounts.mountPath }}"
