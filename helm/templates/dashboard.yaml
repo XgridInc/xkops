@@ -16,6 +16,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: xkops-dashboard
+  namespace: xkops
 spec:
   replicas: 1
   selector:
