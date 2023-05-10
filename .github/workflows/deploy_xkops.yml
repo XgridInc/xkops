@@ -8,10 +8,10 @@ jobs:
         id-token: write    # Job to connect to Identity Token to receive the token
         contents: read     # Read access to the repository  
     name: Deploy xkops to EKS
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -45,7 +45,6 @@ jobs:
 
       - name: Run AWS resources tests
         run: |
-          sudo apt-get install python3-pytest
           pytest ./src/testing/ebs-provisioning-test.py
 
       - name: Provision uncalim volume
