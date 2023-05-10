@@ -41,41 +41,41 @@ spec:
       - name: "{{ .Values.xkops_volumes.name }}"
         hostPath:
           path: "{{ .Values.xkops_volumes.hostPath.path }}"
-      # initContainers:
-      #   - name: terraform-init
-      #     image: "{{ .Values.xkops_init_container.image.repository }}:{{ .Values.xkops_init_container.image.tag }}"
-      #     command: ["terraform", "apply", "-auto-approve"]
-      #     # command: ["sleep", "3600"]
-      #     volumeMounts:
-      #     - name: xkops-secret-vol
-      #       mountPath: "/mnt/secret-xkops-v1"
-      #       readOnly: true
-      #     env:
-      #     - name: AWS_ACCESS_KEY_ID
-      #       valueFrom:
-      #         secretKeyRef:
-      #           name: secret-xkops-v1
-      #           key: AWS_ACCESS_KEY_ID
-      #     - name: AWS_SECRET_ACCESS_KEY
-      #       valueFrom:
-      #         secretKeyRef:
-      #           name: secret-xkops-v1
-      #           key: AWS_SECRET_ACCESS_KEY
-      #     - name: AWS_SESSION_TOKEN
-      #       valueFrom:
-      #         secretKeyRef:
-      #           name: secret-xkops-v1
-      #           key: AWS_SESSION_TOKEN
-      #     - name: TF_VAR_CLUSTER_NAME
-      #       valueFrom:
-      #         configMapKeyRef:
-      #           name: xkops-config
-      #           key: CLUSTER_NAME
-      #     - name: TF_VAR_REGION
-      #       valueFrom:
-      #         configMapKeyRef:
-      #           name: xkops-config
-      #           key: REGION
+      initContainers:
+        - name: terraform-init
+          image: "{{ .Values.xkops_init_container.image.repository }}:{{ .Values.xkops_init_container.image.tag }}"
+          command: ["terraform", "apply", "-auto-approve"]
+          # command: ["sleep", "3600"]
+          volumeMounts:
+          - name: xkops-secret-vol
+            mountPath: "/mnt/secret-xkops-v1"
+            readOnly: true
+          env:
+          - name: AWS_ACCESS_KEY_ID
+            valueFrom:
+              secretKeyRef:
+                name: secret-xkops-v1
+                key: AWS_ACCESS_KEY_ID
+          - name: AWS_SECRET_ACCESS_KEY
+            valueFrom:
+              secretKeyRef:
+                name: secret-xkops-v1
+                key: AWS_SECRET_ACCESS_KEY
+          - name: AWS_SESSION_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: secret-xkops-v1
+                key: AWS_SESSION_TOKEN
+          - name: TF_VAR_CLUSTER_NAME
+            valueFrom:
+              configMapKeyRef:
+                name: xkops-config
+                key: CLUSTER_NAME
+          - name: TF_VAR_REGION
+            valueFrom:
+              configMapKeyRef:
+                name: xkops-config
+                key: REGION
       containers:
         - name: xkops
           image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
