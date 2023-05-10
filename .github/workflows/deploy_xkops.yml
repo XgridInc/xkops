@@ -27,13 +27,13 @@ jobs:
         run: |
           docker build --no-cache -f Dockerfile -t kaizen .
 
-      - name: Publish Docker Image
+      - name: Publish Test Docker Image
         id: pub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         run: |
-          # Publish the Docker image to the registry with the commit hash as the version
+          # Publish the Docker image to the registry with the xkops-testing tag
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           docker tag kaizen "$DOCKER_USERNAME/kaizen:xkops-testing"
           docker push "$DOCKER_USERNAME/kaizen:xkops-testing"
@@ -50,16 +50,20 @@ jobs:
       - name: Provision uncalim volume
         run: |
           kubectl apply -f ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume.yaml
-
-
-      - name: Start Bash terminal
-        run: bash --login -i
-        shell: bash
       
       - name: Exec into xkops pod and run remediation workflow
         run: |
           sleep 90
-          kubectl -n xkops exec --stdin $(kubectl get pod -n xkops -l app=xkops -o jsonpath='{.items[0].metadata.name}') -- bash ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume-test.sh
+          kubectl -n xkops exec --stdin $(kubectl get pod -n xkops -l app=xkops -o jsonpath='{.items[0].metadata.name}') \
+          -- bash ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume-test.sh
           
-
-          
+       - name: Publish prod Docker Image
+        id: pub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          # Publish the Docker image to the registry with the xkops-prod tag
+          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+          docker tag kaizen "$DOCKER_USERNAME/kaizen:xkops-prod"
+          docker push "$DOCKER_USERNAME/kaizen:xkops-prod"

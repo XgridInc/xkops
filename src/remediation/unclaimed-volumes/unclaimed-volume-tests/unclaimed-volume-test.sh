@@ -51,6 +51,7 @@ trigger_robusta_action() {
         echo "Unclaimed PV $unclaimedPv deleted successfully"
     else
         echo "PV not deleted"
+        exit 1
     fi
 }
 
@@ -65,6 +66,7 @@ verify_deletion() {
 
     if [[ "$oldPv" == "$unclaimedPv" ]]; then
         echo "Volume $oldPv is not deleted"
+        exit 1
     else
         echo "PV deleted and confirmed"
     fi
