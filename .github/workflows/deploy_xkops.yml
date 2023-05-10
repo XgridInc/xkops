@@ -37,7 +37,6 @@ jobs:
           docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
           docker tag kaizen "$DOCKER_USERNAME/kaizen:xkops-testing"
           docker push "$DOCKER_USERNAME/kaizen:xkops-testing"
-          echo $DOCKER_USERNAME
 
       - name: deploy xkops using helm
         run: |
@@ -46,6 +45,7 @@ jobs:
 
       - name: Run AWS resources tests
         run: |
+          sudo apt-get install python3-pytest
           pytest ./src/testing/ebs-provisioning-test.py
 
       - name: Provision uncalim volume
