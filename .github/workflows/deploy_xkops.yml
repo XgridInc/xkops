@@ -57,7 +57,7 @@ jobs:
           kubectl -n xkops exec --stdin $(kubectl get pod -n xkops -l app=xkops -o jsonpath='{.items[0].metadata.name}') \
           -- bash ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume-test.sh
           
-       - name: Publish prod Docker Image
+      - name: Publish prod Docker Image
         id: pub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
