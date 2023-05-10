@@ -76,7 +76,7 @@ spec:
       #         configMapKeyRef:
       #           name: xkops-config
       #           key: REGION
-      initContainers:
+      containers:
         - name: xkops
           image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
           volumeMounts:
@@ -123,8 +123,4 @@ spec:
             requests:
               cpu: "{{ .Values.xkops_resources.requests.cpu }}"
               memory: "{{ .Values.xkops_resources.requests.memory }}"
-      containers:
-       - name: my-container
-         image: busybox
-         command: ["tail", "-f", "/dev/null"]
       restartPolicy: "{{ .Values.xkops_restartPolicy }}"
