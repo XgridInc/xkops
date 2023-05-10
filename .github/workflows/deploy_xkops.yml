@@ -58,7 +58,6 @@ jobs:
           -- bash ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume-test.sh
           
       - name: Publish prod Docker Image
-        id: pub
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
