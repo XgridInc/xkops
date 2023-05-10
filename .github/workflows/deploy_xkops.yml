@@ -58,8 +58,8 @@ jobs:
       
       - name: Exec into xkops pod and run remediation workflow
         run: |
-          sleep 500
-          kubectl -n xkops exec --stdin --tty $(kubectl get pod -n xkops -l app=xkops -o jsonpath='{.items[0].metadata.name}') -- /bin/bash
-          bash ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume-test.sh
+          sleep 90
+          kubectl -n xkops exec --stdin $(kubectl get pod -n xkops -l app=xkops -o jsonpath='{.items[0].metadata.name}') -- bash ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume-test.sh
+          
 
           
