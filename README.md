@@ -1,6 +1,6 @@
 # XkOps
 
-![Xgrid Logo](https://media-exp1.licdn.com/dms/image/C4D0BAQHn43yTM8np2Q/company-logo_200_200/0?e=2159024400&v=beta&t=HCCA_wnetIM7butwiHWBYnXgVzn4pjM9Dq5YDMMJIkE "Xgrid Logo")
+![XkOps Logo](./images/xkops_logo.png "XkOps Logo")
 
 [![Lint Code Base](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml)
 [![Package and Publish Docker Image](https://github.com/X-CBG/xk8s/actions/workflows/build_publish_scan.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/build_publish_scan.yml)
