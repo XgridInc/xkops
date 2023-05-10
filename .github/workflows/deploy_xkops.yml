@@ -8,7 +8,7 @@ jobs:
         id-token: write    # Job to connect to Identity Token to receive the token
         contents: read     # Read access to the repository  
     name: Deploy xkops to EKS
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v3
