@@ -1,0 +1,42 @@
+# Overview
+
+This Terraform code is used to specify the version of the AWS provider that will be used, to create and manage EC2 instances in an AWS account. It also creates an IAM role with a trust relationship set as ebs-csi-controller-sa, attaches the AmazonEBSCSIDriverPolicy to the IAM role and adds Amazon EBS CSI Driver add-on in the existing EKS cluster provided.
+
+## Dependencies
+
+This code is written in Terraform and requires version 0.12.0 or higher. The AWS provider version 4.0 or higher is required to interact with AWS resources.
+
+## Usage
+
+To use this code, you need to pass the following input values via Helm:
+
+- `REGION`: The region value is picked from the environment.
+- `CLUSTER_NAME`: The cluster name on which the Terraform scripts will be run.
+
+The Terraform code can be executed by running `terraform apply`.
+
+## Code Details
+
+### Terraform block
+
+The Terraform block specifies the required Terraform version and required providers. The required version of Terraform is 0.12.0 or higher. The required providers for this code are `aws` and `tls`.
+
+### Provider block
+
+The `aws` provider block is used to interact with AWS resources. The `region` parameter is specified using the value passed in via Helm.
+
+### Data blocks
+
+The `data` blocks are used to query AWS for information about the existing resources. The `aws_eks_cluster` data block queries the EKS cluster for information about the cluster with the provided name. The `aws_iam_openid_connect_provider` data block queries the EKS cluster for the OpenID Connect Provider URL.
+
+### Locals block
+
+The `locals` block defines a local variable `eks_oidc_provider` which is set to the `data.aws_iam_openid_connect_provider.eks` value.
+
+### Resource blocks
+
+The `aws_iam_role` resource block creates an IAM Role with the name "XkOps-EBS-iam-role". The trust relationship is set as `ebs-csi-controller-sa`. The `assume_role_policy` is defined using a `jsonencode` function to create the required JSON structure.
+
+The `aws_iam_role_policy_attachment` resource block attaches the AmazonEBSCSIDriverPolicy to the IAM Role created above.
+
+The `aws_eks_addon` resource block adds Amazon EBS CSI Driver add-on in the existing EKS cluster provided above. The `addon_name`, `cluster_name` and `service_account_role_arn` parameters are specified using the values from input variables and previously created resources.

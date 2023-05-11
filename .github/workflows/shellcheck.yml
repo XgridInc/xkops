@@ -1,0 +1,23 @@
+
+on:
+  pull_request:
+    branches:
+      - master
+
+name: "Shellcheck"
+permissions: {}
+
+jobs:
+  shellcheck:
+    name: Shellcheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.ACCESS_TOKEN }}
+      - name: Run ShellCheck
+        uses: a5k-actions/shellchecker@v0.1.7
+        with:
+          scandir: './src'
+          token: ${{ secrets.ACCESS_TOKEN }}
+          

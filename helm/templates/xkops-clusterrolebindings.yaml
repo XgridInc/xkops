@@ -1,0 +1,43 @@
+# Copyright (c) 2023, Xgrid Inc, https://xgrid.co
+
+# Licensed under the Apache License, Version 2.0 (the 'License');
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an 'AS IS' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+# Cluster roles for XkOps.
+
+# Cluster role binding which binds the default service account
+# under the xkops namespace with all-resource-role cluster role
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: xkops-clusterrole-binding
+subjects:
+  - kind: ServiceAccount #Subject: default service account under xkops namespace
+    name: xkops-my-secret-sa
+    namespace: xkops
+  - kind: ServiceAccount  # kubecost-grafana service account
+    # under kubecost namespace
+    name: kubecost-grafana
+    namespace: kubecost
+  - kind: ServiceAccount  # kubecost-prometheus-server service account
+    # under kubecost namespace
+    name: kubecost-prometheus-server
+    namespace: kubecost
+  - kind: ServiceAccount  # kubecost-kube-state-metrics service account
+    # under kubecost namespace
+    name: kubecost-kube-state-metrics
+    namespace: kubecost
+roleRef:
+  kind: ClusterRole  # Cluster role reference to be used for binding the subject
+  name: xkops-clusterrole
+  apiGroup: rbac.authorization.k8s.io

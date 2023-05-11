@@ -1,0 +1,86 @@
+# Copyright (c) 2023, Xgrid Inc, https://xgrid.co
+
+# Licensed under the Apache License, Version 2.0 (the 'License');
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an 'AS IS' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+---
+
+
+name: Deploy xkops to EKS
+
+on:
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  oidc-connect:
+    permissions:
+        id-token: write    # Job to connect to Identity Token to receive the token
+        contents: read     # Read access to the repository  
+    name: Deploy xkops to EKS
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.CREDENTIALS }}
+          role-session-name: "xkops"
+          aws-region: ap-southeast-1
+
+      - name: configure kubectl with eks cluster
+        run: |
+          aws eks update-kubeconfig --name xkops-cluster-2 --region ap-southeast-1
+
+      - name: Build Docker Image
+        run: |
+          docker build --no-cache -f Dockerfile -t kaizen .
+
+      - name: Publish Test Docker Image
+        id: pub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          # Publish the Docker image to the registry with the xkops-testing tag
+          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+          docker tag kaizen "$DOCKER_USERNAME/kaizen:xkops-testing"
+          docker push "$DOCKER_USERNAME/kaizen:xkops-testing"
+
+      - name: deploy xkops using helm
+        run: |
+          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+          helm install xkops ./helm -f values.yaml
+
+      - name: Provision uncalim volume
+        run: |
+          kubectl apply -f ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume.yaml
+      
+      - name: Exec into xkops pod and run remediation workflow
+        run: |
+          sleep 500
+          kubectl -n xkops exec --stdin $(kubectl get pod -n xkops -l app=xkops -o jsonpath='{.items[0].metadata.name}') \
+          -- bash ./src/remediation/unclaimed-volumes/unclaimed-volume-tests/unclaimed-volume-test.sh
+
+      - name: Run AWS EBS provisioning tests
+        run: |
+          pytest ./src/testing/ebs-provisioning-test.py
+          
+      - name: Publish prod Docker Image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: |
+          # Publish the Docker image to the registry with the xkops-prod tag
+          docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+          docker tag kaizen "$DOCKER_USERNAME/kaizen:xkops-prod"
+          docker push "$DOCKER_USERNAME/kaizen:xkops-prod"
