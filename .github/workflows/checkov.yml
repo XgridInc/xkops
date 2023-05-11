@@ -6,7 +6,7 @@ on:
     branches: [master, main]
 jobs:
   build:
-    runs-on: self-hosted
+    runs-on: ununtu-latest
 
     steps:
       # Checkout the repository
