@@ -20,3 +20,4 @@ jobs:
         with:
           scandir: './src'
           token: ${{ secrets.ACCESS_TOKEN }}
+          
