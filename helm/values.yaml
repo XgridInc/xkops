@@ -1,0 +1,114 @@
+# Copyright (c) 2023, Xgrid Inc, https://xgrid.co
+
+# Licensed under the Apache License, Version 2.0 (the 'License');
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+
+# http://www.apache.org/licenses/LICENSE-2.0
+
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an 'AS IS' BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+---
+# Default values for xkops and dashboard.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+xkops_init_container:
+  image:
+    repository: xgridxcbg/kaizen
+    tag: terraform
+    pullPolicy: Always
+
+namespace:
+  NAMESPACE_NAME: xkops
+
+# Set the container image details for xkops
+xkops_image:
+  repository: xgridxcbg/kaizen
+  tag: xkops-testing
+  pullPolicy: Always
+
+# Set the container image details for dashboard
+dashboard_image:
+  repository: xgridxcbg/kaizen
+  tag: dashboard
+  pullPolicy: IfNotPresent
+
+# Define the resource requirements and limits for the container
+xkops_resources:
+  limits:
+    cpu: "500m"
+    memory: "200Mi"
+  requests:
+    cpu: "100m"
+    memory: "128Mi"
+
+# Set up the volume mount for xkops
+xkops_volumeMounts:
+  name: log-volume
+  mountPath: /tmp
+
+# Set up the persistent volume for xkops
+xkops_volumes:
+  name: log-volume
+  hostPath:
+    path: /mnt/logs
+
+# Set the restart policy for the container
+xkops_restartPolicy: Always
+
+dashboard_service_ports:
+  name: http
+  port: 80
+  targetPort: 3000
+# Set up tolerations and affinity, if necessary
+tolerations: []
+affinity: {}
+
+secret_provider_class: xkops-my-secret-provider # pragma: allowlist secret
+
+# provide your pixie API key (https://docs.px.dev/reference/admin/api-keys)
+PX_API_KEY: ""
+# provide your pixie deploy key
+# (https://docs.px.dev/reference/admin/deploy-keys)
+PX_DEPLOY_KEY: ""
+# provide your Slack API key
+# (https://slack.com/help/articles/215770388-Create-and-regenerate-API-tokens)
+SLACK_API_KEY: ""
+# provide your Slack channel name
+SLACK_CHANNEL_NAME: ""
+# Generate robusta API key using robusta-CLI
+ROBUSTA_UI_API_KEY: ""
+# AWS  credentisl
+AWS_ACCESS_KEY_ID: ""
+AWS_SECRET_ACCESS_KEY: ""
+AWS_SESSION_TOKEN: ""
+# Region where cluster deployed
+REGION: ""
+# secret provider class for extracting secrets
+SECRET_PROVIDER_CLASS: ""
+# Override the name and fullname (including the release name) for the chart
+nameOverride: ""
+fullnameOverride: ""
+
+# List all manifests to apply in order of priority
+manifests:
+  - name: xkops-clusterrole.yaml
+    priority: 1
+  - name: xkops-clusterrolebindings.yaml
+    priority: 2
+  - name: namespace.yaml
+    priority: 3
+  - name: configmaps.yaml
+    priority: 4
+  - name: storage-class.yaml
+    priority: 5
+  - name: xkops-deployment.yaml
+    priority: 6
+  - name: dashboard.yaml
+    priority: 7
+  - name: dashboard-service.yaml
+    priority: 8
