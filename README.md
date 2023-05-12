@@ -2,9 +2,9 @@
 
 ![XkOps Logo](./images/xkops_logo.png "XkOps Logo")
 
-[![Lint Code Base](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml)
-[![Package and Publish Docker Image](https://github.com/X-CBG/xk8s/actions/workflows/build_publish_scan.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/build_publish_scan.yml)
-[![Shellcheck](https://github.com/X-CBG/xk8s/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/shellcheck.yml)
+[![Lint Code Base](https://github.com/XgridInc/xkops/actions/workflows/linter.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml)
+[![Package and Publish Docker Image](https://github.com/XgridInc/xkops/actions/workflows/build_publish_scan.yml/badge.svg)](https://github.com/XgridInc/xkops/actions/workflows/build_publish_scan.yml)
+[![Shellcheck](https://github.com/XgridInc/xkops/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/XgridInc/xkops/actions/workflows/shellcheck.yml)
 
 ## 💻 Overview
 
@@ -14,11 +14,11 @@ This all-in-one solution consolidates the insights obtained from these tools, ma
 
 Check the below video for a quick demo of XkOps.
 
-[![XkOps Demo](./images/Demo-video.png)](https://drive.google.com/file/d/10e1XhDil7To9Fadd7vRjVnE_6lQO9Xsl/view?usp=sharing)
+[![XkOps Demo](./images/Demo-video.jpg)](https://youtu.be/l-psN4IDDBA)
 
 ## 🏗️ XkOps Architecture Diagram
 
-![XkOps Architecture Diagram](./images/arch%20diagram.jpg "Architecture Digram")
+![XkOps Architecture Diagram](./images/arch%20diagram.png "Architecture Digram")
 
 ## 💡 Why XkOps?
 
@@ -59,14 +59,14 @@ To install XkOps, please follow these steps
 First, set up AWS secrets manager on your AWS account:
 
 - Refer to this [guide](https://docs.google.com/document/d/17fhQ0zJZtJGcWtnVD8NehUbFC-x9TrMP11XjyEFi370/edit?usp=sharing) for instructions on how to set up AWS secret manager OR
-- Use [this script](https://github.com/X-CBG/xk8s/blob/master/secret-manager/secret-manager.sh) to automate the setup process.
+- Use [this script](https://github.com/XgridInc/xkops/blob/master/secret-manager/secret-manager.sh) to automate the setup process.
 
 ### 📥 Install XkOps
 
 1. Clone the repository and navigate to the cloned repo:
 
     ```commandline
-    git clone https://github.com/X-CBG/xk8s.git && cd xk8s
+    git clone https://github.com/XgridInc/xkops.git && cd xkops
     ```
 
 2. Update values.yaml file and input your specific value for each key.
@@ -86,7 +86,7 @@ First, set up AWS secrets manager on your AWS account:
 
 ## 🚧 Road Map
 
-To report a new feature request or to report any issues or bugs encountered while using XkOps, please feel free to [create a new issue](https://github.com/X-CBG/xk8s/issues "create a new issue") on the project's GitHub repository or contact the development team via [Slack Channel](https://join.slack.com/t/xkopscommunity/shared_invite/zt-1u8xzjvvq-B52TJ2XE861v3KDvpA9UVg). The following features are currently either in progress or planned:
+To report a new feature request or to report any issues or bugs encountered while using XkOps, please feel free to [create a new issue](https://github.com/XgridInc/xkops/issues "create a new issue") on the project's GitHub repository or contact the development team via [Slack Channel](https://join.slack.com/t/xkopscommunity/shared_invite/zt-1u8xzjvvq-B52TJ2XE861v3KDvpA9UVg). The following features are currently either in progress or planned:
 
 - [X] Checking for observability tools in your Kubernetes cluster.
 - [X] Installing tools to mitigate risk.
@@ -100,10 +100,10 @@ To report a new feature request or to report any issues or bugs encountered whil
 
 ## 🤝 How to contribute
 
-We invite you to contribute to XkOps, which is a community driven project.  If you plan on contributing code, kindly go through our [contribution guide](https://github.com/X-CBG/xk8s/blob/master/CONTRIBUTING.md).
+We invite you to contribute to XkOps, which is a community driven project.  If you plan on contributing code, kindly go through our [contribution guide](https://github.com/XgridInc/xkops/blob/master/CONTRIBUTING.md).
 
-- To report a bug or request a feature, you can submit a [GitHub issue](https://github.com/X-CBG/xk8s/issues "create a new issue").
-- For real-time discussions and immediate assistance, please join our [Slack channel](http://xkopscommunity.slack.com/).
+- To report a bug or request a feature, you can submit a [GitHub issue](https://github.com/XgridInc/xkops/issues "create a new issue").
+- For real-time discussions and immediate assistance, please join our [Slack channel](https://join.slack.com/t/xkopscommunity/shared_invite/zt-1u8xzjvvq-B52TJ2XE861v3KDvpA9UVg).
 
 ## 🧾 License
 
