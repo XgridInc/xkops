@@ -29,7 +29,7 @@ else
 fi
 
 # Delete the xkops-secret-sa service account from the xkops namespace
-if kubectl delete sa/xkops-my-secret-sa --namespace xkops >/dev/null 2>&1; then
+if kubectl delete sa/xkops-secret-sa --namespace xkops >/dev/null 2>&1; then
   echo "Successfully deleted xkops-secret-sa service account"
 else
   echo "Failed to delete xkops-secret-sa service account"
