@@ -52,7 +52,7 @@ if ! aws --region "$region" secretsmanager  create-secret --name xkops-secret --
   exit 1
 fi
 
-secret_arn=$(aws secretsmanager describe-secret --secret-id xkops-secret --query ARN --output text)
+secret_arn=$(aws --region "$region" secretsmanager describe-secret --secret-id xkops-secret --query ARN --output text)
 
 # Create a policy for the secret
 if ! aws --region "$region" --query Policy.Arn --output text iam create-policy --policy-name xkops-secret-policy --policy-document '{     "Version": "2012-10-17",     "Statement": [ {         "Effect": "Allow",         "Action": ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret", "sts:AssumeRoleWithWebIdentity"],         "Resource": ["'"$secret_arn"'"]     } ] }'; then
