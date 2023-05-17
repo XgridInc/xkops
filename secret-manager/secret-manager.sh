@@ -47,20 +47,20 @@ echo "Enter the cluster region: "
 read -r region
 
 # Create the secret in the AWS Secrets Manager
-if ! aws --region "$region" secretsmanager  create-secret --name xkops-my-secret --secret-string '{"AWS_ACCESS_KEY_ID":"<aws-access-key-id>", "AWS_SECRET_ACCESS_KEY":"<aws-secret-access-key>","AWS_SESSION_TOKEN":"<aws-session-token>","ROBUSTA_UI_API_KEY":"<robusta-ui-api-key>","SLACK_API_KEY":"<slack-api-key>","PX_API_KEY":"<pixie-api-key>","PX_DEPLOY_KEY":"<pixie-deploy-key>"}'  &> /dev/null; then
+if ! aws --region "$region" secretsmanager  create-secret --name xkops-secret --secret-string '{"AWS_ACCESS_KEY_ID":"<aws-access-key-id>", "AWS_SECRET_ACCESS_KEY":"<aws-secret-access-key>","AWS_SESSION_TOKEN":"<aws-session-token>","ROBUSTA_UI_API_KEY":"<robusta-ui-api-key>","SLACK_API_KEY":"<slack-api-key>","PX_API_KEY":"<pixie-api-key>","PX_DEPLOY_KEY":"<pixie-deploy-key>"}'  &> /dev/null; then
   echo "Failed to create secret in AWS Secrets Manager"
   exit 1
 fi
 
-secret_arn=$(aws secretsmanager describe-secret --secret-id xkops-my-secret --query ARN --output text)
+secret_arn=$(aws secretsmanager describe-secret --secret-id xkops-secret --query ARN --output text)
 
 # Create a policy for the secret
-if ! aws --region "$region" --query Policy.Arn --output text iam create-policy --policy-name xkops-creds-secret-policy --policy-document '{     "Version": "2012-10-17",     "Statement": [ {         "Effect": "Allow",         "Action": ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret", "sts:AssumeRoleWithWebIdentity"],         "Resource": ["'"$secret_arn"'"]     } ] }'; then
+if ! aws --region "$region" --query Policy.Arn --output text iam create-policy --policy-name xkops-secret-policy --policy-document '{     "Version": "2012-10-17",     "Statement": [ {         "Effect": "Allow",         "Action": ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret", "sts:AssumeRoleWithWebIdentity"],         "Resource": ["'"$secret_arn"'"]     } ] }'; then
   echo "Failed to create policy for the secret"
   exit 1
 fi
 
-policy_arn=$(aws iam list-policies --scope Local --query "Policies[?PolicyName=='xkops-creds-secret-policy'].Arn" --output text)
+policy_arn=$(aws iam list-policies --scope Local --query "Policies[?PolicyName=='xkops-secret-policy'].Arn" --output text)
 
 # Prompt the user to enter the values for the variables
 echo "Enter the Cluster Name: "
@@ -73,13 +73,8 @@ if ! eksctl utils associate-iam-oidc-provider --region="$region" --cluster="$clu
 fi
 
 # Create an IAM service account for the secret
-if ! eksctl create iamserviceaccount --name xkops-my-secret-sa --namespace xkops --region="$region" --cluster "$cluster_name" --attach-policy-arn "$policy_arn" --approve --override-existing-serviceaccounts; then
+if ! eksctl create iamserviceaccount --name xkops-secret-sa --namespace xkops --region="$region" --cluster "$cluster_name" --attach-policy-arn "$policy_arn" --approve --override-existing-serviceaccounts; then
   echo "Failed to create IAM service account for the secret"
   exit 1
 fi
 
-# Apply the secret provider class YAML file
-if ! kubectl apply -f ./secretproviderclass.yaml; then
-  echo "Failed to apply secret provider class YAML file"
-  exit 1
-fi
