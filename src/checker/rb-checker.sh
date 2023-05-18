@@ -102,7 +102,7 @@ kubectl_rb_image_checker() {
         exit 1 # Exit the script with a non-zero code to indicate failure.
     fi
 
-    if [[ "$runnerImage" == "${EXPECTED_RUNNER_IMAGE}" && "$forwarderImage" == "${EXPECTED_FORWARDER_IMAGE}" ]]; then
+    if [[ "${runnerImage[0]}" == "${EXPECTED_RUNNER_IMAGE}" && "${forwarderImage[0]}" == "${EXPECTED_FORWARDER_IMAGE}" ]]; then
         log "${GREEN}[INFO]" "[CHECKER]" "Images found in Deployments ${GREEN}are correct.${CC}"
         exit 1
     else
@@ -128,8 +128,8 @@ curl_rb_checker() {
         runner=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/apis/apps/v1/namespaces/$ns/deployments/$EXPECTED_RUNNER_NAME")
         if [ "$runner" != "Not Found" ]; then
             # Extract the image for the "robusta-runner" deployment from the JSON response
-            runnerImage=$(echo "$runner" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
-            if [ "$runnerImage" == "${EXPECTED_RUNNER_IMAGE}" ]; then
+            runnerImage[0]=$(echo "$runner" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
+            if [ "${runnerImage[0]}" == "${EXPECTED_RUNNER_IMAGE}" ]; then
 
                 # Get the list of pods for the "robusta-runner" deployment
                 pods=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/api/v1/namespaces/$ns/pods?labelSelector=app%3Drobusta-runner")
@@ -148,8 +148,8 @@ curl_rb_checker() {
         forwarder=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/apis/apps/v1/namespaces/$ns/deployments/$EXPECTED_FORWARDER_NAME")
         if [ "$forwarder" != "Not Found" ]; then
             # Extract the image for the "robusta-forwarder" deployment from the JSON response
-            forwarderImage=$(echo "$forwarder" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
-            if [ "$forwarderImage" == "${EXPECTED_FORWARDER_IMAGE}" ]; then
+            forwarderImage[0]=$(echo "$forwarder" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
+            if [ "${forwarderImage[0]}" == "${EXPECTED_FORWARDER_IMAGE}" ]; then
 
                 # Get the list of pods for the "robusta-forwarder" deployment
                 pods=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" -H "Content-Type: application/json" "$KUBERNETES_API_SERVER_URL/api/v1/namespaces/$ns/pods?labelSelector=app%3Drobusta-forwarder")
