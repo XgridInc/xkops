@@ -18,22 +18,22 @@
 # Declare variables to be passed into your templates.
 xkops_init_container:
   image:
-    repository: xgridxcbg/kaizen
+    repository: xkops/xkops_stable
     tag: terraform
     pullPolicy: Always
 
 namespace:
-  NAMESPACE_NAME: xkops
+  namespace_name: xkops
 
 # Set the container image details for xkops
 xkops_image:
-  repository: xgridxcbg/kaizen
-  tag: xkops-testing
+  repository: xkops/xkops_stable
+  tag: xkops
   pullPolicy: Always
 
 # Set the container image details for dashboard
 dashboard_image:
-  repository: xgridxcbg/kaizen
+  repository: xkops/xkops_stable
   tag: dashboard
   pullPolicy: IfNotPresent
 
