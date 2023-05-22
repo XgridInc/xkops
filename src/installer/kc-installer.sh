@@ -41,7 +41,7 @@ kc_installer() {
             exit 1
         fi
 
-        # Wait for Kubecost Prometheus server pod to be ready
+        # Wait for Kubecost Prometheus server and cost analyzer pod to be ready
         if ! kubectl -n "${KC_NAMESPACE[@]}" wait pod --for=condition=Ready -l component=server -l app=cost-analyzer --timeout=1h &>/dev/null; then
             log "${RED}[ERROR]" "[INSTALLER]" "Failed to wait for Kubecost pods to be ready. Exiting.${CC}"
             exit 1
