@@ -16,6 +16,21 @@
 
 # at the end of commands you would see 2>&1 is fetch both response that is in STDOUT and STDERR for more info read this: https://askubuntu.com/questions/812952/cant-capture-output-into-variable-in-bash
 
+response=$(helm uninstall xkops 2>&1)
+# possible responses:
+# release "xkops" uninstalled
+# Error: uninstall: Release not loaded: xkops: release: not found
+
+if [[ $response == *"uninstalled"* ]]; then
+  echo "Successfully removed XkOps from your cluster."
+elif [[ $response == *'release: not found'* ]]; then
+  echo "XkOps has already been removed."
+else
+  echo "$response"
+  echo "Failed to remove XkOps from your cluster. Exiting..."
+  exit 1
+fi
+
 response=$(helm repo remove secrets-store-csi-driver 2>&1)
 # possible responses:
 # secrets-store-csi-driver" has been removed from your repositories
@@ -23,7 +38,7 @@ response=$(helm repo remove secrets-store-csi-driver 2>&1)
 
 if [[ $response == *"has been removed from your repositories"* ]]; then
   echo "Successfully removed secrets-store-csi-driver Helm repository."
-elif [[ $response == *'no repo named "secrets-store-csi-driver" found'* ]]; then
+elif [[ $response == *'Error: no repo named'* ]]; then
   echo "secrets-store-csi-driver Helm repository has already been removed."
 else
   echo "$response"
@@ -38,7 +53,7 @@ response=$(helm repo remove aws-secrets-manager 2>&1)
 
 if [[ $response == *"has been removed from your repositories"* ]]; then
   echo "Successfully removed aws-secrets-manager Helm repository."
-elif [[ $response == *'no repo named "aws-secrets-manager" found'* ]]; then
+elif [[ $response == *'Error: no repo named'* ]]; then
   echo "aws-secrets-manager Helm repository has already been removed."
 else
   echo "$response"
@@ -73,6 +88,51 @@ elif [[ $response == *'release: not found'* ]]; then
 else
   echo "$response"
   echo "Failed to remove secrets-provider-aws Helm chart. Exiting..."
+  exit 1
+fi
+
+response=$(kubectl delete namespace xkops 2>&1)
+# possible responses:
+# namespace "xkops" deleted
+# Error from server (NotFound): namespaces "xkops" not found
+
+if [[ $response == *"deleted"* ]]; then
+  echo "Successfully removed xkops namespace from your cluster."
+elif [[ $response == *'Error from server (NotFound): namespaces'* ]]; then
+  echo "xkops namespace has already been removed from your cluster."
+else
+  echo "$response"
+  echo "Failed to remove xkops namespace from your cluster. Exiting..."
+  exit 1
+fi
+
+response=$(kubectl delete namespace robusta 2>&1)
+# possible responses:
+# namespace "robusta" deleted
+# Error from server (NotFound): namespaces "robusta" not found
+
+if [[ $response == *"deleted"* ]]; then
+  echo "Successfully removed robusta namespace from your cluster."
+elif [[ $response == *'Error from server (NotFound): namespaces'* ]]; then
+  echo "robusta namespace has already been removed from your cluster."
+else
+  echo "$response"
+  echo "Failed to remove robusta namespace from your cluster. Exiting..."
+  exit 1
+fi
+
+response=$(kubectl delete namespace kubecost 2>&1)
+# possible responses:
+# namespace "kubecost" deleted
+# Error from server (NotFound): namespaces "kubecost" not found
+
+if [[ $response == *"deleted"* ]]; then
+  echo "Successfully removed kubecost namespace from your cluster."
+elif [[ $response == *'Error from server (NotFound): namespaces'* ]]; then
+  echo "kubecost namespace has already been removed from your cluster."
+else
+  echo "$response"
+  echo "Failed to remove kubecost namespace from your cluster. Exiting..."
   exit 1
 fi
 
