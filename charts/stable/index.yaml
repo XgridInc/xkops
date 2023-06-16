@@ -1,0 +1,14 @@
+apiVersion: v1
+entries:
+  xkops:
+  - apiVersion: v2
+    appVersion: 0.0.1
+    created: "2023-06-16T16:42:09.441321744+05:00"
+    description: A Helm chart to deploy xkops
+    digest: 52baa82875323901a5a3a950571bf68b07c57006e57b3ec30a5db8fb260bb84b
+    name: xkops
+    type: application
+    urls:
+    - xkops-0.1.0.tgz
+    version: 0.1.0
+generated: "2023-06-16T16:42:09.440907644+05:00"
