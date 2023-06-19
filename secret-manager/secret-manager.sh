@@ -212,16 +212,41 @@ echo "Enter the EKS cluster name: "
 read -r cluster_name
 
 # Associate the IAM OIDC provider with the EKS cluster
-if ! eksctl utils associate-iam-oidc-provider --region="$region" --cluster="$cluster_name" --approve; then
-  echo "Failed to associate IAM OIDC provider with EKS cluster"
+response=$(eksctl utils associate-iam-oidc-provider --region="$region" --cluster="$cluster_name" --approve)
+
+# possible responses:
+# [ℹ] IAM Open ID Connect provider is already associated with cluster "xkops-cluster" in "ap-southeast-1"
+# will create IAM Open ID Connect provider for cluster "xkops-cluster" in "ap-southeast-1" [✔] created IAM Open ID Connect provider for cluster "xkops-cluster" in "ap-southeast-1"
+
+
+
+if [[ $response == *"is already associated with cluster"* ]]; then
+  echo "IAM Open ID Connect provider already associated with cluster"
+
+elif [[ $response == *"created IAM Open ID Connect provider for cluster"* ]]; then
+  echo "IAM Open ID Connect provider associated with cluster"
+else
+  echo "$response"
+  echo "Failed to create IAM Open ID Connect provider. Exiting..."
   exit 1
 fi
 
-#possible responses
-# Already Associated: IAM Open ID Connect provider is already associated with cluster "xkops-cluster" in "ap-southeast-1"
 
 # Create an IAM service account for the secret
-if ! eksctl create iamserviceaccount --name xkops-secret-sa --namespace xkops --region="$region" --cluster "$cluster_name" --attach-policy-arn "$policy_arn" --approve --override-existing-serviceaccounts; then
-  echo "Failed to create IAM service account for the secret"
+response=$(eksctl create iamserviceaccount --name xkops-secret-sa --namespace xkops --region="$region" --cluster "$cluster_name" --attach-policy-arn "$policy_arn" --approve --override-existing-serviceaccounts)
+
+
+
+#possible responses
+# created serviceaccount "xkops/xkops-secret-sa"
+# 1 existing iamserviceaccount(s) (xkops/xkops-secret-sa) will be excluded
+
+if [[ $response == *"created serviceaccount"* ]]; then
+  echo "Serviceaccount created in xkops namespace"
+elif [[ $response == *"existing iamserviceaccount(s)"* ]]; then
+  echo "Serviceaccount stack already exists"
+else
+  echo "$response"
+  echo "Failed to create service account. Exiting..."
   exit 1
 fi
