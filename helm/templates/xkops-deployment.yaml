@@ -30,6 +30,10 @@ spec:
     spec:
       serviceAccountName: xkops-secret-sa
       volumes:
+      - name: workflows-config-secret
+        secret:
+          secretName: xkops-workflows-config-secret
+          optional: true      
       - name: xkops-secret-vol
         csi:
           driver: secrets-store.csi.k8s.io
@@ -42,6 +46,7 @@ spec:
       initContainers:
         - name: terraform-init
           image: "{{ .Values.xkops_init_container.image.repository }}:{{ .Values.xkops_init_container.image.tag }}"
+          imagePullPolicy: "{{ .Values.xkops_init_container.image.pullPolicy }}"
           command: ["terraform", "apply", "-auto-approve"]
           # command: ["sleep", "3600"]
           volumeMounts:
@@ -77,9 +82,13 @@ spec:
       containers:
         - name: xkops
           image: "{{ .Values.xkops_image.repository }}:{{ .Values.xkops_image.tag }}"
+          imagePullPolicy: "{{ .Values.xkops_image.pullPolicy }}"
+          # command: ["sleep", "3650d"]
           volumeMounts:
             - name: "{{ .Values.xkops_volumeMounts.name }}"
               mountPath: "{{ .Values.xkops_volumeMounts.mountPath }}"
+            - name: workflows-config-secret
+              mountPath: /etc/xkops/config
             - name: xkops-secret-vol
               mountPath: "/mnt/xkops-secret"
               readOnly: true

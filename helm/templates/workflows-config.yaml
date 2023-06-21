@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: xkops-workflows-config-secret
+  # namespace: {{ .Release.Namespace }}
+  namespace: xkops
+type: Opaque
+data:
+  custom_workflows.yaml: |-
+    {{ include "xkops.configfile" . | b64enc }}
