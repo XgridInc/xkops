@@ -2,7 +2,7 @@
 
 ![XkOps Logo](./images/xkops_logo.png "XkOps Logo")
 
-[![Lint Code Base](https://github.com/XgridInc/xkops/actions/workflows/linter.yml/badge.svg)](https://github.com/X-CBG/xk8s/actions/workflows/linter.yml)
+[![Lint Code Base](https://github.com/XgridInc/xkops/actions/workflows/linter.yml/badge.svg)](https://github.com/XgridInc/xkops/actions/workflows/linter.yml)
 [![Package and Publish Docker Image](https://github.com/XgridInc/xkops/actions/workflows/build_publish_scan.yml/badge.svg)](https://github.com/XgridInc/xkops/actions/workflows/build_publish_scan.yml)
 [![Shellcheck](https://github.com/XgridInc/xkops/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/XgridInc/xkops/actions/workflows/shellcheck.yml)
 
@@ -107,4 +107,4 @@ We invite you to contribute to XkOps, which is a community driven project.  If y
 
 ## 🧾 License
 
-XkOps is distributed under the MIT License. See [LICENSE.md](https://github.com/X-CBG/xk8s/blob/master/LICENSE "LICENSE.md") for more information
+XkOps is licensed under Apache License, Version 2.0. See [LICENSE.md](https://github.com/XgridInc/xkops/blob/master/LICENSE "LICENSE.md") for more information

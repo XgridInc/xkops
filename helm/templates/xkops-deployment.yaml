@@ -17,7 +17,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: xkops-deployment
-  namespace: "{{ .Values.namespace.NAMESPACE_NAME }}"
+  namespace: "{{ .Values.namespace.namespace_name }}"
 spec:
   replicas: 1
   selector:
@@ -28,7 +28,7 @@ spec:
       labels:
         app: xkops
     spec:
-      serviceAccountName: xkops-my-secret-sa
+      serviceAccountName: xkops-secret-sa
       volumes:
       - name: xkops-secret-vol
         csi:
@@ -46,23 +46,23 @@ spec:
           # command: ["sleep", "3600"]
           volumeMounts:
           - name: xkops-secret-vol
-            mountPath: "/mnt/xkops-my-secret"
+            mountPath: "/mnt/xkops-secret"
             readOnly: true
           env:
           - name: AWS_ACCESS_KEY_ID
             valueFrom:
               secretKeyRef:
-                name: xkops-my-secret
+                name: xkops-secret
                 key: AWS_ACCESS_KEY_ID
           - name: AWS_SECRET_ACCESS_KEY
             valueFrom:
               secretKeyRef:
-                name: xkops-my-secret
+                name: xkops-secret
                 key: AWS_SECRET_ACCESS_KEY
           - name: AWS_SESSION_TOKEN
             valueFrom:
               secretKeyRef:
-                name: xkops-my-secret
+                name: xkops-secret
                 key: AWS_SESSION_TOKEN
           - name: TF_VAR_CLUSTER_NAME
             valueFrom:
@@ -81,23 +81,23 @@ spec:
             - name: "{{ .Values.xkops_volumeMounts.name }}"
               mountPath: "{{ .Values.xkops_volumeMounts.mountPath }}"
             - name: xkops-secret-vol
-              mountPath: "/mnt/xkops-my-secret"
+              mountPath: "/mnt/xkops-secret"
               readOnly: true
           env:
             - name: PX_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-my-secret
+                  name: xkops-secret
                   key: PX_API_KEY
             - name: PX_DEPLOY_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-my-secret
+                  name: xkops-secret
                   key: PX_DEPLOY_KEY
             - name: SLACK_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-my-secret
+                  name: xkops-secret
                   key: SLACK_API_KEY
             - name: SLACK_CHANNEL_NAME
               valueFrom:
@@ -107,7 +107,7 @@ spec:
             - name: ROBUSTA_UI_API_KEY
               valueFrom:
                 secretKeyRef:
-                  name: xkops-my-secret
+                  name: xkops-secret
                   key: ROBUSTA_UI_API_KEY
             - name: CLUSTER_NAME
               valueFrom:

@@ -8,15 +8,15 @@ Xkops follows the [CNCF Code of Conduct](https://github.com/cncf/foundation/blob
 
 We expect all contributors and participants in the XkOps project to behave in a respectful and professional manner. Any forms of harassment, discrimination, or other unacceptable behavior will not be tolerated.
 
-If you experience or witness any violations, please contact our Slack channel [XkOps Community](http://xkopscommunity.slack.com/)
+If you experience or witness any violations, please contact our Slack channel [XkOps Community](https://join.slack.com/t/xkopscommunity/shared_invite/zt-1u8xzjvvq-B52TJ2XE861v3KDvpA9UVg)
 
 ## Development Environment
 
-Instructions for setting up the development environment can be found in the [README.md](https://github.com/X-CBG/xk8s/blob/master/README.md) file.
+Instructions for setting up the development environment can be found in the [README.md](https://github.com/XgridInc/xkops/blob/master/README.md) file.
 
 ## Open Issues
 
-Check out the [issues page](https://github.com/X-CBG/xk8s/issues) for a list of open issues that you can work on.
+Check out the [issues page](https://github.com/XgridInc/xkops/issues) for a list of open issues that you can work on.
 
 ## How to Contribute
 
@@ -69,7 +69,7 @@ Examples of unacceptable behavior by participants include:
 
 ## Contact
 
-If you have any questions or need help, Join our Slack channel [XkOps Community](http://xkopscommunity.slack.com/)
+If you have any questions or need help, Join our Slack channel [XkOps Community](https://join.slack.com/t/xkopscommunity/shared_invite/zt-1u8xzjvvq-B52TJ2XE861v3KDvpA9UVg)
 
 
 ## Acknowledgements

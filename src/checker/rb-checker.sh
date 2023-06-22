@@ -14,95 +14,101 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-
+# Skip this check
+# shellcheck source=/dev/null
 source /src/config/rb-config.sh
 source /src/commons/common-functions.sh
 
+# Function that starts basic execution of the checker script
 print_prompt() {
-    log "${CYAN}[INFO]" "[CHECKER]" "Initiating checks if Robusta installed in your cluster."
-
+    log "${CYAN}[INFO]" "[CHECKER]" "Detecting robusta in the Kubernetes cluster.${CC}"
 }
 
-#Ensure cluster has kubectl installed, otherwise use curl
+# This function checks if kubectl is configured or not.
 check_kubectl() {
+    # Checking robusta In Kubernetes Cluster
+    log "${CYAN}[INFO]" "[CHECKER]" "Checking if kubectl is configured.${CC}"
 
-    if ! command -v kubectl &>/dev/null; then
-        log "${CYAN}[INFO]" "[CHECKER]" "kubectl not found. Checking through curl.${CC}"
-        curl_rb_checker
-
+    if command -v kubectl &>/dev/null; then
+        log "${GREEN}[INFO]" "[CHECKER]" "kubectl configurations are obtained successfully.${CC}"
+        kubectl_rb_checker # Function call to below defined function.
     else
-        log "${CYAN}[INFO]" "[CHECKER]" "kubectl found. Checking through kubectl.${CC}"
-        kubectl_rb_checker
-
+        log "${RED}[ERROR]" "[CHECKER]" "kubectl is not configured. Using Curl Instead.${CC}"
+        curl_rb_checker # Function call to below defined functions.
     fi
-
 }
 
+# This function calls three functions which checks namespace, deployment and image of robusta using kubectl utility.
 kubectl_rb_checker() {
-    # Set the list of deployment names and image names to check
-    deploymentsName=("${EXPECTED_RUNNER_NAME}" "${EXPECTED_FORWARDER_NAME}")
-    imageNames=("${EXPECTED_RUNNER_IMAGE}" "${EXPECTED_FORWARDER_IMAGE}")
+    log "${CYAN}[INFO]" "[CHECKER]" "Checking if robusta namespace is found in the cluster.${CC}"
+    kubectl_rb_ns_checker
 
-    # Get the number of deployments
-    totalDeployments=${#deploymentsName[@]}
+    log "${CYAN}[INFO]" "[CHECKER]" "Checking if robusta deployment is found in the cluster.${CC}"
+    kubectl_rb_deployment_checker
 
-    # Set a flag to indicate whether the deployment and image were found
-    found=0
+    log "${CYAN}[INFO]" "[CHECKER]" "Checking correctness of robusta deployment image.${CC}"
+    kubectl_rb_image_checker
+}
 
-    # Get a list of all namespaces
-    # namespaces=$(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}')
-    mapfile -t namespaces < <(kubectl get namespaces -o jsonpath='{.items[*].metadata.name}')
+# Function finds robusta namespace that we are looking for using kubectl tool.
+kubectl_rb_ns_checker() {
+    returnedNamespace=$(kubectl get ns --no-headers 2>&1)
 
-    # Iterate through each namespace
-    for namespace in "${namespaces[@]}"; do
-        # Get a list of all deployments in the namespace
-        deployments=$(kubectl get deployments -n "$namespace" -o jsonpath='{.items[*].metadata.name}')
-
-        # Iterate through each deployment
-        for deployment in $deployments; do
-            # Iterate through each specified deployment name and image name
-            for i in $(seq 0 $((totalDeployments - 1))); do
-                # Check if the deployment matches the specified deployment name
-                if [ "$deployment" == "${deploymentsName[$i]}" ]; then
-                    # Get the image for the deployment
-                    deploymentImage=$(kubectl get deployment "$deployment" -n "$namespace" -o jsonpath='{.spec.template.spec.containers[0].image}')
-
-                    # Check if the image matches the specified image name
-                    if [ "$deploymentImage" == "${imageNames[$i]}" ]; then
-                        # Get the status of the pods in the deployment
-                        podStatus=$(kubectl get pods -n "$namespace" -l "app=$deployment" -o jsonpath='{.items[*].status.phase}')
-
-                        # Check if any of the pods are not in the "Running" state
-                        if [[ "$podStatus" != *"Running"* ]]; then
-                            # Print an error message
-                            log "${RED}[ERROR]" "[CHECKER]" "Deployment $deployment in namespace $namespace is not running.${CC}"
-                            # Set the flag to indicate that the deployment and image were found
-                            found=0
-                        else
-
-                            # Set the flag to indicate that the deployment and image were found
-                            found=1
-                        fi
-                    else
-                        # Print an error message
-                        log "${RED}[ERROR]" "[CHECKER]" "Incorrect image in {$deployment} deployment in namespace $namespace.${CC}"
-
-                    fi
-                fi
-            done
-        done
-    done
-
-    # Check if the flag is still set to 0
-    if [ "$found" -eq 0 ]; then
-        # Print an error message
-        log "${RED}[ERROR]" "[CHECKER]" "Robusta not found.${CC}"
-    else
-        # Print a success message
-        log "${GREEN}[INFO]" "[CHECKER]" "Robusta Exists in your cluster${CC}."
-        exit 1
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for robusta namespace.${CC}"
+        exit 1 # Exit with a non-zero code to indicate failure.
     fi
 
+    returnedNamespace=$(echo "$returnedNamespace" | grep -i robusta | awk '{print $1}')
+
+    if [ "$returnedNamespace" == "${RB_NAMESPACE[0]}" ]; then
+        log "${GREEN}[INFO]" "[CHECKER]" "Namespace $returnedNamespace found in the cluster.${CC}"
+    else
+        log "${RED}[INFO]" "[CHECKER]" "Namespace robusta not found in the cluster.${CC}"
+        exit 0
+    fi
+}
+
+# This function checks whether robusta deployment is present in the cluster or not.
+kubectl_rb_deployment_checker() {
+    runnerDeploy=$(kubectl -n "${RB_NAMESPACE[@]}" get deploy --no-headers 2>&1 | grep -i "${EXPECTED_RUNNER_NAME}" | awk '{print $1}')
+    forwarderDeploy=$(kubectl -n "${RB_NAMESPACE[@]}" get deploy --no-headers 2>&1 | grep -i "${EXPECTED_FORWARDER_NAME}" | awk '{print $1}')
+    
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for robusta deployment.${CC}"
+        exit 1 # Exit the script with a non-zero code to indicate failure.
+    fi
+
+    if [[ "$runnerDeploy" == "${EXPECTED_RUNNER_NAME}" && "$forwarderDeploy" == "${EXPECTED_FORWARDER_NAME}" ]]; then
+        log "${GREEN}[INFO]" "[CHECKER]" "robusta deployment found in cluster.${CC}"
+    else
+        log "${RED}[INFO]" "[CHECKER]" "Unable to find robusta Deployment in cluster.${CC}"
+        exit 0
+    fi
+}
+
+# This function checks whether image used by robusta deployment is correct or not.
+kubectl_rb_image_checker() {
+    runnerImage=("$(kubectl -n "${RB_NAMESPACE[@]}" get deployment "${EXPECTED_RUNNER_NAME}" -o=jsonpath='{$.spec.template.spec.containers[:1].image}')")
+    forwarderImage=("$(kubectl -n "${RB_NAMESPACE[@]}" get deployment "${EXPECTED_FORWARDER_NAME}" -o=jsonpath='{$.spec.template.spec.containers[:1].image}')")
+    # Check the exit code of the last command (kubectl).
+    errorCode=$?
+    if [ $errorCode -ne 0 ]; then
+        log "${RED}[ERROR]" "[CHECKER]" "Error occurred while checking for robusta image.${CC}"
+        exit 1 # Exit the script with a non-zero code to indicate failure.
+    fi
+
+    if [[ "${runnerImage[0]}" == *"$EXPECTED_RUNNER_IMAGE"* && "${forwarderImage[0]}" == *"$EXPECTED_FORWARDER_IMAGE"* ]]; then
+        log "${GREEN}[INFO]" "[CHECKER]" "Images found in Deployments ${GREEN}are correct.${CC}"
+        exit 1
+    else
+        log "${RED}[ERROR]" "[CHECKER]" "Unable to find required image in Deployment${GREEN}.${CC}"
+        exit 0
+    fi
 }
 
 curl_rb_checker() {
@@ -122,8 +128,8 @@ curl_rb_checker() {
         runner=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/apis/apps/v1/namespaces/$ns/deployments/$EXPECTED_RUNNER_NAME")
         if [ "$runner" != "Not Found" ]; then
             # Extract the image for the "robusta-runner" deployment from the JSON response
-            runnerImage=$(echo "$runner" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
-            if [ "$runnerImage" == "${EXPECTED_RUNNER_IMAGE}" ]; then
+            runnerImage[0]=$(echo "$runner" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
+            if [[ "${runnerImage[0]}" == *"$EXPECTED_RUNNER_IMAGE"* ]]; then
 
                 # Get the list of pods for the "robusta-runner" deployment
                 pods=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/api/v1/namespaces/$ns/pods?labelSelector=app%3Drobusta-runner")
@@ -142,8 +148,8 @@ curl_rb_checker() {
         forwarder=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" "$KUBERNETES_API_SERVER_URL/apis/apps/v1/namespaces/$ns/deployments/$EXPECTED_FORWARDER_NAME")
         if [ "$forwarder" != "Not Found" ]; then
             # Extract the image for the "robusta-forwarder" deployment from the JSON response
-            forwarderImage=$(echo "$forwarder" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
-            if [ "$forwarderImage" == "${EXPECTED_FORWARDER_IMAGE}" ]; then
+            forwarderImage[0]=$(echo "$forwarder" | sed -n 's/.*"image": "\(.*\)",.*/\1/p')
+            if [[ "${forwarderImage[0]}" == *"$EXPECTED_FORWARDER_IMAGE"* ]]; then
 
                 # Get the list of pods for the "robusta-forwarder" deployment
                 pods=$(curl -s -k --cacert "$CA_CERT_PATH" -H "${HEADERS[@]}" -H "Content-Type: application/json" "$KUBERNETES_API_SERVER_URL/api/v1/namespaces/$ns/pods?labelSelector=app%3Drobusta-forwarder")
@@ -169,7 +175,7 @@ curl_rb_checker() {
     fi
 }
 
+# Calling the above Defined functions.
 print_prompt
 check_permissions
 check_kubectl
-exit 0
