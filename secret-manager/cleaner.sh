@@ -106,6 +106,51 @@ else
   exit 1
 fi
 
+response=$(kubectl delete deployment xkops-deployment -n xkops 2>&1)
+# possible responses:
+# deployment.apps "xkops-deployment" deleted
+# Error from server (NotFound): deployments.apps "xkops-deployment" not found
+
+if [[ $response == *"deleted"* ]]; then
+  echo "Successfully removed xkops-deployment deployment from your cluster."
+elif [[ $response == *'Error from server (NotFound): deployments.apps'* ]]; then
+  echo "xkops-deployment deployment has already been removed from your cluster."
+else
+  echo "$response"
+  echo "Failed to remove xkops-deployment deployment from your cluster. Exiting..."
+  exit 1
+fi
+
+response=$(kubectl delete deployment xkops-dashboard -n xkops 2>&1)
+# possible responses:
+# deployment.apps "xkops-dashboard" deleted
+# Error from server (NotFound): deployments.apps "xkops-dashboard" not found
+
+if [[ $response == *"deleted"* ]]; then
+  echo "Successfully removed xkops-dashboard deployment from your cluster."
+elif [[ $response == *'Error from server (NotFound): deployments.apps'* ]]; then
+  echo "xkops-dashboard deployment has already been removed from your cluster."
+else
+  echo "$response"
+  echo "Failed to remove xkops-dashboard deployment from your cluster. Exiting..."
+  exit 1
+fi
+
+response=$(kubectl delete pods -n xkops --all --grace-period 0 --force 2>&1)
+# possible responses:
+# pod "pod-name" force deleted <--- for all pods
+# No resources found
+
+if [[ $response == *"deleted"* ]]; then
+  echo "Successfully removed all xkops pods from your cluster."
+elif [[ $response == *"No resources found"* ]]; then
+  echo "All xkops pods has already been removed from your cluster."
+else
+  echo "$response"
+  echo "Failed to remove all xkops pods from your cluster. Exiting..."
+  exit 1
+fi
+
 response=$(kubectl delete namespace xkops 2>&1)
 # possible responses:
 # namespace "xkops" deleted
@@ -235,11 +280,7 @@ response=$(aws cloudformation describe-stacks --stack-name eksctl-xkops-cluster-
 if [[ $response == *'"StackName": "eksctl-xkops-cluster-addon-iamserviceaccount-xkops-xkops-secret-sa"'* ]]; then
   # Refernce : https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-cli-deleting-stack.html
   aws cloudformation delete-stack --stack-name eksctl-xkops-cluster-addon-iamserviceaccount-xkops-xkops-secret-sa
-  sleep 3
-  response2=$(aws cloudformation describe-stacks --stack-name eksctl-xkops-cluster-addon-iamserviceaccount-xkops-xkops-secret-sa 2>&1)
-  if [[ $response2 == *"does not exist"* ]]; then
-    echo "Successfully deleted xkops-secret-sa stack."
-  fi
+  echo "Successfully deleted xkops-secret-sa stack."
 elif [[ $response == *"does not exist"*  ]]; then
   echo "xkops-secret-sa stack has already been removed."
 else
@@ -270,6 +311,7 @@ response=$(aws iam list-attached-role-policies --role-name XkOps-EBS-iam-role 2>
 # The response shows the detailes of the policy, we only need the PolicyName to confirm it exists.
 # "PolicyName": "AmazonEBSCSIDriverPolicy"
 # "AttachedPolicies": []
+# An error occurred (NoSuchEntity) when calling the ListAttachedRolePolicies operation: The role with name XkOps-EBS-iam-role cannot be found.
 
 if [[ $response == *'"PolicyName": "AmazonEBSCSIDriverPolicy"'* ]]; then
   # Refernce : https://awscli.amazonaws.com/v2/documentation/api/latest/reference/iam/detach-role-policy.html
@@ -279,6 +321,8 @@ if [[ $response == *'"PolicyName": "AmazonEBSCSIDriverPolicy"'* ]]; then
     echo "Successfully detached the AmazonEBSCSIDriverPolicy."
   fi
 elif [[ $response == *'"AttachedPolicies": []'*  ]]; then
+  echo "AmazonEBSCSIDriverPolicy has already been detached."
+elif [[ $response == *"The role with name XkOps-EBS-iam-role cannot be found"*  ]]; then
   echo "AmazonEBSCSIDriverPolicy has already been detached."
 else
   echo "$response"
