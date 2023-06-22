@@ -66,6 +66,9 @@ dashboard_service_ports:
   targetPort: 3000
 # Set up tolerations and affinity, if necessary
 tolerations: []
+customWorkflows: []
+
+
 affinity: {}
 
 secret_provider_class: xkops-secret-provider  # pragma: allowlist secret
@@ -107,6 +110,8 @@ manifests:
   - name: configmaps.yaml
     priority: 5
   - name: storage-class.yaml
+    priority: 5
+  - name: workflows-config.yaml
     priority: 6
   - name: xkops-deployment.yaml
     priority: 7
