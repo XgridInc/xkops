@@ -8,3 +8,4 @@ type: Opaque
 data:
   custom_workflows.yaml: |-
     {{ include "xkops.configfile" . | b64enc }}
+    
