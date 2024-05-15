@@ -63,26 +63,36 @@ First, set up AWS secrets manager on your AWS account:
 
 ### 📥 Install XkOps
 
-1. Clone the repository and navigate to the cloned repo:
+1. Install Helm on your system:
+Refer to this guide for instructions on how to install Helm.
+
+2. Create values.yaml file and input your specific value for each key.
+
+    - The values.yaml file in Helm provides a structured approach for users to customize configuration parameters essential for deploying Helm charts.
+
+    - You need to provide following in your values.yml file: 
+
+            REGION: 
+            CLUSTER_NAME: 
+            SLACK_CHANNEL_NAME: 
+
+3. Add the XkOps remote repository into your local Helm registry
+
 
     ```commandline
-    git clone https://github.com/XgridInc/xkops.git && cd xkops
+    helm repo add xkops https://xgridinc.github.io/xkops/charts/stable
     ```
-
-2. Update values.yaml file and input your specific value for each key.
-3. Install XkOps using Helm:
+4. Install XkOps using Helm:
 
     ```commandline
-    helm install xkops ./helm -f values.yml
+    helm install my-xkops xkops/xkops -f values.yaml
     ```
 
-4. After successful installation, obtain the link of the XkOps frontend service to access the dashboard:
+5. After successful installation, obtain the link of the XkOps frontend service to access the dashboard:
 
     ```commandline
     kubectl get svc -n xkops
     ```
-
-5. Create an unclaimed volume in your cluster and delete it using the delete button on the dashboard. You can verify the volume deletion action both from the dashboard and the cluster.
 
 ## 🚧 Road Map
 
