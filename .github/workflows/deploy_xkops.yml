@@ -39,7 +39,7 @@ jobs:
 
       - name: configure kubectl with eks cluster
         run: |
-          aws eks update-kubeconfig --name xkops-cluster-2 --region ap-southeast-1
+          aws eks update-kubeconfig --name xkops-cluster --region ap-southeast-1
 
       - name: Build Docker Image
         run: |
