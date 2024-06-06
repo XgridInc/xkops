@@ -1,0 +1,15 @@
+# values for helmfile.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+robusta:
+  slack_api_key: <add slack-api-key here> 
+  slack_channel_name: <add slack-channel name here>
+  cluster_name: <add cluster-name here>
+  
+  # Give path where you want to the generated_values.yaml file to be created.
+  # Note:
+  #  - Give the whole path including /generated_values.yaml, ideally give path to GeneratedValues which is already created for convinience
+  #  - if you give any other path you have to update it in the helmfile under robusta's 'values:' tag, so robusta release can pick up the file.
+  generated_values_path: "<add the whole path including /generated_values.yaml here>"
+
