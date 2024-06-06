@@ -40,7 +40,7 @@ check_kubectl_installed() {
 # Function to check if port forwarding is already active
 is_port_forwarded() {
   # Local port for accessing Kubecost UI (default 9090)
-  local PORT=9090
+  local PORT=80
 
   # Check if process exists using ss command (replace with netstat if ss is unavailable)
   if ss -aln | grep "LISTEN" | grep ":$PORT "; then
