@@ -13,7 +13,7 @@
 # limitations under the License.
 
 # Use an official Terraform image as the base
-FROM hashicorp/terraform:light
+FROM hashicorp/terraform:1.5.0
 
 # Set working directory
 WORKDIR /app
