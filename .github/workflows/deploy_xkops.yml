@@ -18,7 +18,7 @@ name: Deploy xkops to EKS
 
 on:
   pull_request:
-    branches: [master, main]
+    branches: [master, dev]
 
 jobs:
   oidc-connect:

@@ -3,7 +3,7 @@ name: Checkov vulnerability scan
 
 on:
   pull_request:
-    branches: [master, main]
+    branches: [master, dev]
   
 jobs:
   build:
