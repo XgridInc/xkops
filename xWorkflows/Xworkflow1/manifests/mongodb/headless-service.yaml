@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: xworkflow-mongodb
+spec:
+  selector:
+    app: mongo
+  clusterIP: None  # Headless service does not have a cluster IP
+  ports:
+  - port: 27017
+    targetPort: 27017  # Default mongodb port

@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: xworkflow1-go-app-cronjob
+spec:
+  schedule: "*/1 * * * *"  # Run every 5 minutes to check for unclaimed Persistent Volumes
+  concurrencyPolicy: Replace
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: my-go-app
+            image: murtazashah46/xworkflow1:latest  # Updated to use correct image tag
+          restartPolicy: OnFailure
