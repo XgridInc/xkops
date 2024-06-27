@@ -16,7 +16,7 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: new-pv-volume3
+  name: new-pv-volume2
   labels:
     type: local
 spec:

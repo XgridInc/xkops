@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: xworkflow1-go-app-cronjob
 spec:
-  schedule: "*/1 * * * *"  # Run every 5 minutes to check for unclaimed Persistent Volumes
+  schedule: "*/1 * * * *"  # Run every 1 minute
   concurrencyPolicy: Replace
   jobTemplate:
     spec:
@@ -11,5 +11,5 @@ spec:
         spec:
           containers:
           - name: my-go-app
-            image: murtazashah46/xworkflow1:latest  # Updated to use correct image tag
+            image: murtazashah46/kubecost-cronjob:latest #murtazashah46/xworkflow1:latest
           restartPolicy: OnFailure
