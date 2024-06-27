@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: xworkflow-mongodb
+spec:
+  serviceName: "xworkflow-mongodb"
+  replicas: 3
+  selector:
+    matchLabels:
+      app: mongo
+  template:
+    metadata:
+      labels:
+        app: mongo
+    spec:
+      containers:
+      - name: mongo
+        image: mongo:latest
+        command: ["mongod"]
+        args:
+          - "--bind_ip_all"
+          - "--replSet"
+          - "xworkflowReplSet"
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+        - name: mongo-data
+          mountPath: /data/db
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          value: "root"
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          value: "example"
+  volumeClaimTemplates:
+  - metadata:
+      name: mongo-data
+    spec:
+      accessModes: ["ReadWriteOnce"]
+      storageClassName: "xworkflow-mongo-storage"
+      resources:
+        requests:
+          storage: 1Gi

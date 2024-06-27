@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unclaimed-pv-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unclaimed-pv-api
+  template:
+    metadata:
+      labels:
+        app: unclaimed-pv-api
+    spec:
+      containers:
+      - name: unclaimed-pv-api
+        image: murtazashah46/flask-backend:latest
+        ports:
+        - containerPort: 5000
