@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubecost-query-pod
+spec:
+  containers:
+    - name: kubecost-query-container
+      image: umerjamil16/query_pod:v1
+      env:
+        - name: API_URL
+          value: "http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9090/model/assets?window=1w&filter=assetType:%22node%22&accumulate=true"
+        - name: MONGODB_URI
+          value: "mongodb://mongo-db:27017/k8sData"
+        - name: MONGODB_DATABASE
+          value: "k8sData"
+        - name: MONGODB_USERNAME
+          value: "admin"
+        - name: MONGODB_PASSWORD
+          value: "password"

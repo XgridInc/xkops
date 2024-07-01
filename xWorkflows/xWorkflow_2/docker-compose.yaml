@@ -4,7 +4,7 @@ services:
   kubecost-query-container:
     build: .
     environment:
-      - API_URL=http://localhost:9090/model/assets?window=30d&filter=assetType:%22node%22
+      - API_URL=http://localhost:9090/model/assets?window=1w&filter=assetType:%22node%22&accumulate=true
       - MONGODB_URI=mongodb://localhost:27017/k8sData
       - MONGODB_DATABASE=k8sData
       - MONGODB_USERNAME=admin
@@ -12,6 +12,20 @@ services:
     network_mode: "host"
     depends_on:
       - mongo
+
+  flask_backend:
+    build: ./flask_backend
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongo
+    environment:
+      MONGODB_HOST: mongo
+      MONGODB_PORT: 27017
+      MONGODB_DATABASE: k8sData
+      MONGODB_USERNAME: admin
+      MONGODB_PASSWORD: admin123
+    network_mode: "host"
 
   mongo:
     image: mongo:latest
@@ -21,7 +35,6 @@ services:
       MONGO_INITDB_DATABASE: k8sData
       MONGO_INITDB_ROOT_USERNAME: admin
       MONGO_INITDB_ROOT_PASSWORD: admin123
-    network_mode: "host"
 
   mongo-express:
     image: mongo-express:latest
@@ -30,7 +43,7 @@ services:
     environment:
       - ME_CONFIG_MONGODB_ADMINUSERNAME=admin
       - ME_CONFIG_MONGODB_ADMINPASSWORD=admin123
-      - ME_CONFIG_MONGODB_URL=mongodb://admin:admin123@localhost:27017/k8sData?authSource=admin
+      - ME_CONFIG_MONGODB_URL=mongodb://admin:admin123@mongo:27017/k8sData?authSource=admin
     depends_on:
       - mongo
     network_mode: "host"

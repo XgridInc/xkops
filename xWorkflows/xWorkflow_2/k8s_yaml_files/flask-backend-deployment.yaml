@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-backend
+spec:
+  replicas: 1  # Adjust as per your scaling needs
+  selector:
+    matchLabels:
+      app: flask-backend
+  template:
+    metadata:
+      labels:
+        app: flask-backend
+    spec:
+      containers:
+      - name: flask-backend
+        image: umerjamil16/flask_backend:v15  # Replace with your Docker image name and tag
+        ports:
+        - containerPort: 5000  # Port on which Flask app listens
+        env:
+        - name: MONGODB_HOST
+          value: "mongo-db-0.mongo-db.default.svc.cluster.local"
+          #"mongo-db"  # Name of your MongoDB Service
+        - name: MONGODB_PORT
+          value: "27017"  # MongoDB port
+        - name: MONGODB_DATABASE
+          value: "k8sData"  # MongoDB database name
+        - name: MONGODB_USERNAME
+          value: "admin"  # MongoDB username
+        - name: MONGODB_PASSWORD
+          value: "admin123"  # MongoDB password
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-backend-service
+spec:
+  selector:
+    app: flask-backend  # Selects the Pods with label 'app: flask-backend'
+  ports:
+    - protocol: TCP
+      port: 5000  # Port on the Service
+      targetPort: 5000  # Port on the Pod (Flask app)
+  type: NodePort  # Exposes the Service on an internal IP in the cluster
