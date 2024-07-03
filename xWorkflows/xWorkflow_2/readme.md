@@ -1,5 +1,5 @@
 
-``# X-Workflow 2: Detecting Unutilized Nodes in a Kubernetes Cluster
+# X-Workflow 2: Detecting Unutilized Nodes in a Kubernetes Cluster
 
 ## Overview
 
@@ -49,3 +49,6 @@ X-Workflow 2 aims to identify unutilized nodes in a Kubernetes cluster, and disp
 
 After port-forwarding, the API can be accessed at `http://localhost:5000`.
     
+## 🧾 License
+
+XkOps is licensed under Apache License, Version 2.0. See [LICENSE.md](https://github.com/XgridInc/xkops/blob/master/LICENSE "LICENSE.md") for more information
