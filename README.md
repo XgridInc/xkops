@@ -77,8 +77,10 @@ mongo -u <username> -p <password> --authenticationDatabase <database> <host>:<po
 5. Logs and Error Messages
 Check the MongoDB log files for error messages. The default log file location is:
 
-Linux/Unix: /var/log/mongodb/mongod.log
-Windows: C:\Program Files\MongoDB\Server\<version>\log\mongod.log
+**Linux/Unix:** /var/log/mongodb/mongod.log 
+
+**Windows:** C:\Program Files\MongoDB\Server\<version>\log\mongod.log 
+
 Review the logs for any errors or warnings that can provide more insight into the issue.
 
 6. Client Compatibility
@@ -106,7 +108,7 @@ If you are connecting to a replica set, ensure that your connection string inclu
 ```bash
 mongodb://<username>:<password>@<host1>:<port1>,<host2>:<port2>,<host3>:<port3>/?replicaSet=<replicaSetName>
 ```
-Following these steps, you should be able to troubleshoot and resolve most MongoDB connection issues. If you continue to experience problems, consult the MongoDB documentation or seek help from the community.
+Following these steps, you should be able to troubleshoot and resolve most MongoDB connection issues. If you continue to experience problems, consult the [MongoDB documentation](https://www.mongodb.com/docs/) or seek help from the community.
 
 ## 🧾 License
 XkOps is licensed under Apache License, Version 2.0. See LICENSE.md for more information
