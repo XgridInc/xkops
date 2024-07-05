@@ -7,12 +7,12 @@ Xkops is an integrated solution that combines widely-adopted open-source utiliti
 ## 📒 Getting Started
 To install XkOps, please follow these steps
 
-## 🔐 Secret Manager Setup
+### 🔐 Secret Manager Setup
 First, set up AWS secrets manager on your AWS account:
 
 Refer to this guide for instructions on how to set up AWS secret manager OR
 Use this script to automate the setup process.
-## 📥 Install XkOps
+### 📥 Install XkOps
 Clone the repository and navigate to the cloned repo:
 ```bash
  git clone https://github.com/XgridInc/xkops.git && cd xkops
