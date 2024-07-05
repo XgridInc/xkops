@@ -110,8 +110,16 @@ mongodb://<username>:<password>@<host1>:<port1>,<host2>:<port2>,<host3>:<port3>/
 ```
 Following these steps, you should be able to troubleshoot and resolve most MongoDB connection issues. If you continue to experience problems, consult the [MongoDB documentation](https://www.mongodb.com/docs/) or seek help from the community.
 
+### 🤝 How to contribute
+
+We invite you to contribute to XkOps, which is a community driven project. If you plan on contributing code, kindly go through our [contribution guide](https://github.com/XgridInc/xkops/blob/master/CONTRIBUTING.md).
+
+To report a bug or request a feature, you can submit a [GitHub issue](https://github.com/XgridInc/xkops/issues).
+For real-time discussions and immediate assistance, please join our [Slack channel](https://xkops.slack.com/join/shared_invite/zt-1u8xzjvvq-B52TJ2XE861v3KDvpA9UVg#/shared-invite/error).
+
+
 ## 🧾 License
-XkOps is licensed under Apache License, Version 2.0. See LICENSE.md for more information
+XkOps is licensed under Apache License, Version 2.0. See [LICENSE.md](https://github.com/XgridInc/xkops/blob/master/LICENSE) for more information
 
 
 
