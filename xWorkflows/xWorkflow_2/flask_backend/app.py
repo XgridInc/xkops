@@ -31,7 +31,7 @@ def get_nodes():
     # Returning JSON response
 #    return jsonify(nodes_list)
 
-# Health check endpoint (New addition)
+# Health check endpoint
 @app.route('/health')
 def health():
     return jsonify({"status": "OK"}), 200  # Simple JSON response with 200 status code
