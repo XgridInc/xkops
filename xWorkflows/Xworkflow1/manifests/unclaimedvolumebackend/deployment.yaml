@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: unclaimed-pv-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unclaimed-pv-api
+  template:
+    metadata:
+      labels:
+        app: unclaimed-pv-api
+    spec:
+      containers:
+      - name: unclaimed-pv-api
+        image: murtazashah46/flask-backend:latest
+        ports:
+        - containerPort: 5000
+        # Add the environment variables here
+        env:
+          - name: MONGO_URI
+            value: "mongodb://xworkflow-mongodb-0.xworkflow-mongodb.default.svc.cluster.local:27017," \
+                     "xworkflow-mongodb-1.xworkflow-mongodb.default.svc.cluster.local:27017," \
+                     "xworkflow-mongodb-2.xworkflow-mongodb.default.svc.cluster.local:27017/?replicaSet=xworkflowReplSet"
+          - name: DB_NAME
+            value: "xworkflow-db"
+          - name: COLLECTION_NAME
+            value: "xworkflow1-collection"
+          - name: ROBUSTA_URL
+            value: "http://robusta-runner.robusta.svc.cluster.local/api/trigger"
