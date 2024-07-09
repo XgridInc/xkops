@@ -1,18 +1,15 @@
+import os
 import requests
 from pymongo import MongoClient
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
 
-# MongoDB connection URI and database/collection names
-mongoURI = "mongodb://xworkflow-mongodb-0.xworkflow-mongodb.default.svc.cluster.local:27017," \
-           "xworkflow-mongodb-1.xworkflow-mongodb.default.svc.cluster.local:27017," \
-           "xworkflow-mongodb-2.xworkflow-mongodb.default.svc.cluster.local:27017/?replicaSet=xworkflowReplSet"
-dbName = "xworkflow-db"
-collectionName = "xworkflow1-collection"
-
-# Robusta API URL for deleting persistent volumes
-ROBUSTA_URL = "http://robusta-runner.robusta.svc.cluster.local/api/trigger"
+# Environment variables (access these instead of hardcoded values)
+mongoURI = os.getenv("MONGO_URI")
+dbName = os.getenv("DB_NAME")
+collectionName = os.getenv("COLLECTION_NAME")
+ROBUSTA_URL = os.getenv("ROBUSTA_URL")
 
 @app.route("/unclaimed_pvs", methods=["GET"])
 def get_unclaimed_pvs():

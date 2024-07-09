@@ -3,7 +3,7 @@ kind: CronJob
 metadata:
   name: xworkflow1-go-app-cronjob
 spec:
-  schedule: "*/1 * * * *"  # Run every 1 minute
+  schedule: "*/1 * * * *"  # Run every 1 minute (adjust as needed)
   concurrencyPolicy: Replace
   jobTemplate:
     spec:
@@ -11,5 +11,14 @@ spec:
         spec:
           containers:
           - name: my-go-app
-            image: murtazashah46/kubecost-cronjob:latest #murtazashah46/xworkflow1:latest
+            image: murtazashah46/kubecost-cronjob:latest  # Replace with your actual image name
+            env:
+              - name: KUBECOST_API_URL
+                value: "http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9003/allPersistentVolumes"  # Replace with your actual Kubecost API URL
+              - name: MONGO_URI
+                value: "mongodb://xworkflow-mongodb-0.xworkflow-mongodb.default.svc.cluster.local:27017,xworkflow-mongodb-1.xworkflow-mongodb.default.svc.cluster.local:27017,xworkflow-mongodb-2.xworkflow-mongodb.default.svc.cluster.local:27017/?replicaSet=xworkflowReplSet"  # Replace with your actual MongoDB URI
+              - name: DB_NAME
+                value: "xworkflow-db"  # Database name (if needed)
+              - name: COLLECTION_NAME
+                value: "xworkflow1-collection"  # Collection name (if needed)
           restartPolicy: OnFailure

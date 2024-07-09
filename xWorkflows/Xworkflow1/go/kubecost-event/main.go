@@ -6,13 +6,14 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"os"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// Kubecost API endpoint URL (replace with your actual URL)
-const kubecostAPIURL = "http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9003/allPersistentVolumes"
+// Kubecost API endpoint URL, declared variable to hold the URL
+var kubecostAPIURL string
 
 // PersistentVolume represents the structure of a Persistent Volume
 type PersistentVolume struct {
@@ -110,12 +111,16 @@ func SaveVolumesToMongoDB(collection *mongo.Collection, volumes []PersistentVolu
 }
 
 func main() {
-	// MongoDB connection URI
-	mongoURI := "mongodb://xworkflow-mongodb-0.xworkflow-mongodb.default.svc.cluster.local:27017,xworkflow-mongodb-1.xworkflow-mongodb.default.svc.cluster.local:27017,xworkflow-mongodb-2.xworkflow-mongodb.default.svc.cluster.local:27017/?replicaSet=xworkflowReplSet"
+	// Retrieve environment variables
+	kubecostAPIURL := os.Getenv("KUBECOST_API_URL")
+	mongoURI := os.Getenv("MONGO_URI")
+	dbName := os.Getenv("DB_NAME")
+	collectionName := os.Getenv("COLLECTION_NAME")
 
-	// Database and collection names
-	dbName := "xworkflow-db"
-	collectionName := "xworkflow1-collection"
+	if kubecostAPIURL == "" || mongoURI == "" || dbName == "" || collectionName == "" {
+		fmt.Println("Error: Missing required environment variables.")
+		return
+	}
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
