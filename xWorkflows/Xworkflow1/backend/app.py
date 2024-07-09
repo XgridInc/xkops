@@ -57,5 +57,10 @@ def delete_pv():
         print(f"Error deleting PV: {e}")
         return jsonify({"error": "Error deleting PV"}), 500
 
+# Health check endpoint
+@app.route('/health')
+def health():
+    return jsonify({"status": "OK"}), 200  # Simple JSON response with 200 status code
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=False)  # Set debug=False for production
