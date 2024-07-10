@@ -23,8 +23,11 @@ def get_unclaimed_pvs():
             unclaimed_pvs = [doc["name"] for doc in cursor]  # Extracting "name" field from documents
 
         return jsonify(unclaimed_pvs)
-    except Exception as e:
-        print(f"Error fetching unclaimed PVs: {e}")
+    except pymongo.errors.ConnectionFailure:
+        return jsonify({"error": "Error connecting to MongoDB"}), 500
+    except pymongo.errors.PyMongoError as e:
+        return jsonify({"error": f"MongoDB error: {e}"}), 500
+    except Exception as e:  # Catch other unexpected errors
         return jsonify({"error": "Internal server error"}), 500
 
 @app.route("/delete_pv", methods=["POST"])
@@ -50,9 +53,13 @@ def delete_pv():
             col.update_one({"name": pv_name}, {"$set": {"status": "deleted"}})  # Update only if necessary
 
         return jsonify({"message": "PV deletion initiated"})
-    except Exception as e:
-        print(f"Error deleting PV: {e}")
-        return jsonify({"error": "Error deleting PV"}), 500
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": f"Error from Robusta API: {e}"}), e.response.status_code
+    except pymongo.errors.PyMongoError as e:
+        return jsonify({"error": f"MongoDB error: {e}"}), 500
+    except Exception as e:  # Catch other unexpected errors
+        return jsonify({"error": "Internal server error"}), 500
+
 
 # Health check endpoint
 @app.route('/health')
