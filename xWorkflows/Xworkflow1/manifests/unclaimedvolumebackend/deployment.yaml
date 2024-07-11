@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: unclaimed-pv-api
+  namespace: xworkflow1
 spec:
   replicas: 1
   selector:

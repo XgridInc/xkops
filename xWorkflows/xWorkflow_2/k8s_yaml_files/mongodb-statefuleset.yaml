@@ -3,6 +3,7 @@
   kind: "PersistentVolumeClaim"
   metadata: 
     name: "mongodb-pvc"
+    namespace: xworkflow2
     labels: 
       app: "mongo-db"
   spec: 
@@ -18,6 +19,7 @@
   kind: "StatefulSet"
   metadata: 
     name: "mongo-db"
+    namespace: xworkflow2
   spec:
     serviceName: "mongo-db" 
     replicas: 1
@@ -55,6 +57,7 @@
   kind: "Service"
   metadata: 
     name: "mongo-db"
+    namespace: xworkflow2
     labels: 
       app: "mongo-db"
   spec: 

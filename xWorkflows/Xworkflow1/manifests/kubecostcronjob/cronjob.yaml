@@ -2,6 +2,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: xworkflow1-go-app-cronjob
+  namespace: xworkflow1
 spec:
   schedule: "*/1 * * * *"  # Run every 1 minute (adjust as needed)
   concurrencyPolicy: Replace
