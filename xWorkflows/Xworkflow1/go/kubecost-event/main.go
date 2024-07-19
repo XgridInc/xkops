@@ -34,7 +34,7 @@ func GetUnclaimedVolumes() ([]PersistentVolume, error) {
 	// Make a GET request to the Kubecost API
 	response, err := http.Get(kubecostAPIURL)
 	if err != nil {
-		errorLogger.Println("error making GET request to Kubecost API: %w", err)
+		errorLogger.Println("Error making GET request to Kubecost API: %w", err)
 		return nil, err
 	}
 	defer response.Body.Close()
@@ -42,7 +42,7 @@ func GetUnclaimedVolumes() ([]PersistentVolume, error) {
 	// Read response data
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		errorLogger.Println("error reading response body: %w", err)
+		errorLogger.Println("Error reading response body: %w", err)
 		return nil, err
 	}
 
@@ -50,14 +50,14 @@ func GetUnclaimedVolumes() ([]PersistentVolume, error) {
 	var data map[string]interface{}
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		errorLogger.Println("error unmarshalling JSON response: %w", err)
+		errorLogger.Println("Error unmarshalling JSON response: %w", err)
 		return nil, err
 	}
 
 	// Ensure that 'items' key exists and is of the correct type
 	items, ok := data["items"].([]interface{})
 	if !ok {
-		errorLogger.Println("error: 'items' field is not a slice of interfaces")
+		errorLogger.Println("Error: 'items' field is not a slice of interfaces")
 		return nil, err
 	}
 
@@ -104,7 +104,7 @@ func SaveVolumesToMongoDB(collection *mongo.Collection, volumes []PersistentVolu
 	// Create the index on the collection
 	_, err := collection.Indexes().CreateOne(context.Background(), index)
 	if err != nil {
-		errorLogger.Println("error creating index: %w", err)
+		errorLogger.Println("Error creating index: %w", err)
 		return nil
 	}
 
