@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: xworkflow-mongodb
+  namespace: xworkflow1
 spec:
   serviceName: "xworkflow-mongodb"
   replicas: 3

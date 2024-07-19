@@ -17,6 +17,7 @@ apiVersion: v1
 kind: PersistentVolume
 metadata:
   name: new-pv-volume2
+  namespace: xworkflow1
   labels:
     type: local
 spec:

@@ -2,6 +2,7 @@ apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
   name: xworkflow-mongo-storage
+  namespace: xworkflow1
 provisioner: kubernetes.io/host-path  # Using hostPath provisioner
 parameters:
   path: /data/xworkflow-mongodb 
