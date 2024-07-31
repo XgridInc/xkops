@@ -1,4 +1,4 @@
 Flask==2.1.1
 Werkzeug==2.0.2
-pymongo==4.2.0
+pymongo==4.6.3
 requests==2.27.1
