@@ -3,14 +3,21 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+)
+
+// Creating loggers to use in logs
+var (
+	flags       = log.Ldate | log.Ltime | log.Lshortfile
+	infoLogger  = log.New(os.Stdout, "INFO: ", flags)
+	errorLogger = log.New(os.Stdout, "ERROR: ", flags)
 )
 
 // Node represents the structure of each node's information
@@ -32,19 +39,19 @@ func main() {
 	// Get environment variables
 	apiURL := os.Getenv("API_URL")
 	if apiURL == "" {
-		fmt.Println("Error: API_URL environment variable not set")
+		errorLogger.Println("API_URL environment variable not set")
 		return
 	}
 
 	mongoURI := os.Getenv("MONGODB_URI")
 	if mongoURI == "" {
-		fmt.Println("Error: MONGODB_URI environment variable not set")
+		errorLogger.Println("MONGODB_URI environment variable not set")
 		return
 	}
 
 	mongoDB := os.Getenv("MONGODB_DATABASE")
 	if mongoDB == "" {
-		fmt.Println("Error: MONGODB_DATABASE environment variable not set")
+		errorLogger.Println("MONGODB_DATABASE environment variable not set")
 		return
 	}
 
@@ -63,7 +70,7 @@ func main() {
 	// Create a MongoDB client
 	client, err := mongo.NewClient(clientOpts)
 	if err != nil {
-		fmt.Println("Error creating MongoDB client:", err)
+		errorLogger.Println("Error creating MongoDB client:", err)
 		return
 	}
 
@@ -72,7 +79,7 @@ func main() {
 	defer cancel()
 	err = client.Connect(ctx)
 	if err != nil {
-		fmt.Println("Error connecting to MongoDB:", err)
+		errorLogger.Println("Error connecting to MongoDB:", err)
 		return
 	}
 	defer client.Disconnect(ctx)
@@ -83,34 +90,34 @@ func main() {
 	// Fetch data from the API
 	resp, err := http.Get(apiURL)
 	if err != nil {
-		fmt.Println("Error:", err)
+		errorLogger.Println("Error:", err)
 		return
 	}
 	defer resp.Body.Close()
 
 	if resp.StatusCode != 200 {
-		fmt.Println("Error: Received non-200 response code")
+		errorLogger.Println("Received non-200 response code")
 		return
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		fmt.Println("Error reading response body:", err)
+		errorLogger.Println("Error reading response body:", err)
 		return
 	}
 
 	// Print the raw response body
-	fmt.Println("Raw response body:", string(body))
+	infoLogger.Println("Raw response body:", string(body))
 
 	var apiResponse APIResponse
 	err = json.Unmarshal(body, &apiResponse)
 	if err != nil {
-		fmt.Println("Error unmarshalling JSON:", err)
+		errorLogger.Println("Error unmarshalling JSON:", err)
 		return
 	}
 
 	if apiResponse.Code != 200 {
-		fmt.Println("Error: API response code is not 200")
+		errorLogger.Println("API response code is not 200")
 		return
 	}
 
@@ -119,10 +126,10 @@ func main() {
 		for _, node := range nodeMap {
 			_, err := collection.InsertOne(ctx, node)
 			if err != nil {
-				fmt.Println("Error inserting document into MongoDB:", err)
+				errorLogger.Println("Error inserting document into MongoDB:", err)
 				continue
 			}
-			fmt.Printf("Inserted: Cluster: %s, Name: %s, TotalCost: %.6f\n", node.Properties.Cluster, node.Properties.Name, node.TotalCost)
+			infoLogger.Printf("Inserted: Cluster: %s, Name: %s, TotalCost: %.6f\n", node.Properties.Cluster, node.Properties.Name, node.TotalCost)
 		}
 	}
 }

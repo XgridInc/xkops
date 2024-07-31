@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 
@@ -14,6 +15,13 @@ import (
 
 // Kubecost API endpoint URL, declared variable to hold the URL
 var kubecostAPIURL string
+
+// Creating loggers to use in logs
+var (
+	flags       = log.Ldate | log.Ltime | log.Lshortfile
+	infoLogger  = log.New(os.Stdout, "INFO: ", flags)
+	errorLogger = log.New(os.Stdout, "ERROR: ", flags)
+)
 
 // PersistentVolume represents the structure of a Persistent Volume
 type PersistentVolume struct {
@@ -26,27 +34,31 @@ func GetUnclaimedVolumes() ([]PersistentVolume, error) {
 	// Make a GET request to the Kubecost API
 	response, err := http.Get(kubecostAPIURL)
 	if err != nil {
-		return nil, fmt.Errorf("error making GET request to Kubecost API: %w", err)
+		errorLogger.Println("Error making GET request to Kubecost API: %w", err)
+		return nil, err
 	}
 	defer response.Body.Close()
 
 	// Read response data
 	body, err := io.ReadAll(response.Body)
 	if err != nil {
-		return nil, fmt.Errorf("error reading response body: %w", err)
+		errorLogger.Println("Error reading response body: %w", err)
+		return nil, err
 	}
 
 	// Parse JSON response
 	var data map[string]interface{}
 	err = json.Unmarshal(body, &data)
 	if err != nil {
-		return nil, fmt.Errorf("error unmarshalling JSON response: %w", err)
+		errorLogger.Println("Error unmarshalling JSON response: %w", err)
+		return nil, err
 	}
 
 	// Ensure that 'items' key exists and is of the correct type
 	items, ok := data["items"].([]interface{})
 	if !ok {
-		return nil, fmt.Errorf("error: 'items' field is not a slice of interfaces")
+		errorLogger.Println("Error: 'items' field is not a slice of interfaces")
+		return nil, err
 	}
 
 	// Extract volume names and statuses
@@ -92,7 +104,8 @@ func SaveVolumesToMongoDB(collection *mongo.Collection, volumes []PersistentVolu
 	// Create the index on the collection
 	_, err := collection.Indexes().CreateOne(context.Background(), index)
 	if err != nil {
-		return fmt.Errorf("error creating index: %w", err)
+		errorLogger.Println("Error creating index: %w", err)
+		return nil
 	}
 
 	// Insert volumes into MongoDB
@@ -100,11 +113,12 @@ func SaveVolumesToMongoDB(collection *mongo.Collection, volumes []PersistentVolu
 		_, err := collection.InsertOne(context.Background(), volume)
 		if err != nil {
 			if mongo.IsDuplicateKeyError(err) {
-				fmt.Printf("Document with name '%s' already exists.\n", volume.Name)
+				errorLogger.Println("Document with name '" + volume.Name + "' already exists.")
 				// Handle duplicate entry gracefully
 				continue
 			}
-			return fmt.Errorf("error inserting document into MongoDB: %w", err)
+			errorLogger.Println("Error inserting document into MongoDB: %w", err)
+			return nil
 		}
 	}
 	return nil
@@ -118,14 +132,14 @@ func main() {
 	collectionName := os.Getenv("COLLECTION_NAME")
 
 	if kubecostAPIURL == "" || mongoURI == "" || dbName == "" || collectionName == "" {
-		fmt.Println("Error: Missing required environment variables.")
+		errorLogger.Println("Missing required environment variables.")
 		return
 	}
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
 	if err != nil {
-		fmt.Println("Error connecting to MongoDB:", err)
+		errorLogger.Println("Error connecting to MongoDB:", err)
 		return
 	}
 	defer client.Disconnect(context.Background())
@@ -137,16 +151,16 @@ func main() {
 	// Get unclaimed volumes
 	unclaimedPVs, err := GetUnclaimedVolumes()
 	if err != nil {
-		fmt.Println("Error retrieving unclaimed volumes:", err)
+		errorLogger.Println("Error retrieving unclaimed volumes:", err)
 		return
 	}
 
 	// Print a success message for data retrieval
-	fmt.Println("Successfully retrieved data from Kubecost API!")
+	infoLogger.Println("Successfully retrieved data from Kubecost API!")
 
 	// Process or print the list of unclaimed volumes
 	if len(unclaimedPVs) > 0 {
-		fmt.Println("Unclaimed Persistent Volumes:")
+		infoLogger.Println("Unclaimed Persistent Volumes:")
 		for _, pv := range unclaimedPVs {
 			fmt.Println("-", pv.Name)
 		}
@@ -154,12 +168,12 @@ func main() {
 		// Save unclaimed volumes to MongoDB
 		err = SaveVolumesToMongoDB(collection, unclaimedPVs)
 		if err != nil {
-			fmt.Println("Error saving volumes to MongoDB:", err)
+			errorLogger.Println("Error saving volumes to MongoDB:", err)
 			return
 		}
 
-		fmt.Println("Unclaimed volumes saved to MongoDB successfully!")
+		infoLogger.Println("Unclaimed volumes saved to MongoDB successfully!")
 	} else {
-		fmt.Println("No unclaimed Persistent Volumes found.")
+		infoLogger.Println("No unclaimed Persistent Volumes found.")
 	}
 }
