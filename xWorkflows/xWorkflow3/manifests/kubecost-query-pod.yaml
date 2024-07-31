@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: kubecost-query-pod1
+  namespace: xworkflow3
+spec:
+  containers:
+  - name: kubecost-query-container
+    image: hamzaarshad10/my-multistage-image:latest
+    env:
+    - name: MONGO_HOST
+      value: "mongo-db-0.mongo-db.xworkflow3.svc.cluster.local"
+    - name: MONGO_PORT
+      value: "27017" # MongoDB port
+    - name: MONGO_DB_NAME
+      value: "k8sData" # MongoDB database name
+    - name: MONGO_USERNAME
+      value: "admin" # MongoDB username
+    - name: MONGO_PASSWORD
+      value: "password" # MongoDB password
+    - name: MONGO_COLLECTION_NAME
+      value: "abandonendworkloads"
+    - name: ROBUSTA_URL
+      value: "http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9090/model/savings/abandonedWorkloads"
