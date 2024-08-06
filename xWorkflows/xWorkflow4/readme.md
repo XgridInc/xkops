@@ -30,6 +30,7 @@ updateMemoryRequest: <Updated Memeory Request>
 ```
 Note incase of Deployment "name" field requires the name of deployment instead of podname rest remains same. This rule should be same for Daemonset and Statefulset meaning instead of pod name we need the name of the resource.
 
+### Schema for Pods
 The name of the actions in case of pods are:
 ```bash
 podCpu and podMemory
@@ -53,5 +54,30 @@ So the final schema would be like this:
         payload = {
             "action_name": "podMemory",
             "action_params": {"name": podname, "namespace": podnamespace,"updateMemoryRequest":cpuRequests}
+        }
+```
+### Schema for Deployment 
+The name of the actions in case of deployments are:
+```bash
+deploymentCpu and deploymentMemory
+```
+```bash
+name: <deploymentname>
+namespace: <deploymentnamespace>
+updateCpuRequest: <Updated CPU request> 
+"OR"  
+updateMemoryRequest: <Updated Memeory Request>
+```
+So the final schema would be like this:
+```bash
+# Incase of cpu
+        payload = {
+            "action_name": "deploymentCpu",
+            "action_params": {"name": deploymentname, "namespace": deploymentnamespace,"updateCpuRequest":cpuRequests}
+        },
+# Incase of memory
+        payload = {
+            "action_name": "deploymentMemory",
+            "action_params": {"name": deploymentname, "namespace": deploymentnamespace, "updateMemoryRequest":cpuRequests}
         }
 ```
