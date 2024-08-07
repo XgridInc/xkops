@@ -1,0 +1,53 @@
+# Define the directory where the charts will be stored
+
+# Define repositories where Helm charts are hosted
+repositories:
+  # Repository for Pixie charts
+  - name: pixie
+    url: https://pixie-operator-charts.storage.googleapis.com
+
+  # Repository for Kubecost charts
+  - name: kubecost
+    url: https://kubecost.github.io/cost-analyzer/
+
+  # Repository for Robusta charts
+  - name: robusta
+    url: https://robusta-charts.storage.googleapis.com
+
+# Define releases for each tool
+releases:
+  # Release for Pixie
+  - name: pixie
+    namespace: pixie
+    chart: pixie/pixie-operator-chart
+    installed: true
+    values:
+      - ../values.yaml
+
+  # Release for Kubecost
+  - name: kubecost
+    namespace: kubecost
+    chart: kubecost/cost-analyzer
+    installed: true
+    hooks:
+      - events: ["postsync"]
+        showlogs: true
+        command: "./hooks/kubecost-postsync-hook.sh"
+    values:
+      - ../values.yaml
+
+  # Release for Robusta
+  - name: robusta
+    namespace: robusta
+    chart: robusta/robusta
+    installed: true
+    hooks:
+      - events: ["prepare"]
+        showlogs: true
+        command: "bash"
+        args: ["-c", "./hooks/robusta-prepare-hook.sh"]
+    values:
+      - ../values.yaml
+      - ../GeneratedValues/generated_values.yaml
+        
+        
