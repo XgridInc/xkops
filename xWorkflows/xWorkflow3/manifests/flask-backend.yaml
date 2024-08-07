@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-backend
+  namespace: xworkflow3
+spec:
+  replicas: 1 # Adjust as per your scaling needs
+  selector:
+    matchLabels:
+      app: flask-backend
+  template:
+    metadata:
+      labels:
+        app: flask-backend
+    spec:
+      containers:
+      - name: flask-backend
+        image: hamzaarshad10/workflow3backend:v11.8 # Replace with your Docker image name and tag
+        ports:
+        - containerPort: 5000 # Port on which Flask app listens
+          # We need to move password and username in the secrets and mongo host, port, db name and collection name to config
+        env:
+        - name: MONGO_HOST
+          value: "mongo-db-0.mongo-db.xworkflow3.svc.cluster.local"
+        - name: MONGO_PORT
+          value: "27017" # MongoDB port
+        - name: MONGO_DB_NAME
+          value: "k8sData" # MongoDB database name
+        - name: MONGO_USERNAME
+          value: "admin" # MongoDB username
+        - name: MONGO_PASSWORD
+          value: "password" # MongoDB password
+        - name: MONGO_COLLECTION_NAME
+          value: "abandonendworkloads"
+        - name: ROBUSTA_URL
+          value: "http://robusta-runner.default.svc.cluster.local/api/trigger"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flask-backend-service
+  namespace: xworkflow3
+spec:
+  selector:
+    app: flask-backend # Selects the Pods with label 'app: flask-backend'
+  ports:
+  - protocol: TCP
+    port: 5000 # Port on the Service
+    targetPort: 5000 # Port on the Pod (Flask app)
+

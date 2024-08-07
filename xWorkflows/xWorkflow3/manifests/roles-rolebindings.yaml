@@ -1,0 +1,23 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: deployment-editor
+  namespace: default
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch", "update"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: robusta-runner-binding
+  namespace: default
+subjects:
+- kind: ServiceAccount
+  name: robusta-runner-service-account
+  namespace: default
+roleRef:
+  kind: Role
+  name: deployment-editor
+  apiGroup: rbac.authorization.k8s.io
