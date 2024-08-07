@@ -1,0 +1,15 @@
+workflows:
+- dataSource: kubecost
+  name: nodeScrapeWorkflow
+  robustaPlaybook: nil
+  scrapeData: nodes
+
+- dataSource: kubecost
+  name: unclaimedVolumeScrapeWorkflow
+  robustaPlaybook: xyz
+  scrapeData: unclaimedvolume
+
+- dataSource: customSource
+  name: customDataScrapeWorkflow
+  robustaPlaybook: customPlaybook
+  scrapeData: customData

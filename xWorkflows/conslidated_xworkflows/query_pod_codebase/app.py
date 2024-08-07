@@ -30,7 +30,7 @@ def connectToMongoDB(hostname, port, username, password, databaseName, collectio
 
 urlsAndParams = {
     'nodeUrl': {
-        'url': "http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9090/model/assets",
+        'url': "http://localhost:9090/model/assets",
         'params': {
             'window': '1w',
             'filter': 'assetType:\"node\"',
@@ -38,7 +38,7 @@ urlsAndParams = {
         }
     },
     'unclaimedVolUrl': {
-        'url': "http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9090/model/savings/unclaimedVolumes",
+        'url': "http://localhost:9090/model/savings/unclaimedVolumes",
         'params': {
             'window': '7d',
             'aggregate': 'provider',
