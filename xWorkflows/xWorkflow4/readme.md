@@ -81,3 +81,53 @@ So the final schema would be like this:
             "action_params": {"name": deploymentname, "namespace": deploymentnamespace, "updateMemoryRequest":cpuRequests}
         }
 ```
+### Schema for DaemonSet 
+The name of the actions in case of daemonsets are:
+```bash
+daemonSetCpu and daemonSetMemory
+```
+```bash
+name: <daemonSetname>
+namespace: <daemonSetnamespace>
+updateCpuRequest: <Updated CPU request> 
+"OR"  
+updateMemoryRequest: <Updated Memeory Request>
+```
+So the final schema would be like this:
+```bash
+# Incase of cpu
+        payload = {
+            "action_name": "daemonSetCpu",
+            "action_params": {"name": daemonSetname, "namespace": daemonSetnamespace,"updateCpuRequest":cpuRequests}
+        },
+# Incase of memory
+        payload = {
+            "action_name": "daemonSetMemory",
+            "action_params": {"name": daemonSetname, "namespace": daemonSetnamespace, "updateMemoryRequest":cpuRequests}
+        }
+```
+### Schema for StatefulSet 
+The name of the actions in case of statefulSet are:
+```bash
+statefulSetCpu and statefulSetMemory
+```
+```bash
+name: <statefulSetname>
+namespace: <statefulSetnamespace>
+updateCpuRequest: <Updated CPU request> 
+"OR"  
+updateMemoryRequest: <Updated Memeory Request>
+```
+So the final schema would be like this:
+```bash
+# Incase of cpu
+        payload = {
+            "action_name": "statefulSetCpu",
+            "action_params": {"name": statefulSetname, "namespace": statefulSetnamespace,"updateCpuRequest":cpuRequests}
+        },
+# Incase of memory
+        payload = {
+            "action_name": "statefulSetMemory",
+            "action_params": {"name": statefulSetname, "namespace": statefulSetnamespace, "updateMemoryRequest":cpuRequests}
+        }
+```
