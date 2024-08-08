@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-pod
+  labels:
+    app: query-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: query-pod
+  template:
+    metadata:
+      labels:
+        app: query-pod
+    spec:
+      containers:
+      - name: query-container
+        image: your-image:latest  # Replace with your actual image
+        ports:
+        - containerPort: 8080  # Replace with your actual port if needed
+        env:
+        - name: MONGODB_HOSTNAME
+          value: "mongodb-service"  # Replace with your actual MongoDB service name or endpoint
+        - name: MONGODB_PORT
+          value: "27017"  # Default MongoDB port
+        - name: MONGODB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: query-secrets
+              key: mongodb-root-username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: query-secrets
+              key: mongodb-root-password
+        - name: MONGODB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: query-config
+              key: values.yaml
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config
+          subPath: values.yaml
+      volumes:
+      - name: config-volume
+        configMap:
+          name: query-config
