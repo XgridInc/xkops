@@ -78,7 +78,7 @@ workflows:
 - **data_source**: This specifies the origin of the data you wish to retrieve. In our case, it is typically `kubecost`, but other sources can be added as the application evolves.
 - **name**: The unique name of the workflow. This helps in identifying and managing different workflows.
 - **robusta_playbook**: The associated Robusta playbook for this workflow. While this is a placeholder for now, it will be linked to specific playbooks in future updates.
-- **scrape_data**: Indicates the specific type of data to be fetched from the data source. For `kubecost`, allowed values include `nodes` and `unclaimedvolume`. As the application grows, more data types will be supported.
+- **scrape_data**: Indicates the specific type of data to be fetched from the data source. For `kubecost`, allowed values include `nodes`, `unclaimedvolume` and `containerResourceSizing`. As the application grows, more data types will be supported.
 
 #### 2. Update URL and Parameters in `app.py`
 

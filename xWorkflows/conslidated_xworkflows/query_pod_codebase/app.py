@@ -45,6 +45,20 @@ urlsAndParams = {
             'accumulate': 'true'
         }
     },
+    'sizingV2Url': {
+        'url': "http://localhost:9090/model/savings/requestSizingV2",
+        'params': {
+            'algorithmCPU': 'max',
+            'algorithmRAM': 'max',
+            'filter': '',
+            'targetCPUUtilization': '0.80',
+            'targetRAMUtilization': '0.80',
+            'window': '7d',
+            'sortByOrder': 'descending',
+            'offset': '0',
+            'limit': '25'
+        }
+    },    
     # Add more URLs and parameters as needed
 }
 
@@ -120,6 +134,8 @@ def main():
     databaseName = os.getenv('MONGODB_DATABASE')
     collectionVolume = "collection_volume"  # for storing volume data
     collectionNodes = "collection_nodes"  # for storing nodes data
+    collectionSizingV2 = "collection_sizingv2"  # for storing containerResourceSizing data
+
 
     filePath = '/app/config/values.yaml'
     workflowsDict = readWorkflowDefinitions(filePath)
@@ -209,6 +225,56 @@ def main():
                         collectionForVolumeData.insert_one(volumeData)
                     except KeyError as e:
                         print(f"KeyError: {e} in data item {volume}")
+
+        elif dataSource == "kubecost" and scrapeData == "containerResourceSizing":
+            """
+            Set up a scraper for sizing v2 data from the Kubecost API and insert data into MongoDB.
+
+            This process involves:
+            - Connecting to the MongoDB collection for sizing v2 data.
+            - Fetching sizing v2 data from the specified API endpoint.
+            - Processing and inserting each recommendation's data into the MongoDB collection.
+
+            Workflow Details:
+            - Name: {name}
+            - Data Source: {dataSource}
+            - Scrape Data: {scrapeData}
+            """
+            collectionForSizingV2Data = connectToMongoDB(hostname, port, username, password, databaseName, collectionSizingV2)
+
+            if collectionForSizingV2Data is not None:
+                print("Successfully connected to the collectionForSizingV2Data!")
+            else:
+                print("Failed to connect to the collectionForSizingV2Data.")
+
+            print(f"Setting up scraper for Workflow: {name}, Data Source: {dataSource}, Scrape Data: {scrapeData}")
+            response = fetchData(urlsAndParams['sizingV2Url']['url'], urlsAndParams['sizingV2Url']['params'])
+            if response:
+                recommendations = response.get("Recommendations", [])
+
+                for recommendation in recommendations:
+                    sizingV2Data = {
+                        'clusterID': recommendation.get('clusterID'),
+                        'namespace': recommendation.get('namespace'),
+                        'controllerKind': recommendation.get('controllerKind'),
+                        'controllerName': recommendation.get('controllerName'),
+                        'containerName': recommendation.get('containerName'),
+                        'recommendedRequest': recommendation.get('recommendedRequest'),
+                        'monthlySavings': recommendation.get('monthlySavings'),
+                        'latestKnownRequest': recommendation.get('latestKnownRequest'),
+                        'currentEfficiency': recommendation.get('currentEfficiency'),
+                        'averageUsage': recommendation.get('averageUsage'),
+                        'maxUsage': recommendation.get('maxUsage')
+                    }
+                    try:
+                        collectionForSizingV2Data.insert_one(sizingV2Data)
+                        print(f"Inserted recommendation for {sizingV2Data['containerName']} in {sizingV2Data['namespace']}")
+                    except Exception as e:
+                        print(f"Error inserting data: {e}")
+
+            else:
+                print("Failed to fetch sizing v2 data from the API.")
+
 
 
 if __name__ == "__main__":

@@ -3,13 +3,22 @@ workflows:
   name: nodeScrapeWorkflow
   robustaPlaybook: nil
   scrapeData: nodes
+  description: "Sample description"
 
 - dataSource: kubecost
   name: unclaimedVolumeScrapeWorkflow
   robustaPlaybook: xyz
   scrapeData: unclaimedvolume
+  description: "Sample description"
+
+- dataSource: kubecost
+  name: sizingCPUandRAMWorkflow
+  robustaPlaybook: resourceOptimizationPlaybook
+  scrapeData: containerResourceSizing
+  description: "Analyzes and recommends optimal CPU and RAM sizing for containers"
 
 - dataSource: customSource
   name: customDataScrapeWorkflow
   robustaPlaybook: customPlaybook
   scrapeData: customData
+  description: "Sample description"
