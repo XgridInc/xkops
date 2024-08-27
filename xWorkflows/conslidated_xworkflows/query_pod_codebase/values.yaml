@@ -17,8 +17,8 @@ workflows:
   scrapeData: containerResourceSizing
   description: "Analyzes and recommends optimal CPU and RAM sizing for containers"
 
-- dataSource: customSource
-  name: customDataScrapeWorkflow
-  robustaPlaybook: customPlaybook
-  scrapeData: customData
-  description: "Sample description"
+- dataSource: kubecost
+  name: abandonedWorkloadsScrapeWorkflow
+  robustaPlaybook: abandonedWorkloadPlaybook
+  scrapeData: abandonedWorkloads
+  description: "Fetches and processes data related to abandoned workloads"

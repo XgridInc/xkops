@@ -58,8 +58,18 @@ urlsAndParams = {
             'offset': '0',
             'limit': '25'
         }
-    },    
+    },
+    'abandonedWorkloadsUrl': {
+        'url': "http://localhost:9090/model/savings/abandonedWorkloads",
+        'params': {
+            'days': '2',
+            'threshold': '100',
+            'offset': '0',
+            'limit': '25',
+            'filter': ''
+        }
     # Add more URLs and parameters as needed
+    }
 }
 
 def readWorkflowDefinitions(filePath):
@@ -135,6 +145,7 @@ def main():
     collectionVolume = "collection_volume"  # for storing volume data
     collectionNodes = "collection_nodes"  # for storing nodes data
     collectionSizingV2 = "collection_sizingv2"  # for storing containerResourceSizing data
+    collectionAbandonedWorkloads = "collection_abandoned_workloads"  # for storing abandoned workloads data
 
 
     filePath = '/app/config/values.yaml'
@@ -271,9 +282,57 @@ def main():
                         print(f"Inserted recommendation for {sizingV2Data['containerName']} in {sizingV2Data['namespace']}")
                     except Exception as e:
                         print(f"Error inserting data: {e}")
-
             else:
                 print("Failed to fetch sizing v2 data from the API.")
+                
+        elif dataSource == "kubecost" and scrapeData == "abandonedWorkloads":
+            """
+            Set up a scraper for abandoned workloads data from the Kubecost API and insert data into MongoDB.
+
+            This process involves:
+            - Connecting to the MongoDB collection for abandoned workloads.
+            - Fetching data from the specified API endpoint.
+            - Processing and inserting the fetched workload data into the MongoDB collection.
+
+            Workflow Details:
+            - Name: {name}
+            - Data Source: {dataSource}
+            - Scrape Data: {scrapeData}
+            """
+            collectionForAbandonedWorkloadsData = connectToMongoDB(hostname, port, username, password, databaseName, collectionAbandonedWorkloads)
+
+            if collectionForAbandonedWorkloadsData is not None:
+                print("Successfully connected to the collectionForAbandonedWorkloadsData!")
+            else:
+                print("Failed to connect to the collectionForAbandonedWorkloadsData.")
+
+            print(f"Setting up scraper for Workflow: {name}, Data Source: {dataSource}, Scrape Data: {scrapeData}")
+            response = fetchData(urlsAndParams['abandonedWorkloadsUrl']['url'], urlsAndParams['abandonedWorkloadsUrl']['params'])
+            if response:
+                for workload in response:
+                    workloadData = {
+                        'pod': workload['pod'],
+                        'namespace': workload['namespace'],
+                        'node': workload['node'],
+                        'clusterId': workload['clusterId'],
+                        'clusterName': workload.get('clusterName', ''),
+                        'owners': workload.get('owners', []),
+                        'ingressBytesPerSecond': workload['ingressBytesPerSecond'],
+                        'egressBytesPerSecond': workload['egressBytesPerSecond'],
+                        'allocation': workload['allocation'],
+                        'requests': workload['requests'],
+                        'usage': workload['usage'],
+                        'monthlySavings': workload['monthlySavings']
+                    }
+                    try:
+                        collectionForAbandonedWorkloadsData.insert_one(workloadData)
+                        print(f"Inserted abandoned workload data for pod {workloadData['pod']} in namespace {workloadData['namespace']}")
+                    except Exception as e:
+                        print(f"Error inserting data: {e}")
+            else:
+                print("Failed to fetch abandoned workloads data from the API.")
+
+
 
 
 
