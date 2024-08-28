@@ -1,9 +1,10 @@
 import React from 'react';
-import TableComponent from '../../components/TableComponent/TableComponent';
+
+import AbandonendWorkflowTable from '../../components/TableComponent/AbandonendWorkflowTable';
 const AbandonendWorkloadPage = () => {
   return (
     <div className="Home">
-        <TableComponent />
+        <AbandonendWorkflowTable />
     </div>
   );
 };

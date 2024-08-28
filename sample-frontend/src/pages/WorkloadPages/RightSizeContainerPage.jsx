@@ -1,9 +1,10 @@
 import React from 'react';
-import TableComponent from '../../components/TableComponent/TableComponent';
+
+import RightSizeContainerTable from '../../components/TableComponent/RightSizeContainerTable';
 const RightSizeContainerPage = () => {
   return (
     <div className="Home">
-        <TableComponent />
+        <RightSizeContainerTable />
     </div>
   );
 };

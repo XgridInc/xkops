@@ -1,9 +1,10 @@
 import React from 'react';
-import TableComponent from '../../components/TableComponent/TableComponent';
+
+import UnderUtilizedNodesTable from '../../components/TableComponent/UnderUtilizedNodesTable';
 const UnderutilizedNodesPage = () => {
   return (
     <div className="Home">
-        <TableComponent />
+        <UnderUtilizedNodesTable />
     </div>
   );
 };

@@ -1,9 +1,10 @@
 import React from 'react';
-import TableComponent from '../../components/TableComponent/TableComponent';
+
+import UnclaimedVolumeTable from '../../components/TableComponent/UnclaimedVolumeTable';
 const UnclaimedPvPage = () => {
   return (
     <div className="Home">
-        <TableComponent />
+        <UnclaimedVolumeTable />
     </div>
   );
 };
