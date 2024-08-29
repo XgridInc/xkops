@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Table, Button, message } from 'antd';
 
-const columns = (handleResizeCpu,handleResizeMemory) => [
+const columns = (handleResizeCpu, handleResizeMemory) => [
   {
     title: 'Container Name',
     dataIndex: 'containerName',
@@ -17,32 +17,29 @@ const columns = (handleResizeCpu,handleResizeMemory) => [
     title: 'Resource Name',
     dataIndex: 'controllerName',
     key: 'controllerName',
-    // render: (value) => `$${value.toFixed(5)}`,
   },
   {
     title: 'Recommended CPU',
     dataIndex: 'cpu',
     key: 'cpu',
-    // render: (value) => `$${value.toFixed(5)}`,
   },
   {
     title: 'Recommended Memory',
     dataIndex: 'memory',
     key: 'memory',
-    // render: (value) => `$${value.toFixed(5)}`,
   },
   {
     title: 'Monthly Savings',
     dataIndex: 'monthlySavings',
     key: 'monthlySavings',
-    // render: (value) => `$${value.toFixed(3)}`,
   },
   {
     title: 'Resize CPU',
-    key: 'Resize CPU',
+    key: 'resizeCpu',
     render: (text, record) => (
-      <Button style={{background:'#538ACA',color:"white"}} type="danger" 
-      onClick={() => handleResizeCpu(record)}
+      <Button
+        style={{ background: '#538ACA', color: 'white' }}
+        onClick={() => handleResizeCpu(record)}
       >
         Resize CPU
       </Button>
@@ -50,10 +47,11 @@ const columns = (handleResizeCpu,handleResizeMemory) => [
   },
   {
     title: 'Resize Memory',
-    key: 'Resize Memory',
+    key: 'resizeMemory',
     render: (text, record) => (
-      <Button style={{background:'#538ACA',color:"white"}} type="danger" 
-      onClick={() => handleResizeMemory(record)}
+      <Button
+        style={{ background: '#538ACA', color: 'white' }}
+        onClick={() => handleResizeMemory(record)}
       >
         Resize Memory
       </Button>
@@ -68,7 +66,6 @@ const TableContainer = styled.div`
 `;
 
 const RightSizeContainerTable = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState([]);
   const [loadingApi, setLoadingApi] = useState(true);
   const [error, setError] = useState(null);
@@ -87,6 +84,7 @@ const RightSizeContainerTable = () => {
           containerName: item.containerName,
           controllerKind: item.controllerKind,
           controllerName: item.controllerName,
+          namespace: item.namespace,
           recommendedRequest: item.recommendedRequest,
           cpu: item.recommendedRequest.cpu,
           memory: item.recommendedRequest.memory,
@@ -102,71 +100,79 @@ const RightSizeContainerTable = () => {
       });
   }, []);
 
-  const handleDelete = (record) => {
-      const pvName = record.name;
-      fetch('http://172.19.49.240:5000/delete_pv', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ pv_name: pvName }),
+  const handleResizeCpu = (record) => {
+    const { controllerKind, controllerName, namespace, recommendedRequest } = record;
+    const apiUrl =
+      controllerKind === 'deployment'
+        ? 'http://172.19.49.240:5000/update_deployment_cpu'
+        : 'http://172.19.49.240:5000/update_pod_cpu';
+
+    const body = {
+      name: controllerName,
+      namespace: namespace,
+      updateCpuRequest: recommendedRequest.cpu,
+    };
+
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to resize CPU');
+        }
+        return response.json();
       })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Failed to delete the PV');
-          }
-          return response.json();
-        })
-        .then(() => {
-          message.success(`PV ${pvName} deleted successfully.`);
-          setData((prevData) => prevData.filter((item) => item.name !== pvName));
-        })
-        .catch((error) => {
-          message.error(`Error: ${error.message}`);
-        });
-    
+      .then(() => {
+        message.success(`CPU resized successfully for ${controllerName}.`);
+      })
+      .catch((error) => {
+        message.error(`Error: ${error.message}`);
+      });
   };
+
   const handleResizeMemory = (record) => {
-  console.log("Records are ",record)
-};
-//   const handleDeleteSelected = () => {
-//     if (selectedRowKeys.length === 0) {
-//       message.warning('Please select at least one item to delete.');
-//       return;
-//     }
+    const { controllerKind, controllerName, namespace, recommendedRequest } = record;
+    const apiUrl =
+      controllerKind === 'deployment'
+        ? 'http://172.19.49.240:5000/update_deployment_memory'
+        : 'http://172.19.49.240:5000/update_pod_memory';
 
-//     const selectedItems = data.filter((item) => selectedRowKeys.includes(item.key));
-//     selectedItems.forEach((record) => handleDelete(record));
+    const body = {
+      name: controllerName,
+      namespace: namespace,
+      updateMemoryRequest: recommendedRequest.memory,
+    };
 
-//     setSelectedRowKeys([]); // Clear selected keys after deletion
-//   };
-
-  const onSelectChange = (newSelectedRowKeys) => {
-    setSelectedRowKeys(newSelectedRowKeys);
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to resize Memory');
+        }
+        return response.json();
+      })
+      .then(() => {
+        message.success(`Memory resized successfully for ${controllerName}.`);
+      })
+      .catch((error) => {
+        message.error(`Error: ${error.message}`);
+      });
   };
-
-//   const rowSelection = {
-//     selectedRowKeys,
-//     onChange: onSelectChange,
-//   };
 
   return (
     <TableContainer>
       <div className="Table-row-parent">
-        {/* <Button
-          type="danger"
-          onClick={handleDeleteSelected}
-          disabled={selectedRowKeys.length === 0}
-          style={{background:'#538ACA',color:"white", marginBottom:"1rem"}}
-        >
-          Delete Selected
-        </Button>
-        <span style={{ marginLeft: 8 }}>
-          {selectedRowKeys.length > 0 ? `Selected ${selectedRowKeys.length} items` : ''}
-        </span> */}
         <Table
-        //   rowSelection={rowSelection}
-          columns={columns(handleDelete)}
+          columns={columns(handleResizeCpu, handleResizeMemory)}
           dataSource={data}
           loading={loadingApi}
         />
