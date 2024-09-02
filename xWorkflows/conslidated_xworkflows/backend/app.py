@@ -121,8 +121,7 @@ def delete_unclaimed_volume_entry():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-
-
+###
 @app.route('/delete_abandoned_workloads', methods=['DELETE'])
 def delete_abandoned_workloads_entry():
     try:
@@ -152,15 +151,18 @@ def delete_abandoned_workloads_entry():
 def delete_pv():
     """
     Deletes a Persistent Volume (PV) by making a request to the Robusta API.
+    If successful, deletes corresponding entries from MongoDB.
     Expects a JSON payload with the 'pv_name'.
     """
+    mongo_message = "No MongoDB operation attempted"  # Default message if MongoDB is not accessed
+
     try:
         data = request.get_json()
 
         # Validate input data
         pv_name = data.get("pv_name")
         if not pv_name:
-            return jsonify({"error": "PV name is required"}), 400
+            return jsonify({"error": "PV name is required", "mongo_message": mongo_message}), 400
 
         # Prepare payload and headers for the Robusta API
         payload = {
@@ -172,12 +174,28 @@ def delete_pv():
         # Make the request to Robusta API and raise an exception for non-2xx status codes
         response = requests.post(ROBUSTA_URL, json=payload, headers=headers)
         response.raise_for_status()
-        
-        # Return success message with Robusta API response details
+
+        # If Robusta API response is successful, proceed to delete from MongoDB
+        if response.status_code == 200:
+            try:
+                collection = connect_to_mongodb('collection_volume')
+                result = collection.delete_many({"name": pv_name})
+
+                if result.deleted_count > 0:
+                    mongo_message = f"Successfully deleted {result.deleted_count} entries with volume '{pv_name}'"
+                else:
+                    mongo_message = "No entries found with the given volume"
+
+            except Exception as e:
+                mongo_message = f"Error while deleting from MongoDB: {str(e)}"
+                app.logger.error(f"MongoDB deletion error: {e}")
+
+        # Return success message with Robusta API response and MongoDB status
         return jsonify({
             "message": f"PV {pv_name} deletion initiated",
             "status_code": response.status_code,
-            "response": response.json()
+            "response": response.json(),
+            "mongo_message": mongo_message
         }), 202
     
     except requests.exceptions.HTTPError as http_err:
@@ -185,7 +203,8 @@ def delete_pv():
         app.logger.error(f"HTTP error occurred: {http_err}")
         return jsonify({
             "error": "Error from Robusta API",
-            "details": str(http_err)
+            "details": str(http_err),
+            "mongo_message": mongo_message
         }), response.status_code if response else 500
     
     except requests.exceptions.RequestException as req_err:
@@ -193,13 +212,18 @@ def delete_pv():
         app.logger.error(f"Request exception occurred: {req_err}")
         return jsonify({
             "error": "Error while connecting to Robusta API",
-            "details": str(req_err)
+            "details": str(req_err),
+            "mongo_message": mongo_message
         }), 500
 
     except Exception as e:
         # Catch any other unexpected exceptions
         app.logger.error(f"Unexpected error: {e}")
-        return jsonify({"error": "Internal server error", "details": str(e)}), 500
+        return jsonify({
+            "error": "Internal server error",
+            "details": str(e),
+            "mongo_message": mongo_message
+        }), 500
 
 
 ### 2. ABONDONED WORKFLOW ROBUSTA ACTION CALLING
@@ -240,19 +264,23 @@ def delete_deployment():
         return jsonify({"error": str(e)}), 500
 
 
+
 @app.route("/delete_pod", methods=["POST"])
 def delete_pod():
     """
     Deletes a pod by making a request to the Robusta API.
+    If successful, deletes the pod entry from MongoDB.
     Expects a JSON payload with the 'name' and 'namespace'.
     """
+    mongo_message = "No MongoDB operation attempted"  # Default message if MongoDB is not accessed
+
     try:
         data = request.get_json()
         pod_name = data.get("name")
         namespace = data.get("namespace")
 
         if not pod_name or not namespace:
-            return jsonify({"error": "Pod name and namespace are required"}), 400
+            return jsonify({"error": "Pod name and namespace are required", "mongo_message": mongo_message}), 400
 
         # Prepare payload for the Robusta API
         payload = {
@@ -265,14 +293,35 @@ def delete_pod():
         response = requests.post(ROBUSTA_URL, json=payload, headers=headers)
         response.raise_for_status()
 
+        # If Robusta API response is successful, proceed to delete from MongoDB
+        if response.status_code == 200:
+            try:
+                collection = connect_to_mongodb('collection_abandoned_workloads')
+                result = collection.delete_many({"name": pod_name, "namespace": namespace})
+
+                if result.deleted_count > 0:
+                    mongo_message = f"Successfully deleted {result.deleted_count} entries with pod '{pod_name}' in namespace '{namespace}'"
+                else:
+                    mongo_message = "No entries found with the given pod name and namespace"
+
+            except Exception as e:
+                mongo_message = f"Error while deleting from MongoDB: {str(e)}"
+                app.logger.error(f"MongoDB deletion error: {e}")
+
+        # Return success message with Robusta API response and MongoDB status
         return jsonify({
             "message": f"Pod {pod_name} deletion initiated",
             "status_code": response.status_code,
-            "response": response.json()
+            "response": response.json(),
+            "mongo_message": mongo_message
         }), 202
 
     except requests.exceptions.RequestException as e:
-        return jsonify({"error": str(e)}), 500
+        # Handle request exceptions (network errors, timeouts, etc.)
+        return jsonify({
+            "error": str(e),
+            "mongo_message": mongo_message
+        }), 500
 
 #curl -X POST http://localhost:5000/delete_deployment -H 'Content-Type: application/json' -d '{"name": "nginx-deployment", "namespace": "default"}'
 
@@ -283,7 +332,7 @@ def delete_pod():
 def update_pod_cpu():
     """
     Updates the CPU request for a specific pod using the Robusta API.
-    Expects a JSON payload with the 'name', 'namespace', and 'updateCpuRequest'.
+    If successful, modifies the recommendedRequest.cpu value to None in the MongoDB collection.
     """
     try:
         data = request.get_json()
@@ -294,29 +343,52 @@ def update_pod_cpu():
         if not pod_name or not namespace or not cpu_request:
             return jsonify({"error": "Pod name, namespace, and CPU request are required"}), 400
 
+        # Prepare the payload for the Robusta API
         payload = {
             "action_name": "podCpu",
             "action_params": {"name": pod_name, "namespace": namespace, "updateCpuRequest": cpu_request},
         }
         headers = {"Content-Type": "application/json"}
 
+        # Make the request to the Robusta API
         response = requests.post(ROBUSTA_URL, json=payload, headers=headers)
         response.raise_for_status()
+
+        # If Robusta API request is successful, update MongoDB
+        collection = connect_to_mongodb('collection_sizingv2')
+        query = {"controllerName": pod_name, "controllerKind": "pod", "namespace": namespace}
+        update = {"$set": {"recommendedRequest.cpu": None}}
+
+        result = collection.update_one(query, update)
+
+        mongo_message = ""
+        if result.matched_count > 0:
+            if result.modified_count > 0:
+                mongo_message = "Successfully modified 'recommendedRequest.cpu' in MongoDB."
+            else:
+                mongo_message = "Document found, but no modification was made (it might already be set to None)."
+        else:
+            mongo_message = "No document found with the given criteria in MongoDB."
 
         return jsonify({
             "message": f"CPU request for Pod {pod_name} updated",
             "status_code": response.status_code,
-            "response": response.json()
+            "response": response.json(),
+            "mongo_message": mongo_message
         }), 202
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
+
+    except Exception as e:
+        return jsonify({"error": "Internal server error", "details": str(e)}), 500
 
 
 @app.route("/update_deployment_cpu", methods=["POST"])
 def update_deployment_cpu():
     """
     Updates the CPU request for a specific deployment using the Robusta API.
+    If successful, modifies the recommendedRequest.cpu value to None in the MongoDB collection.
     Expects a JSON payload with the 'name', 'namespace', and 'updateCpuRequest'.
     """
     try:
@@ -328,29 +400,51 @@ def update_deployment_cpu():
         if not deployment_name or not namespace or not cpu_request:
             return jsonify({"error": "Deployment name, namespace, and CPU request are required"}), 400
 
+        # Prepare the payload for the Robusta API
         payload = {
             "action_name": "deploymentCpu",
             "action_params": {"name": deployment_name, "namespace": namespace, "updateCpuRequest": cpu_request},
         }
         headers = {"Content-Type": "application/json"}
 
+        # Make the request to the Robusta API
         response = requests.post(ROBUSTA_URL, json=payload, headers=headers)
         response.raise_for_status()
+
+        # If Robusta API request is successful, update MongoDB
+        collection = connect_to_mongodb('collection_sizingv2')
+        query = {"controllerName": deployment_name, "controllerKind": "deployment", "namespace": namespace}
+        update = {"$set": {"recommendedRequest.cpu": None}}
+
+        result = collection.update_one(query, update)
+
+        mongo_message = ""
+        if result.matched_count > 0:
+            if result.modified_count > 0:
+                mongo_message = "Successfully modified 'recommendedRequest.cpu' in MongoDB."
+            else:
+                mongo_message = "Document found, but no modification was made (it might already be set to None)."
+        else:
+            mongo_message = "No document found with the given criteria in MongoDB."
 
         return jsonify({
             "message": f"CPU request for Deployment {deployment_name} updated",
             "status_code": response.status_code,
-            "response": response.json()
+            "response": response.json(),
+            "mongo_message": mongo_message
         }), 202
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
 
+    except Exception as e:
+        return jsonify({"error": "Internal server error", "details": str(e)}), 500
 
 @app.route("/update_deployment_memory", methods=["POST"])
 def update_deployment_memory():
     """
     Updates the memory request for a specific deployment using the Robusta API.
+    If successful, modifies the recommendedRequest.memory value to None in the MongoDB collection.
     Expects a JSON payload with the 'name', 'namespace', and 'updateMemoryRequest'.
     """
     try:
@@ -362,28 +456,51 @@ def update_deployment_memory():
         if not deployment_name or not namespace or not memory_request:
             return jsonify({"error": "Deployment name, namespace, and memory request are required"}), 400
 
+        # Prepare the payload for the Robusta API
         payload = {
             "action_name": "deploymentMemory",
             "action_params": {"name": deployment_name, "namespace": namespace, "updateMemoryRequest": memory_request},
         }
         headers = {"Content-Type": "application/json"}
 
+        # Make the request to the Robusta API
         response = requests.post(ROBUSTA_URL, json=payload, headers=headers)
         response.raise_for_status()
+
+        # If Robusta API request is successful, update MongoDB
+        collection = connect_to_mongodb('collection_sizingv2')
+        query = {"controllerName": deployment_name, "controllerKind": "deployment", "namespace": namespace}
+        update = {"$set": {"recommendedRequest.memory": None}}
+
+        result = collection.update_one(query, update)
+
+        mongo_message = ""
+        if result.matched_count > 0:
+            if result.modified_count > 0:
+                mongo_message = "Successfully modified 'recommendedRequest.memory' in MongoDB."
+            else:
+                mongo_message = "Document found, but no modification was made (it might already be set to None)."
+        else:
+            mongo_message = "No document found with the given criteria in MongoDB."
 
         return jsonify({
             "message": f"Memory request for Deployment {deployment_name} updated",
             "status_code": response.status_code,
-            "response": response.json()
+            "response": response.json(),
+            "mongo_message": mongo_message
         }), 202
 
     except requests.exceptions.RequestException as e:
         return jsonify({"error": str(e)}), 500
 
+    except Exception as e:
+        return jsonify({"error": "Internal server error", "details": str(e)}), 500
+
 @app.route("/update_pod_memory", methods=["POST"])
 def update_pod_memory():
     """
     Updates the memory request for a specific pod using the Robusta API.
+    If successful, modifies the recommendedRequest.memory value to None in the MongoDB collection.
     Expects a JSON payload with the 'name', 'namespace', and 'updateMemoryRequest'.
     """
     try:
@@ -407,17 +524,37 @@ def update_pod_memory():
         response = requests.post(ROBUSTA_URL, json=payload, headers=headers)
         response.raise_for_status()
 
-        # Return success message along with the Robusta API response details
+        # If Robusta API request is successful, update MongoDB
+        collection = connect_to_mongodb('collection_sizingv2')
+        query = {"controllerName": pod_name, "controllerKind": "pod", "namespace": namespace}
+        update = {"$set": {"recommendedRequest.memory": None}}
+
+        result = collection.update_one(query, update)
+
+        mongo_message = ""
+        if result.matched_count > 0:
+            if result.modified_count > 0:
+                mongo_message = "Successfully modified 'recommendedRequest.memory' in MongoDB."
+            else:
+                mongo_message = "Document found, but no modification was made (it might already be set to None)."
+        else:
+            mongo_message = "No document found with the given criteria in MongoDB."
+
+        # Return success message along with the Robusta API response details and MongoDB status
         return jsonify({
             "message": f"Memory request for Pod {pod_name} updated",
             "status_code": response.status_code,
-            "response": response.json()
+            "response": response.json(),
+            "mongo_message": mongo_message
         }), 202
 
     except requests.exceptions.RequestException as e:
         # Handle request exceptions
         return jsonify({"error": str(e)}), 500
-    
+
+    except Exception as e:
+        # Handle any other exceptions
+        return jsonify({"error": "Internal server error", "details": str(e)}), 500
 
 # Update Pod CPU
 # curl -X POST http://localhost:5000/update_pod_cpu -H 'Content-Type: application/json' -d '{"name": "nginx", "namespace": "default", "updateCpuRequest": "300m"}'

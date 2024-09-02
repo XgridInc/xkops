@@ -1,0 +1,129 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-1
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/pv-1
+  storageClassName: default
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-2
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/pv-2
+  storageClassName: default
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-3
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/pv-3
+  storageClassName: default
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-4
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/pv-4
+  storageClassName: default
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-5
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/pv-5
+  storageClassName: default
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-6
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/pv-6
+  storageClassName: default
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-7
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/pv-7
+  storageClassName: default
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-8
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/pv-8
+  storageClassName: default
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-9
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/pv-9
+  storageClassName: default
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-10
+spec:
+  capacity:
+    storage: 100Mi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /mnt/data/pv-10
+  storageClassName: default

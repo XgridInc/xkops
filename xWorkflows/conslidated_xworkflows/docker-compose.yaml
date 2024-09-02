@@ -45,6 +45,18 @@ services:
       - "5000:5000"
     network_mode: "host"
 
+  jupyter:
+    image: jupyter/base-notebook:latest
+    container_name: jupyter_notebook
+    ports:
+      - "8888:8888"
+#    volumes:
+#      - ./notebooks:/home/jovyan/work
+    environment:
+      JUPYTER_TOKEN: "password"  # Set a token for security
+    command: start-notebook.sh --NotebookApp.token=password
+    network_mode: "host"
+
 
 volumes:
   mongodb-data:
