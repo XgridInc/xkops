@@ -29,13 +29,14 @@ const TableContainer = styled.div`
 `;
 
 const UnderUtilizedNodesTable= () => {
+  const BACKENDURL = process.env.REACT_APP_BACKEND_URL;
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [data, setData] = useState([]);
   const [loadingApi, setLoadingApi] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('http://172.19.49.240:5000/nodes')
+    fetch(`${BACKENDURL}/nodes`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);

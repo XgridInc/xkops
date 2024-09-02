@@ -69,9 +69,9 @@ const RightSizeContainerTable = () => {
   const [data, setData] = useState([]);
   const [loadingApi, setLoadingApi] = useState(true);
   const [error, setError] = useState(null);
-
+  const BACKENDURL = process.env.REACT_APP_BACKEND_URL;
   useEffect(() => {
-    fetch('http://172.19.49.240:5000/sizing_v2')
+    fetch(`${BACKENDURL}/sizing_v2`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
