@@ -9,9 +9,14 @@ const columns = (handleDelete) => [
     key: 'pod',
   },
   {
-    title: 'Pod Namespace',
+    title: 'Namespace',
     dataIndex: 'namespace',
     key: 'namespace',
+  },
+  {
+    title: 'Kind',
+    dataIndex: 'kind',
+    key: 'kind',
   },
   {
     title: 'Monthly Savings',
@@ -52,15 +57,41 @@ const AbandonendWorkflowTable = () => {
         return response.json();
       })
       .then((data) => {
-        const transformedData = data.map((item, index) => ({
-          key: index,
-          pod: item.pod,
-          namespace: item.namespace,
-          monthlySavings: item.monthlySavings,
-          owners: item.owners,
-        }));
-
-        setData(transformedData);
+        const uniqueDataMap = new Map();
+        const separateData = [];
+  
+        data.forEach((item) => {
+          const kind = item.owners?.[0]?.kind || '';
+          const name = item.owners?.[0]?.name || '';
+  
+          if (kind === '' || name === '') {
+            // If kind or name is empty, push it to separateData array
+            separateData.push({
+              key: `${item.pod}-${item.namespace}`,
+              pod: item.pod,
+              namespace: item.namespace,
+              kind: kind || 'pod', // Display 'N/A' if kind is empty
+              monthlySavings: item.monthlySavings,
+            });
+          } else {
+            const uniqueKey = `${kind}-${name}`;
+  
+            if (!uniqueDataMap.has(uniqueKey)) {
+              uniqueDataMap.set(uniqueKey, {
+                key: uniqueKey,
+                pod: name, // Set pod to the name from owners when duplicates are found
+                namespace: item.namespace,
+                kind: kind,
+                monthlySavings: item.monthlySavings,
+              });
+            }
+          }
+        });
+  
+        // Combine unique data with the separate data entries
+        const combinedData = [...Array.from(uniqueDataMap.values()), ...separateData];
+  
+        setData(combinedData);
         setLoadingApi(false);
       })
       .catch((error) => {
@@ -68,6 +99,8 @@ const AbandonendWorkflowTable = () => {
         setLoadingApi(false);
       });
   }, []);
+  
+  
 
   const handleDelete = (record) => {
     const { pod, namespace, owners } = record;

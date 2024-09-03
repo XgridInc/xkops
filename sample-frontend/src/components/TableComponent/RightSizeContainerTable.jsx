@@ -70,7 +70,12 @@ const RightSizeContainerTable = () => {
   const [loadingApi, setLoadingApi] = useState(true);
   const [error, setError] = useState(null);
   const BACKENDURL = process.env.REACT_APP_BACKEND_URL;
+
   useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = () => {
     fetch(`${BACKENDURL}/sizing_v2`)
       .then((response) => {
         if (!response.ok) {
@@ -98,7 +103,7 @@ const RightSizeContainerTable = () => {
         setError(error);
         setLoadingApi(false);
       });
-  }, []);
+  };
 
   const handleResizeCpu = (record) => {
     const { controllerKind, controllerName, namespace, recommendedRequest } = record;
@@ -128,6 +133,8 @@ const RightSizeContainerTable = () => {
       })
       .then(() => {
         message.success(`CPU resized successfully for ${controllerName}.`);
+        // Trigger a re-fetch of the data to update the table
+        fetchData();
       })
       .catch((error) => {
         message.error(`Error: ${error.message}`);
@@ -162,6 +169,8 @@ const RightSizeContainerTable = () => {
       })
       .then(() => {
         message.success(`Memory resized successfully for ${controllerName}.`);
+        // Trigger a re-fetch of the data to update the table
+        fetchData();
       })
       .catch((error) => {
         message.error(`Error: ${error.message}`);
@@ -182,3 +191,4 @@ const RightSizeContainerTable = () => {
 };
 
 export default RightSizeContainerTable;
+
