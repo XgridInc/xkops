@@ -74,7 +74,7 @@ const AbandonendWorkflowTable = () => {
 
     if (owners && owners.length > 0 && owners[0].kind && owners[0].name) {
       const deploymentName = owners[0].name;
-      fetch('http://172.19.49.240:5000/delete_deployment', {
+      fetch(`${BACKENDURL}/delete_deployment`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -95,7 +95,7 @@ const AbandonendWorkflowTable = () => {
           message.error(`Error: ${error.message}`);
         });
     } else {
-      fetch('http://172.19.49.240:5000/delete_pod', {
+      fetch(`${BACKENDURL}/delete_pod`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -104,8 +104,8 @@ const RightSizeContainerTable = () => {
     const { controllerKind, controllerName, namespace, recommendedRequest } = record;
     const apiUrl =
       controllerKind === 'deployment'
-        ? 'http://172.19.49.240:5000/update_deployment_cpu'
-        : 'http://172.19.49.240:5000/update_pod_cpu';
+        ? `${BACKENDURL}/update_deployment_cpu`
+        : `${BACKENDURL}/update_pod_cpu`;
 
     const body = {
       name: controllerName,
@@ -138,8 +138,8 @@ const RightSizeContainerTable = () => {
     const { controllerKind, controllerName, namespace, recommendedRequest } = record;
     const apiUrl =
       controllerKind === 'deployment'
-        ? 'http://172.19.49.240:5000/update_deployment_memory'
-        : 'http://172.19.49.240:5000/update_pod_memory';
+        ? `${BACKENDURL}/update_deployment_memory`
+        : `${BACKENDURL}/update_pod_memory`;
 
     const body = {
       name: controllerName,

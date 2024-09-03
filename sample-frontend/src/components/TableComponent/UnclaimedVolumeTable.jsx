@@ -70,7 +70,7 @@ const UnclaimedVolumeTable = () => {
 
   const handleDelete = (record) => {
       const pvName = record.name;
-      fetch('http://172.19.49.240:5000/delete_pv', {
+      fetch(`${BACKENDURL}/delete_pv`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
