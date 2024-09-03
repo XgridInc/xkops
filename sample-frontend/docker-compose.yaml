@@ -1,0 +1,11 @@
+version: '3'
+services:
+  react_frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REACT_APP_BACKEND_URL: http://172.19.49.240:5000
+    container_name: react_frontend
+    ports:
+      - "3000:3000"
