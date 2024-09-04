@@ -233,15 +233,18 @@ def delete_pv():
 def delete_deployment():
     """
     Deletes a deployment by making a request to the Robusta API.
+    If successful, deletes the deployment entry from MongoDB.
     Expects a JSON payload with the 'name' and 'namespace'.
     """
+    mongo_message = "No MongoDB operation attempted"  # Default message if MongoDB is not accessed
+
     try:
         data = request.get_json()
         deployment_name = data.get("name")
         namespace = data.get("namespace")
 
         if not deployment_name or not namespace:
-            return jsonify({"error": "Deployment name and namespace are required"}), 400
+            return jsonify({"error": "Deployment name and namespace are required", "mongo_message": mongo_message}), 400
 
         # Prepare payload for the Robusta API
         payload = {
@@ -250,20 +253,54 @@ def delete_deployment():
         }
         headers = {"Content-Type": "application/json"}
 
+        app.logger.info(f"Sending delete request to Robusta for deployment '{deployment_name}' in namespace '{namespace}'")
+
         # Make the request to Robusta API
         response = requests.post(ROBUSTA_URL, json=payload, headers=headers)
         response.raise_for_status()
 
+        # If Robusta API response is successful, proceed to delete from MongoDB
+        if response.status_code == 200:
+            response_data = response.json()
+
+            # Optional: Validate response data before proceeding
+            if response_data.get("success"):
+                try:
+                    collection = connect_to_mongodb('collection_abandoned_workloads')
+                    result = collection.delete_many({
+                        "namespace": namespace,
+                        "owners": {
+                            "$elemMatch": {"kind": "deployment", "name": deployment_name}
+                        }
+                    })
+
+                    if result.deleted_count > 0:
+                        mongo_message = f"Successfully deleted {result.deleted_count} entries with deployment '{deployment_name}' in namespace '{namespace}'"
+                    else:
+                        mongo_message = "No entries found with the given deployment name and namespace"
+
+                except Exception as e:
+                    mongo_message = f"Error while deleting from MongoDB: {str(e)}"
+                    app.logger.error(f"MongoDB deletion error: {e}")
+
+            else:
+                mongo_message = "Robusta API did not confirm success"
+
+        # Return success message with Robusta API response and MongoDB status
         return jsonify({
             "message": f"Deployment {deployment_name} deletion initiated",
             "status_code": response.status_code,
-            "response": response.json()
+            "response": response.json(),
+            "mongo_message": mongo_message
         }), 202
 
     except requests.exceptions.RequestException as e:
-        return jsonify({"error": str(e)}), 500
-
-
+        # Handle request exceptions (network errors, timeouts, etc.)
+        app.logger.error(f"Robusta API request failed: {str(e)}")
+        return jsonify({
+            "error": str(e),
+            "mongo_message": mongo_message
+        }), 500
 
 @app.route("/delete_pod", methods=["POST"])
 def delete_pod():
@@ -297,7 +334,7 @@ def delete_pod():
         if response.status_code == 200:
             try:
                 collection = connect_to_mongodb('collection_abandoned_workloads')
-                result = collection.delete_many({"name": pod_name, "namespace": namespace})
+                result = collection.delete_many({"pod": pod_name, "namespace": namespace})
 
                 if result.deleted_count > 0:
                     mongo_message = f"Successfully deleted {result.deleted_count} entries with pod '{pod_name}' in namespace '{namespace}'"
