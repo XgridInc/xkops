@@ -1,32 +1,9 @@
-import React,{useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Card, Avatar, Row, Col } from "antd";
 import { useNavigate } from "react-router-dom";
 
 const { Meta } = Card;
-
-const data = [
-  {
-    title: "Manage unclaimed volumes",
-    description: "Delete volumes that are not used by any pod. Detected volume can be deleted",
-    cost: "$23",
-  },
-  {
-    title: "Manage underutilized nodes",
-    description: "Turn down or resize nodes with low memory and CPU utilization. A user will be recommended for the nodes cpu and memory utilization",
-    cost: "$40",
-  },
-  {
-    title: "Right size container requests",
-    description: "Detect pods that don't send or receive a meaningful rate of network traffic.",
-    cost: "$2",
-  },
-  {
-    title: "Manage abandoned workloads",
-    description: "Over-provisioned containers provide an opportunity to lower requests and save money. Under-provisioned containers may cause CPU throttling or memory-based evictions.",
-    cost: "$43",
-  },
-];
 
 const CardContainer = styled.div`
   .Card-row-parent {
@@ -64,20 +41,49 @@ const CardContainer = styled.div`
 `;
 
 const WorkflowListComponent = () => {
+  const BACKENDURL = process.env.REACT_APP_BACKEND_URL;
   const navigate = useNavigate(); 
-  const [containerRequest, setcontainerRequest] = useState(null);
+  const [cardData, setCardData] = useState([]);
   const [error, setError] = useState(null);
 
   const fetchData = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:9090/model/savings/requestSizingV2?algorithmCPU=max&algorithmRAM=max&filter=&targetCPUUtilization=0.65&targetRAMUtilization=0.65&window=48h&sortByOrder=descending&offset=0&limit=25');
+      const response = await fetch(`${BACKENDURL}/get_savings`);
       if (!response.ok) {
         throw new Error(`Error: ${response.statusText}`);
       }
       const result = await response.json();
-      console.log(result.TotalMonthlySavings)
-      const formattedSavings = `$${result.TotalMonthlySavings.toFixed(2)}`
-      setcontainerRequest(formattedSavings);
+      
+      // Extract unclaimedVolumes, requestSizing, abandonedWorkload, and nodeTurndown from the response
+      const { unclaimedVolumes, requestSizing, abandonedWorkload, nodeTurndown } = result;
+  
+      // Prepare the data for the cards
+      const updatedData = [
+        {
+          title: "Manage unclaimed volumes",
+          description: "Delete volumes that are not used by any pod. Detected volume can be deleted",
+          cost: `$${unclaimedVolumes.value.toFixed(2)}`,
+        },
+        {
+          title: "Manage underutilized nodes",
+          description: "Turn down or resize nodes with low memory and CPU utilization. A user will be recommended for the nodes cpu and memory utilization",
+          cost: `$${nodeTurndown.value.toFixed(2)}`,
+        },
+        {
+          title: "Manage abandoned workloads",
+          description: "Over-provisioned containers provide an opportunity to lower requests and save money. Under-provisioned containers may cause CPU throttling or memory-based evictions.",
+          cost: `$${abandonedWorkload.value.toFixed(2)}`,
+        },
+        {
+          title: "Right size container requests",
+          description: "Detect pods that don't send or receive a meaningful rate of network traffic.",
+          cost: `$${requestSizing.value.toFixed(2)}`,
+        },
+      ];
+      
+      // Set the updated data in state
+      setCardData(updatedData);
+  
     } catch (error) {
       setError(error.message);
     }
@@ -92,6 +98,7 @@ const WorkflowListComponent = () => {
 
     return () => clearInterval(intervalId); // Cleanup interval on component unmount
   }, []);
+
   const handleCardClick = (title) => {
     if (title === "Manage unclaimed volumes") {
       navigate('/unclaimedpvs');
@@ -110,7 +117,7 @@ const WorkflowListComponent = () => {
     <CardContainer>
       <div className='Card-row-parent'>
         <Row justify="start" gutter={[16, 16]}>
-          {data.map((Element, index) => (
+          {cardData.map((Element, index) => (
             <Col span={8} key={index}>
               <Card 
                 style={{ width: 500, cursor: 'pointer' }}

@@ -36,26 +36,34 @@ const columns = (handleResizeCpu, handleResizeMemory) => [
   {
     title: 'Resize CPU',
     key: 'resizeCpu',
-    render: (text, record) => (
-      <Button
-        style={{ background: '#538ACA', color: 'white' }}
-        onClick={() => handleResizeCpu(record)}
-      >
-        Resize CPU
-      </Button>
-    ),
+    render: (text, record) => {
+      const isDisabled = !record.cpu || record.cpu.trim() === '' || record.cpu === 'nil';
+      return (
+        <Button
+          style={isDisabled ? {} : { background: '#538ACA', color: 'white' }}
+          onClick={() => handleResizeCpu(record)}
+          disabled={isDisabled}
+        >
+          Resize CPU
+        </Button>
+      );
+    },
   },
   {
     title: 'Resize Memory',
     key: 'resizeMemory',
-    render: (text, record) => (
-      <Button
-        style={{ background: '#538ACA', color: 'white' }}
-        onClick={() => handleResizeMemory(record)}
-      >
-        Resize Memory
-      </Button>
-    ),
+    render: (text, record) => {
+      const isDisabled = !record.memory || record.memory.trim() === '' || record.memory === 'nil';
+      return (
+        <Button
+          style={isDisabled ? {} : { background: '#538ACA', color: 'white' }}
+          onClick={() => handleResizeMemory(record)}
+          disabled={isDisabled}
+        >
+          Resize Memory
+        </Button>
+      );
+    },
   },
 ];
 
@@ -91,11 +99,11 @@ const RightSizeContainerTable = () => {
           controllerName: item.controllerName,
           namespace: item.namespace,
           recommendedRequest: item.recommendedRequest,
-          cpu: item.recommendedRequest.cpu,
-          memory: item.recommendedRequest.memory,
-          monthlySavings: item.monthlySavings.total,
+          cpu: item.recommendedRequest.cpu && item.recommendedRequest.cpu.trim() !== '' ? item.recommendedRequest.cpu : 'nil',
+          memory: item.recommendedRequest.memory && item.recommendedRequest.memory.trim() !== '' ? item.recommendedRequest.memory : 'nil',
+          monthlySavings: item.monthlySavings.total.toFixed(3),  // Format to 3 decimal places
         }));
-
+  
         setData(transformedData);
         setLoadingApi(false);
       })
@@ -104,6 +112,7 @@ const RightSizeContainerTable = () => {
         setLoadingApi(false);
       });
   };
+  
 
   const handleResizeCpu = (record) => {
     const { controllerKind, controllerName, namespace, recommendedRequest } = record;

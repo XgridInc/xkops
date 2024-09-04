@@ -4,7 +4,7 @@ import { Table, Button, message } from 'antd';
 
 const columns = (handleDelete) => [
   {
-    title: 'Pod Name',
+    title: 'Name',
     dataIndex: 'pod',
     key: 'pod',
   },
