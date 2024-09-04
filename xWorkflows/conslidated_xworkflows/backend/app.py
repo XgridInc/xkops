@@ -635,6 +635,25 @@ def get_savings():
             'message': response.text
         }), response.status_code
     
+@app.route('/drain_db', methods=['POST'])
+def drain_db():
+    try:
+        # MongoDB collections
+        collections = [
+            'collection_volume',
+            'collection_nodes',
+            'collection_sizingv2',
+            'collection_abandoned_workloads'
+            ]
+        for collection_name in collections:
+            collection = connect_to_mongodb(collection_name)
+            if collection is not None:
+                collection.delete_many({})  # Empty the collection
+        return jsonify({"message": "All collections have been drained successfully"}), 200
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
