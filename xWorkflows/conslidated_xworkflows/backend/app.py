@@ -568,5 +568,36 @@ def update_pod_memory():
 # Update Pod Memory
 # curl -X POST http://localhost:5000/update_pod_memory -H 'Content-Type: application/json' -d '{"name": "nginx", "namespace": "default", "updateMemoryRequest": "300M"}'
 
+
+@app.route('/get_savings', methods=['GET'])
+def get_savings():
+    # API endpoint for model savings API
+    url = 'http://localhost:9090/model/savings'
+    
+    # Query parameters to pass
+    params = {
+        'req': '7320'  # You can modify this based on what you need
+    }
+
+    # Forward the request to the specified URL
+    response = requests.get(url, params=params)
+    
+    # Check if the response was successful
+    if response.status_code == 200:
+        # Extract the 'development' part of the JSON response
+        data = response.json()
+        development_data = data.get('development', {})
+        
+        # Return only the 'development' data
+        return jsonify(development_data)
+    else:
+        # If there was an error, return the error status and message
+        return jsonify({
+            'error': 'Failed to retrieve data',
+            'status_code': response.status_code,
+            'message': response.text
+        }), response.status_code
+    
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
