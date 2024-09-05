@@ -103,10 +103,10 @@ const AbandonendWorkflowTable = () => {
   
 
   const handleDelete = (record) => {
-    const { pod, namespace, owners } = record;
-
-    if (owners && owners.length > 0 && owners[0].kind && owners[0].name) {
-      const deploymentName = owners[0].name;
+    const { pod, namespace, kind } = record;
+    console.log("owners is ", record)
+    if (kind == "deployment") {
+      const deploymentName = pod;
       fetch(`${BACKENDURL}/delete_deployment`, {
         method: 'POST',
         headers: {
