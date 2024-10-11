@@ -1,0 +1,77 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xkops-backend
+  labels:
+    app: xkops-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xkops-backend
+  template:
+    metadata:
+      labels:
+        app: xkops-backend
+    spec:
+      containers:
+      - name: query-container
+        image: hamzaarshad10/querybackend:1.6 #1.5.2  # Replace with your actual image
+        ports:
+        - containerPort: 5000  # Replace with your actual port if needed
+        env:
+        - name: MONGODB_HOSTNAME
+          value: "mongodb-0.mongodb-headless.default.svc.cluster.local"  # Replace with your actual MongoDB service name or endpoint
+        - name: MONGODB_PORT
+          value: "27017"  # Default MongoDB port
+        - name: MONGODB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: mongodb-root-username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: mongodb-root-password
+        - name: MONGODB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb-config
+              key: mongoInitDbDatabase #values.yaml
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: xkops-backend-svc
+  labels:
+    app: xkops-backend-svc
+spec:
+  selector:
+    app: xkops-backend  # This must match the label in your deployment
+  ports:
+    - port: 5000         # The port that the service will expose
+      targetPort: 5000    # The port that the container listens on
+  type: ClusterIP         # Change to LoadBalancer if you need external access
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: deployment-reader
+rules:
+- apiGroups: ["apps"]
+  resources: ["deployments"]
+  verbs: ["get", "list", "watch"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: deployment-reader-binding
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: default
+roleRef:
+  kind: ClusterRole
+  name: deployment-reader
+  apiGroup: rbac.authorization.k8s.io

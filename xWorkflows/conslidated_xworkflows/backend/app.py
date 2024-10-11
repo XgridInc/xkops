@@ -3,11 +3,12 @@ from flask_cors import CORS
 from pymongo import MongoClient
 import os
 import requests
+from kubernetes import client, config
 
 app = Flask(__name__)
 CORS(app)  # This will allow all domains
 
-ROBUSTA_URL = "http://localhost:8080/api/trigger"
+ROBUSTA_URL = "http://robusta-runner.default.svc.cluster.local/api/trigger" #"http://localhost:8080/api/trigger"
 # Fetch Robusta URL from environment variables
 #ROBUSTA_URL = os.getenv("ROBUSTA_URL")
 
@@ -15,6 +16,8 @@ ROBUSTA_URL = "http://localhost:8080/api/trigger"
 if not ROBUSTA_URL:
     raise ValueError("ROBUSTA_URL environment variable is not set")
 
+config.load_incluster_config()
+#config.load_kube_config()
 def connect_to_mongodb(collection_name):
     """
     Connects to a MongoDB database and returns a collection.
@@ -360,6 +363,61 @@ def delete_pod():
             "mongo_message": mongo_message
         }), 500
 
+@app.route('/replicas/<namespace>/<deployment_name>', methods=['GET'])
+def get_replicas(namespace, deployment_name):
+    try:
+        # Create an instance of the AppsV1Api
+        v1_apps = client.AppsV1Api()
+        
+        # Get the deployment object
+        deployment = v1_apps.read_namespaced_deployment(deployment_name, namespace)
+        
+        # Extract the number of replicas
+        replicas = deployment.status.replicas or 0  # default to 0 if None
+        available_replicas = deployment.status.available_replicas or 0  # default to 0 if None
+        
+        return jsonify({
+            'deployment_name': deployment_name,
+            'namespace': namespace,
+            'replicas': replicas,
+            'available_replicas': available_replicas
+        })
+    except client.exceptions.ApiException as e:
+        # Extracting more detailed error information
+        error_body = e.body if e.body else str(e)
+        return jsonify({
+            'error': 'Kubernetes API Exception',
+            'reason': e.reason,
+            'status': e.status,
+            'message': error_body
+        }), e.status or 500
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+        
+# @app.route('/deployments/replicasresize/<deploymentName>', methods=['POST'])
+# def resize_deployments(deploymentName):
+#     print("The name of the Deployment is:", deploymentName)
+#     data = request.get_json()
+#     deploymentNamespace = data.get("namespace")
+#     updatedReplicas = data.get("replicas")
+#     try:
+#         payload = {
+#             "action_name": "resizeDeploymentReplicaCount",
+#             "action_params": {"name": deploymentName, "namespace": deploymentNamespace, "replicas": updatedReplicas},
+#         }
+#         headers = {"Content-Type": "application/json"}
+#         response = requests.post(ROBUSTA_URL, json=payload, headers=headers)
+#         response.raise_for_status()  # Raise exception for non-2xx status codes
+
+#         # Update PV status in MongoDB (optional for informational purposes)
+#         with MongoClient(f"mongodb://{MONGO_USERNAME}:{MONGO_PASSWORD}@{MONGO_HOST}:{MONGO_PORT}") as client:
+#             db = client[MONGO_DB_NAME]
+#             col = db[MONGO_COLLECTION_NAME]
+#             col.update_one({"name": deploymentName}, {"$set": {"status": "Resized"}})  # Update only if necessary
+
+#         return jsonify({"message": "Deployment resizing initiated"})
+#     except requests.exceptions.RequestException as e:
+#         return jsonify({"error": f"Error from Robusta API: {e}"}), e.response.status_code
 #curl -X POST http://localhost:5000/delete_deployment -H 'Content-Type: application/json' -d '{"name": "nginx-deployment", "namespace": "default"}'
 
 #curl -X POST http://localhost:5000/delete_pod -H 'Content-Type: application/json' -d '{"name": "temp-pod", "namespace": "default"}'
@@ -609,7 +667,7 @@ def update_pod_memory():
 @app.route('/get_savings', methods=['GET'])
 def get_savings():
     # API endpoint for model savings API
-    url = 'http://localhost:9090/model/savings'
+    url = 'http://kubecost-cost-analyzer.kubecost.svc.cluster.local:9090/model/savings'
     
     # Query parameters to pass
     params = {

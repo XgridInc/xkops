@@ -1,38 +1,32 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import styled from 'styled-components';
-import Navbar from './Navbar';
-import Home from './Home';
-import About from './About';
-import Contact from './Contact';
-import UnclaimedVolumes from './UnclaimedVolumes'; // Import the new page
-
-// Styled components
-const Page = styled.div`
-  padding: 20px;
-`;
+import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import NavbarComponent from './components/NavbarComponent/NavbarComponent';
+import WorkflowsPage from './pages/WorkflowsPage';
+import ResourcePage from './pages/ResourcePage';
+import UnclaimedPvPage from './pages/WorkloadPages/UnclaimedPvPage';
+import AbandonendWorkloadPage from './pages/WorkloadPages/AbandonendWorkloadPage';
+import RightSizeContainerPage from './pages/WorkloadPages/RightSizeContainerPage';
+import UnderutilizedNodesPage from './pages/WorkloadPages/UnderutilizedNodesPage';
 
 function App() {
-  const links = [
-    { name: 'Home', path: '/' },
-    { name: 'About', path: '/about' },
-    { name: 'Contact', path: '/contact' },
-    { name: 'Unclaimed Volumes', path: '/unclaimed-volumes' }, // Add the new page link
-  ];
-
   return (
-    <Router>
-      <Navbar links={links} />
-      <Page>
+    <div className="App">
+      <NavbarComponent />
+      <main>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/unclaimed-volumes" element={<UnclaimedVolumes />} /> {/* Add the new route */}
+          <Route path="/" element={<HomePage />} />
+          <Route path="/workflows" element={<WorkflowsPage />} />
+          <Route path="/resources" element={<ResourcePage />} />
+          <Route path="/unclaimedpvs" element={<UnclaimedPvPage />} />
+          <Route path="/underutilizednodes" element={<UnderutilizedNodesPage />} />
+          <Route path="/rightsizecontainer" element={<RightSizeContainerPage />} />
+          <Route path="/abandonendworkload" element={<AbandonendWorkloadPage />} />
         </Routes>
-      </Page>
-    </Router>
+      </main>
+    </div>
   );
 }
 
 export default App;
+

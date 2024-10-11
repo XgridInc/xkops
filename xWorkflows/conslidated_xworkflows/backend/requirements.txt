@@ -2,3 +2,4 @@ Flask
 pymongo
 requests
 flask-cors
+kubernetes

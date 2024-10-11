@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: query-pod
+  labels:
+    app: query-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: query-pod
+  template:
+    metadata:
+      labels:
+        app: query-pod
+    spec:
+      containers:
+      - name: query-container
+        image: hamzaarshad10/querypodpy:1.4  # Replace with your actual image
+        ports:
+        - containerPort: 8080  # Replace with your actual port if needed
+        env:
+        - name: MONGODB_HOSTNAME
+          value: "mongodb-0.mongodb-headless.default.svc.cluster.local"  # Replace with your actual MongoDB service name or endpoint
+        - name: MONGODB_PORT
+          value: "27017"  # Default MongoDB port
+        - name: MONGODB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: mongodb-root-username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: mongodb-root-password
+        - name: MONGODB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb-config
+              key: mongoInitDbDatabase #values.yaml
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config/
+          #subPath: values.yaml
+      volumes:
+      - name: config-volume
+        configMap:
+          name: query-config
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: query-config
+data:
+  values.yaml: |
+    workflows:
+    - dataSource: kubecost
+      name: nodeScrapeWorkflow
+      robustaPlaybook: nil
+      scrapeData: nodes
+      description: "Sample description"
+
+    - dataSource: kubecost
+      name: unclaimedVolumeScrapeWorkflow
+      robustaPlaybook: xyz
+      scrapeData: unclaimedvolume
+      description: "Sample description"
+
+    - dataSource: kubecost
+      name: sizingCPUandRAMWorkflow
+      robustaPlaybook: resourceOptimizationPlaybook
+      scrapeData: containerResourceSizing
+      description: "Analyzes and recommends optimal CPU and RAM sizing for containers"
+
+    - dataSource: kubecost
+      name: abandonedWorkloadsScrapeWorkflow
+      robustaPlaybook: abandonedWorkloadPlaybook
+      scrapeData: abandonedWorkloads
+      description: "Fetches and processes data related to abandoned workloads"
+
+

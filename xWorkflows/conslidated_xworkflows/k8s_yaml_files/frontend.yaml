@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-react-app
+  labels:
+    app: my-react-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: my-react-app
+  template:
+    metadata:
+      labels:
+        app: my-react-app
+    spec:
+      containers:
+      - name: my-react-app
+        image: hamzaarshad10/queryfrontend:1.1.5.14  # Replace with your actual image name
+        ports:
+        - containerPort: 3000
+        env:
+        - name: REACT_APP_BACKEND_URL
+          value: "http://xkops-backend-svc:5000"
+          #value: "http://xkops-backend-svc.default.svc.cluster.local:5000"  # Replace with your actual backend URL
