@@ -1,0 +1,62 @@
+version: '3.3'
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+      MONGO_INITDB_DATABASE: k8sData
+    volumes:
+      - mongodb-data:/data/db
+    network_mode: "host"
+
+  query_pod:
+    build:
+      context: ./query_pod_codebase
+    container_name: query_pod
+    depends_on:
+      - mongodb
+    environment:
+      MONGODB_HOSTNAME: localhost
+      MONGODB_USERNAME: admin
+      MONGODB_PASSWORD: admin123
+      MONGODB_DATABASE: k8sData
+    volumes:
+      - ./query_pod_codebase/values.yaml:/app/config/values.yaml
+    network_mode: "host"
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    depends_on:
+      - query_pod
+    environment:
+      MONGODB_HOSTNAME: localhost
+      MONGODB_USERNAME: admin
+      MONGODB_PASSWORD: admin123
+      MONGODB_DATABASE: k8sData
+      ROBUSTA_URL: "http://localhost:5000/api/trigger"
+    ports:
+      - "5000:5000"
+    network_mode: "host"
+
+  jupyter:
+    image: jupyter/base-notebook:latest
+    container_name: jupyter_notebook
+    ports:
+      - "8888:8888"
+#    volumes:
+#      - ./notebooks:/home/jovyan/work
+    environment:
+      JUPYTER_TOKEN: "password"  # Set a token for security
+    command: start-notebook.sh --NotebookApp.token=password
+    network_mode: "host"
+
+
+volumes:
+  mongodb-data:
