@@ -9,6 +9,6 @@ entries:
     name: xkops
     type: application
     urls:
-    - https://xgridinc.github.io/xkops/xkops-0.1.0.tgz
+    - https://xgridinc.github.io/xkops/charts/stable/xkops-0.1.0.tgz
     version: 0.1.0
 generated: "2024-10-28T03:34:15.349159015+05:00"
