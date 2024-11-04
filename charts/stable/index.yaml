@@ -3,12 +3,12 @@ entries:
   xkops:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-10-28T03:34:15.349468839+05:00"
+    created: "2024-11-04T14:14:24.223233269+05:00"
     description: A Helm chart for Kubernetes
-    digest: fa0f0c5b046f5d55df01998de98ab327457916ece14e3c48b52d74c37fe7e8b5
+    digest: e112fb7bfc9599eccc9d76d840dc73f9f585faa436dc758c781a8f88abd7fe47
     name: xkops
     type: application
     urls:
     - https://xgridinc.github.io/xkops/charts/stable/xkops-0.1.0.tgz
     version: 0.1.0
-generated: "2024-10-28T03:34:15.349159015+05:00"
+generated: "2024-11-04T14:14:24.222908302+05:00"
