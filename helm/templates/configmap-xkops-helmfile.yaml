@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: helmfile-values-config
+data:
+  slack_api_key: {{ .Values.robusta.slack_api_key | quote }}  # Pulls the Slack API key
+  slack_channel_name: {{ .Values.robusta.slack_channel_name | quote }}  # Pulls the Slack channel name
+  cluster_name: {{ .Values.robusta.cluster_name | quote }}  # Pulls the cluster name

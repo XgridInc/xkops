@@ -1,0 +1,19 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: helmfile-job
+spec:
+  template:
+    spec:
+      containers:
+        - name: helmfile-container
+          image: murtazashah46/helmfile:latest  
+          command: ["bash", "scripts/install-helmfile.sh"]
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config  # Mount the ConfigMap at /config
+      restartPolicy: Never
+      volumes:
+        - name: config-volume
+          configMap:
+            name: helmfile-values-config  # Reference the ConfigMap

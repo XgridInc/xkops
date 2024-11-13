@@ -1,0 +1,12 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: helmfile-installation-manager-binding
+subjects:
+  - kind: ServiceAccount
+    name: default  # Replace with your specific service account name
+    namespace: default  # Adjust as needed
+roleRef:
+  kind: ClusterRole
+  name: helmfile-installation-manager
+  apiGroup: rbac.authorization.k8s.io
