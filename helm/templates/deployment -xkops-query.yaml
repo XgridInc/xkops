@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: xkops-query-pod
+  labels:
+    app: xkops-query-pod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: xkops-query-pod
+  template:
+    metadata:
+      labels:
+        app: xkops-query-pod
+    spec:
+      containers:
+      - name: xkops-query-container
+        image: hamzaarshad10/querypodpy:1.7  # Replace with your actual image
+        ports:
+        - containerPort: 8080  # Replace with your actual port if needed
+        env:
+        - name: MONGODB_HOSTNAME
+          value: "mongodb-0.mongodb-headless.default.svc.cluster.local"  # Replace with your actual MongoDB service name or endpoint
+        - name: MONGODB_PORT
+          value: "27017"  # Default MongoDB port
+        - name: MONGODB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: mongodb-root-username
+        - name: MONGODB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-secrets
+              key: mongodb-root-password
+        - name: MONGODB_DATABASE
+          valueFrom:
+            configMapKeyRef:
+              name: mongodb-config
+              key: mongoInitDbDatabase #values.yaml
+        volumeMounts:
+        - name: config-volume
+          mountPath: /app/config/
+          #subPath: values.yaml
+      volumes:
+      - name: config-volume
+        configMap:
+          name: query-config

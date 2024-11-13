@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: xkops-backend-svc
+  labels:
+    app: xkops-backend-svc
+spec:
+  selector:
+    app: xkops-backend  # This must match the label in your deployment
+  ports:
+    - port: 5000         # The port that the service will expose
+      targetPort: 5000    # The port that the container listens on
+  type: ClusterIP         # Change to LoadBalancer if you need external access

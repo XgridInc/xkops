@@ -1,4 +1,6 @@
-# pre-commit configuration file
+# This file configures Git pre-commit hooks to automatically run code quality checks
+# and format code before commits, ensuring consistent standards across the project.
+# Define each hook, its source repo, and version below.
 
 # Repositories containing hooks
 repos:

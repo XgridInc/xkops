@@ -41,6 +41,9 @@ Before getting started and setup with contributing, you'll want to have a look a
 
 If you have gotten that far, then you can go ahead and work on the issue. Below are more detailed instructions based on the basic workflow above.
 
+### Commit Messages
+Commit messages should provide enough information about what has changed and why. 
+
 ### Pull Request Process
 
 Please adhere to the following guideline for submitting a pull request:

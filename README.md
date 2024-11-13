@@ -1,31 +1,36 @@
 # XkOps
 
-![XkOps Logo](./images/xkops_logo.png "XkOps Logo")
-
+![XkOps - Kubernetes Observability Tool](./images/xkops_logo.png "XkOps Logo")
 [![Lint Code Base](https://github.com/XgridInc/xkops/actions/workflows/linter.yml/badge.svg)](https://github.com/XgridInc/xkops/actions/workflows/linter.yml)
 [![Package and Publish Docker Image](https://github.com/XgridInc/xkops/actions/workflows/build_publish_scan.yml/badge.svg)](https://github.com/XgridInc/xkops/actions/workflows/build_publish_scan.yml)
 [![Shellcheck](https://github.com/XgridInc/xkops/actions/workflows/shellcheck.yml/badge.svg)](https://github.com/XgridInc/xkops/actions/workflows/shellcheck.yml)
 
-## 💻 Overview
+## 📘 Overview
 
-Xkops is an integrated solution that combines widely-adopted open-source utilities to simplify Kubernetes management, emphasizing the enhancement of observability, reliability, security, and cost control in cluster operations which help users optimize the deployment and management of Kubernetes clusters. The platform provides a comprehensive evaluation of costs, observability, and security.
-XkOps provides an effortless way for users to manage their cluster and extract meaningful insights related to observerability and cost. The platform includes the installers of top-tier open-source tools, namely Kubecost, Robusta, and Pixie, which are bundled together into a single Docker image. This Docker image is then deployed as a Pod, simplifying the installation process of these tools.
-This all-in-one solution consolidates the insights obtained from these tools, making it easier for users to make informed decisions and have centralized monitoring of their Kubernetes cluster.
+**XkOps** is a unified observability and management solution designed to simplify Kubernetes cluster operations, with a focus on **observability**, **reliability**, **security**, and **cost control**. By integrating powerful open-source tools like **Kubecost**, **Robusta**, and **Pixie**, XkOps provides a seamless, all-in-one experience for managing and optimizing Kubernetes environments.
 
-Check the below video for a quick demo of XkOps.
+This platform offers users an end-to-end setup for monitoring, cost analysis, and security insights directly in their Kubernetes clusters, allowing for smarter resource allocation and operational efficiency. XkOps consolidates critical information from these tools to provide a central, intuitive interface for making informed, real-time decisions.
 
-[![XkOps Demo](./images/Demo-video.jpg)](https://youtu.be/l-psN4IDDBA)
+## 📋 Key Features
+
+### Effortless Installation 
+Easily deploy XkOps by visiting Artifact Hub and following the Helm chart installation instructions. It’s designed for quick setup and easy deployment, reducing the complexity of integrating multiple tools.
+
+### Centralized Observability
+Gain deep visibility into your Kubernetes cluster with integrated observability tools like Pixie, providing real-time monitoring and insights to track cluster health.
+
+### Cost Management
+Kubecost integration delivers detailed cost analysis and recommendations, helping teams optimize their Kubernetes workloads and reduce unnecessary spend.
+
+### Actionable Insights
+The XkOps frontend allows users to view actionable insights and directly interact with alerts and recommendations, streamlining decision-making and operational tasks.
+
+### Integrated Workflows
+Benefit from pre-configured workflows that combine Kubecost, Robusta, and Pixie for a seamless Kubernetes management experience that covers cost, observability, and security.
 
 ## 🏗️ XkOps Architecture Diagram
 
 ![XkOps Architecture Diagram](./images/arch%20diagram.png "Architecture Digram")
-
-## 💡 Why XkOps?
-
-XkOps is a unified platform that provides true observability across Kubernetes clusters while being cost-optimized, fault-tolerant, and secure. With an abundance of tools available, implementing and managing multiple data platforms can become overwhelming and lead to additional costs.
-
-XkOps simplifies this by offering a single platform that provides a single source of truth, making it easier for users to gain insights and manage their cluster. Achieving optimal cost efficiency, state-of-the-art security, and dependable application performance through observability is a necessity for Kubernetes clusters.
-XkOps addresses this by encompassing the three core concepts of cost optimization, reliability, and security in a single platform.
 
 ## 🛠️ Use cases
 
@@ -41,50 +46,26 @@ XkOps can be used for several use cases, including:
 
 **Reporting:** XkOps allows users to generate reports to share with stakeholders about the cost, performance, and security of the Kubernetes cluster over time.
 
-## ➕ Dependencies
-
-Please note the following requirements for using the XkOps:
-
-- To install the necessary dependencies, an internet connection is required.
-- You will need an EKS cluster and an AWS IAM user with a minimum set of permissions listed in this [spreadsheet](https://docs.google.com/spreadsheets/d/1cuC-72oRJ7DB4HkvELpml5RLcA2clzCA7xBVd1z6fVw/edit?usp=sharing).
-- The pod resources must meet the minimum requirements of 200MiB memory and 500m CPU.
-- Please ensure that you use a separate XkOps namespace.
-
-## 📒 Getting Started
-
-To install XkOps, please follow these steps
-
-### 🔐 Secret Manager Setup
-
-First, set up AWS secrets manager on your AWS account:
-
-- Refer to this [guide](https://docs.google.com/document/d/17fhQ0zJZtJGcWtnVD8NehUbFC-x9TrMP11XjyEFi370/edit?usp=sharing) for instructions on how to set up AWS secret manager OR
-- Use [this script](https://github.com/XgridInc/xkops/blob/master/secret-manager/secret-manager.sh) to automate the setup process.
-
 ### 📥 Install XkOps
 
-1. Clone the repository and navigate to the cloned repo:
+### Prerequisites
+Before installing XkOps, ensure the following:
 
-    ```commandline
-    git clone https://github.com/XgridInc/xkops.git && cd xkops
-    ```
+- **Kubernetes Cluster**: A running Kubernetes cluster (EKS, GKE, or another provider).
+- **Helm:** Helm 3.x installed to deploy XkOps using Helm charts.
+- **kubectl:** Installed and configured to interact with your Kubernetes cluster.
 
-2. Update values.yaml file and input your specific value for each key.
-3. Install XkOps using Helm:
+For further details on environment setup, refer to the Prerequisites Documentation.
 
-    ```commandline
-    helm install xkops ./helm -f values.yml
-    ```
+### Installation
 
-4. After successful installation, obtain the link of the XkOps frontend service to access the dashboard:
+- Visit the [Artifact Hub](https://artifacthub.io/).
+- Search for the XkOps Helm chart.
+- Follow the installation instructions provided on the Artifact Hub page.
 
-    ```commandline
-    kubectl get svc -n xkops
-    ```
+For more detailed steps and configurations, refer to the Installation Documentation.
 
-5. Create an unclaimed volume in your cluster and delete it using the delete button on the dashboard. You can verify the volume deletion action both from the dashboard and the cluster.
-
-## 🚧 Road Map
+## 🗺️ Road Map
 
 To report a new feature request or to report any issues or bugs encountered while using XkOps, please feel free to [create a new issue](https://github.com/XgridInc/xkops/issues "create a new issue") on the project's GitHub repository or contact the development team via [Slack Channel](https://join.slack.com/t/xkopscommunity/shared_invite/zt-1u8xzjvvq-B52TJ2XE861v3KDvpA9UVg). The following features are currently either in progress or planned:
 
@@ -92,9 +73,9 @@ To report a new feature request or to report any issues or bugs encountered whil
 - [X] Installing tools to mitigate risk.
 - [X] Using Robusta to monitor and troubleshoot clusters.
 - [X] Employing Kubecost for cost optimization.
-- [X] Utilizing Pixie to monitor system performance.
-- [x] Deployment using Helm charts.
-- [ ] Implementation of a user interface.
+- [ ] Utilizing Pixie to monitor system performance.
+- [X] Deployment using Helm charts.
+- [X] Implementation of a user interface.
 - [ ] Determining risk factors based on metrics from your Kubernetes cluster.
 - [ ] Extracting logs from pod using a logging solution
 
