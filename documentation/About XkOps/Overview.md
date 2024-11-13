@@ -12,68 +12,69 @@ XkOps streamlines the deployment and management of essential observability tools
 
 Beyond installation, XkOps empowers users to create powerful workflows by combining the capabilities of integrated tools. For instance, Kubecost’s cost optimization recommendations can be automatically implemented using Robusta actions. XkOps also offers pre-built workflows for common tasks like reclaiming unused persistent volumes, gathering node information, and addressing abandoned workloads. To facilitate data-driven insights, XkOps utilizes MongoDB as a centralized repository for storing recommendations, actions, and other relevant metrics. Users can further extend XkOps' functionality by defining custom workflows using values.yaml file.
 
-XkOps Architecture 
+# XkOps Architecture 
 
-XkOps Architecture
+![XkOps Architecture Diagram](../../images/arch%20diagram.png "Architecture Digram")
 
-Pod for Querying Kubecost
 
-A Kubernetes pod is deployed to periodically query Kubecost, which is a tool used for monitoring and optimizing Kubernetes costs.
+## Pod for Querying Kubecost
 
-The pod is configured to run based on a cron expression, which defines the schedule for querying Kubecost (e.g., every hour, daily, etc.).
+- A Kubernetes pod is deployed to periodically query Kubecost, which is a tool used for monitoring and optimizing Kubernetes costs.
 
-The pod's role is to fetch relevant cost data from Kubecost based on specific workflows. Workflows could be related to monitoring the cost of certain resources or workloads in the Kubernetes cluster.
+- The pod is configured to run based on a cron expression, which defines the schedule for querying Kubecost (e.g., every hour, daily, etc.).
 
-Once the data is retrieved, it is processed and stored in MongoDB, which serves as the persistent storage for cost-related data. MongoDB is ideal for this purpose due to its document-based structure, which allows flexible and efficient data storage.
+- The pod's role is to fetch relevant cost data from Kubecost based on specific workflows. Workflows could be related to monitoring the cost of certain resources or workloads in the Kubernetes cluster.
 
-The pod may also have logging mechanisms to ensure that queries and updates to MongoDB are tracked and can be monitored for future reference.
+- Once the data is retrieved, it is processed and stored in MongoDB, which serves as the persistent storage for cost-related data. MongoDB is ideal for this purpose due to its document-based structure, which allows flexible and efficient data storage.
 
-Backend API Endpoint
+- The pod may also have logging mechanisms to ensure that queries and updates to MongoDB are tracked and can be monitored for future reference.
 
-The backend is implemented using Flask, providing a lightweight yet powerful API service. One of the key API endpoints is designed to handle requests from the dashboard (the frontend).
+## Backend API Endpoint
 
-When users interact with the web dashboard (which is built using React), they may trigger specific workflows or actions related to cost analysis, system monitoring, or other operational tasks.
+- The backend is implemented using Flask, providing a lightweight yet powerful API service. One of the key API endpoints is designed to handle requests from the dashboard (the frontend).
 
-The API endpoint in the Flask backend receives these requests and processes them accordingly. The request may contain parameters, such as which workflow to execute or what cost data to retrieve.
+- When users interact with the web dashboard (which is built using React), they may trigger specific workflows or actions related to cost analysis, system monitoring, or other operational tasks.
 
-Once the API processes the request, it triggers a call to Robusta to perform the necessary action based on the input from the dashboard.
+- The API endpoint in the Flask backend receives these requests and processes them accordingly. The request may contain parameters, such as which workflow to execute or what cost data to retrieve.
 
-Interaction with Robusta
+- Once the API processes the request, it triggers a call to Robusta to perform the necessary action based on the input from the dashboard.
 
-Robusta is a Kubernetes-native automation and observability platform that can automate operational tasks. In this system, Robusta is used to perform actions based on requests from the Flask backend.
+## Interaction with Robusta
 
-When the backend API triggers a call to Robusta, it provides the necessary details (e.g., which workflow to execute, actions to perform, etc.).
+- Robusta is a Kubernetes-native automation and observability platform that can automate operational tasks. In this system, Robusta is used to perform actions based on requests from the Flask backend.
 
-Robusta responds by carrying out the specified task, such as restarting pods, scaling workloads, monitoring certain metrics, or adjusting resources based on cost optimization insights from Kubecost.
+- When the backend API triggers a call to Robusta, it provides the necessary details (e.g., which workflow to execute, actions to perform, etc.).
 
-Robusta operates seamlessly within the Kubernetes cluster, making it an ideal tool for automating complex operational workflows and ensuring that tasks are executed efficiently and reliably.
+- Robusta responds by carrying out the specified task, such as restarting pods, scaling workloads, monitoring certain metrics, or adjusting resources based on cost optimization insights from Kubecost.
 
-Updating MongoDB
+- Robusta operates seamlessly within the Kubernetes cluster, making it an ideal tool for automating complex operational workflows and ensuring that tasks are executed efficiently and reliably.
 
-After Robusta completes the action requested by the backend, it returns the results or status of the operation.
+## Updating MongoDB
 
-The backend processes the response and updates the MongoDB database accordingly. MongoDB stores the results of these workflows, which could include the outcomes of cost optimizations, resource adjustments, or other automated actions taken by Robusta.
+- After Robusta completes the action requested by the backend, it returns the results or status of the operation.
 
-By updating MongoDB, the system ensures that there is a persistent record of all actions taken, which can later be queried for auditing, reporting, or further analysis.
+- The backend processes the response and updates the MongoDB database accordingly. MongoDB stores the results of these workflows, which could include the outcomes of cost optimizations, resource adjustments, or other automated actions taken by Robusta.
 
-User Interaction via Dashboard
+- By updating MongoDB, the system ensures that there is a persistent record of all actions taken, which can later be queried for auditing, reporting, or further analysis.
 
-The web dashboard, built using React, serves as the frontend where users can interact with the system.
+## User Interaction via Dashboard
 
-From the dashboard, users can monitor cost data, trigger workflows, and view the results of actions taken by Robusta. The backend API acts as the intermediary between the dashboard and Robusta, ensuring that user requests are processed efficiently.
+- The web dashboard, built using React, serves as the frontend where users can interact with the system.
 
-The dashboard also provides visibility into the MongoDB data, allowing users to track cost trends, view action logs, and analyze the impact of changes made by Robusta.
+- From the dashboard, users can monitor cost data, trigger workflows, and view the results of actions taken by Robusta. The backend API acts as the intermediary between the dashboard and Robusta, ensuring that user requests are processed efficiently.
 
-Intended Audience
+- The dashboard also provides visibility into the MongoDB data, allowing users to track cost trends, view action logs, and analyze the impact of changes made by Robusta.
+
+# Intended Audience
 
 XkOps mainly targets the following teams.
 
-DevOps teams: DevOps teams are responsible for the deployment, scaling, and maintenance of containerized applications on Kubernetes. XkOps would provide these teams with the visibility and insights they need to ensure the performance and availability of the applications.
+**DevOps teams:** DevOps teams are responsible for the deployment, scaling, and maintenance of containerized applications on Kubernetes. XkOps would provide these teams with the visibility and insights they need to ensure the performance and availability of the applications.
 
-SRE teams: Site reliability engineers (SREs) are responsible for ensuring the reliability, scalability, and performance of production systems. XkOps would provide SREs with the necessary information to identify and diagnose performance issues in a Kubernetes cluster and make informed decisions about resource allocation and cost optimization.
+**SRE teams:** Site reliability engineers (SREs) are responsible for ensuring the reliability, scalability, and performance of production systems. XkOps would provide SREs with the necessary information to identify and diagnose performance issues in a Kubernetes cluster and make informed decisions about resource allocation and cost optimization.
 
-Operations teams: Operations teams are responsible for the day-to-day management and monitoring of production systems. XkOps would provide these teams with the visibility they need to proactively identify and address issues, and ensure the overall health and stability of the applications.
+**Operations teams:** Operations teams are responsible for the day-to-day management and monitoring of production systems. XkOps would provide these teams with the visibility they need to proactively identify and address issues, and ensure the overall health and stability of the applications.
 
-Cloud engineers and Architects: They are responsible for designing and maintaining cloud-based infrastructures for their organizations, XkOps could provide them with a unified view of their k8s clusters and cloud-based resources and also offer cost forecasting and optimization recommendations that could help them make informed decisions about resource allocation and cost optimization.
+**Cloud engineers and Architects:** They are responsible for designing and maintaining cloud-based infrastructures for their organizations, XkOps could provide them with a unified view of their k8s clusters and cloud-based resources and also offer cost forecasting and optimization recommendations that could help them make informed decisions about resource allocation and cost optimization.
 
-Developers: Developers who write code for containerized applications could use XkOps to understand how their applications are performing, and the infrastructure they are running on.
+**Developers:** Developers who write code for containerized applications could use XkOps to understand how their applications are performing, and the infrastructure they are running on.

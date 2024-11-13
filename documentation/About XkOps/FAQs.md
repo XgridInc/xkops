@@ -1,30 +1,31 @@
-General
-What is XkOps
+# General
 
-Who created XkOps
+- What is XkOps
 
-What license is XkOps released under?
+- Who created XkOps
 
-Which Kubernetes environments are supported?
+- What license is XkOps released under?
 
-Can I completely self-host XkOps?
+- Which Kubernetes environments are supported?
 
-Installation
-What are the requirements for installing XkOps?
+- Can I completely self-host XkOps?
 
-How do I set up a Kubernetes cluster for XkOps?
+# Installation
+- What are the requirements for installing XkOps?
 
-How do I install the required tools for XkOps?
+- How do I set up a Kubernetes cluster for XkOps?
 
-How do I install XkOps?
+- How do I install the required tools for XkOps?
 
-Workflows
-What are X-Workflows?
+- How do I install XkOps?
 
-How do the X-Workflows work?
+# Workflows
+- What are X-Workflows?
 
-What types of workflows are present in XkOps?
+- How do the X-Workflows work?
 
-What are the query sources for XkOps?
+- What types of workflows are present in XkOps?
 
-How will I get notifications for any issue?
+- What are the query sources for XkOps?
+
+- How will I get notifications for any issue?
